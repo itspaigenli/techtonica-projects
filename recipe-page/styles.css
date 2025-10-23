@@ -1,76 +1,55 @@
+/* Body Section*/
+
 body {
-  background-image: linear-gradient(to right, #989c96 0%, #989c96 50%, #8e9b62 50%, #8e9b62 100%);
+  background-image: linear-gradient(to right, #989c96 0%, #989c96 50%, #000000 50%, #000000 100%);
   min-height: 100vh;
   margin: 0;
   padding: 0;
 }
 
-.container {
-  background: linear-gradient(
-    to right, 
-    #ff9e2c 0%, 
-    #ff9e2c 50%, 
-    #b6701e 50%, 
-    #b6701e 100%
-  );
-}
+/* Description Section*/
 
 #Background {
   max-width: 600px;
-  margin: 0 auto;
+  margin-left: 5%;
+  margin-right: 30%;
 }
 
-#titl {
-  color: #424755;
-  font-family: 'Georgia', serif;
-  text-align: center;
-  
-}
-
-#ingr {
-  color: #424755;
-  font-family: 'Georgia', serif;
-  text-align: center;
-}
-
-#inst {
-  color: #424755;
-  font-family: 'Georgia', serif;
-  text-align: center;
-}
-
-#rela {
-  color: #424755;
-  font-family: 'Georgia', serif;
-  text-align: center;
-}
+/* Paragraphs, Lists Section*/
 
 p, li {
   color: #424755;
-  font-family: 'Verdana', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 25px;
 }
+
+/* Headers Section*/
+
+h1, h2 {
+  color: #424755;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+h1 {
+  border-bottom-style: solid; 
+  text-align: left; 
+  font-size: 4.5em; 
+  padding: 10px; 
+  text-indent: 60px;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+/* Image Section*/
 
 img {
+  float: left ;
   max-width: 600px;
-  height: auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 5%;
 }
 
-.description {
-  max-width: 600px;
-  margin: 0 auto;
+ol {
+  list-style-position: inside;
 }
-
-.left {
-  float: left;
-  width: 600px;
-}
-
-.right {
-  float: left;
-  width: 600px;
-  margin-left: 30px;
-}
-
