@@ -2,9 +2,34 @@ body {
   background-color: #a5b3d5;
 }
 
-h1, h2 {
+#Background {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#titl {
   color: #424755;
   font-family: 'Georgia', serif;
+  text-align: center;
+  
+}
+
+#ingr {
+  color: #424755;
+  font-family: 'Georgia', serif;
+  text-align: center;
+}
+
+#inst {
+  color: #424755;
+  font-family: 'Georgia', serif;
+  text-align: center;
+}
+
+#rela {
+  color: #424755;
+  font-family: 'Georgia', serif;
+  text-align: center;
 }
 
 p, li {
@@ -23,5 +48,16 @@ img {
 .description {
   max-width: 600px;
   margin: 0 auto;
+}
+
+.left {
+  float: left;
+  width: 600px;
+}
+
+.right {
+  float: left;
+  width: 600px;
+  margin-left: 30px;
 }
 
