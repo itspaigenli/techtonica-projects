@@ -1,16 +1,13 @@
-p {
-  color: black;
-}
 body {
     background-color: #aab5b7;
 }
 
 h1 {
-    color: #312e2a; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #312e2a; font-size: xxx-large; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 h2 {
-    color: #312e2a; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #312e2a; font-family: 'Franklin Gothic Mediu', 'Arial Narrow', Arial, sans-serif;
 }
 
 p {
@@ -28,3 +25,4 @@ ol {
 a {
   color: #4e5c7a; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
