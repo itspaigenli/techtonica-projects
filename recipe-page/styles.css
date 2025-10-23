@@ -1,5 +1,18 @@
 body {
-  background-color: #a5b3d5;
+  background-image: linear-gradient(to right, #989c96 0%, #989c96 50%, #8e9b62 50%, #8e9b62 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  background: linear-gradient(
+    to right, 
+    #ff9e2c 0%, 
+    #ff9e2c 50%, 
+    #b6701e 50%, 
+    #b6701e 100%
+  );
 }
 
 #Background {
