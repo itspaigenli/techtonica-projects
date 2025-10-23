@@ -2,8 +2,16 @@ body {
     background-color: #a5b3d5;
 }
 
+figure {
+  display: table;
+  /* Optional: Center the figure */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 h1 {
-    color: #424755; font-size: 800%; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center; color: #424755; font-size: 800%; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 h2 {
