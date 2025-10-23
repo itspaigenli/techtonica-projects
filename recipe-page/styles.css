@@ -5,3 +5,7 @@ p {
 body {
     background-color: #7A746A;
 }
+
+*header {
+    color: green; font-family: verdana;
+}
