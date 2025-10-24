@@ -10,9 +10,8 @@ body {
 /* Description Section*/
 
 #Background {
-  max-width: 600px;
+  max-width: 500px;
   margin-left: 5%;
-  margin-right: 30%;
 }
 
 /* Paragraphs, Lists Section*/
@@ -20,7 +19,8 @@ body {
 p, li {
   color: #424755;
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: 18px;
+  font-size: 1.2vw;
+  line-height: 1.5;
 }
 
 /* Headers Section*/
@@ -33,43 +33,41 @@ h1, h2 {
 h1 {
   border-bottom-style: solid; 
   text-align: left; 
-  font-size: 4.0em; 
+  font-size: 5vw; 
   padding: 0px; 
   text-indent: 60px;
   margin-top: 0%;
 }
 
 h2 {
-  font-size: 2.0em;
+  font-size: 2vw;
 }
 
 /* Image Section*/
 
 img {
   float: left;
-  max-width: 25%;
+  max-width: 20%;
   height: auto;
   margin-left: 12%;
   margin-top: 1%;
+  margin-bottom: 1%;
   border: 10px solid #000000;
 }
+
+/* Instructions Section*/
 
 #Instructions{
   float: right;
   max-width: 500px;
-  margin-right: 5%;
+  margin-right: 8%;
+  margin-bottom: 10%;
 }
 
-#Ingredients {
-  max-width: 600px;
-  margin-left: 5%;
-  margin-right: 30%;
-  margin-bottom: 0%;
-  margin-top: 43%;
-}
+/*Ingredients-Related Section*/
 
-#Related{
-  float: right;
-  max-width: 500px;
-  margin-right: 5%;
+.ingredients-related {
+  clear: both;       
+  margin-left: 5%;  
+  max-width: 500px; 
 }
