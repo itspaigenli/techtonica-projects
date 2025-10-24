@@ -5,22 +5,47 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
+
 }
 
-/* Description Section*/
+/*Rows, Columns */
 
-#Background {
-  max-width: 500px;
-  margin-left: 5%;
+.row, 
+.column {
+  display: block;
+  float: left;
 }
 
-/* Paragraphs, Lists Section*/
+.row {
+  width:100vw;
+}
 
-p, li {
+.column {
+  width:50vw;
+  box-sizing:border-box;
+  padding:0 3%;
+}
+
+.row> :nth-child(2).column p,
+.row> :nth-child(2).column li,
+.row> :nth-child(2).column h2 {
+  color:#c4c0b7;
+}
+
+/* Paragraphs, Lists Anchor Section*/
+
+a, p, li {
   color: #424755;
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: 1.2vw;
-  line-height: 1.5;
+  font-size: 1.4vw;
+  line-height: 1.4;
+}
+
+a{
+  color: #838B55;
+}
+a:hover{
+  color: #BAA682;
 }
 
 /* Headers Section*/
@@ -30,13 +55,17 @@ h1, h2 {
   font-family: "IBM Plex Sans", sans-serif;
 }
 
+h2 {
+  margin:2vw 0;
+}
+
 h1 {
   border-bottom-style: solid; 
   text-align: left; 
   font-size: 5vw; 
   padding: 0px; 
   text-indent: 60px;
-  margin-top: 0%;
+  margin: 0%;
 }
 
 h2 {
@@ -45,29 +74,27 @@ h2 {
 
 /* Image Section*/
 
+#image {
+  text-align: center;
+}
 img {
-  float: left;
-  max-width: 20%;
-  height: auto;
-  margin-left: 12%;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  width: 75%;
   border: 10px solid #000000;
 }
 
 /* Instructions Section*/
 
-#Instructions{
-  float: right;
-  max-width: 500px;
-  margin-right: 8%;
-  margin-bottom: 10%;
+#Instructions {
+  margin-top: 10vw;
+}
+
+#Instructions ol {
+  padding-left: 3.5vw;
 }
 
 /*Ingredients-Related Section*/
 
 .ingredients-related {
   clear: both;       
-  margin-left: 5%;  
   max-width: 500px; 
 }
