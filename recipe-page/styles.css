@@ -1,69 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: sans-serif;
+}
 /* Body Section*/
 
 body {
-  background-image: linear-gradient(to right, #989c96 0%, #989c96 50%, #000000 50%, #000000 100%);
+  background-image: linear-gradient(
+    to right,
+    #989c96 0%,
+    #989c96 50%,
+    #000000 50%,
+    #000000 100%
+  );
   min-height: 100vh;
   margin: 0;
   padding: 0;
-
 }
 
 /*Rows, Columns */
 
-.row, 
+.row,
 .column {
   display: block;
   float: left;
 }
 
 .row {
-  width:100vw;
+  width: 100vw;
 }
 
 .column {
-  width:50vw;
-  box-sizing:border-box;
-  padding:0 3%;
+  width: 50vw;
+  box-sizing: border-box;
+  padding: 0 3%;
 }
 
-.row> :nth-child(2).column p,
-.row> :nth-child(2).column li,
-.row> :nth-child(2).column h2 {
-  color:#c4c0b7;
+.row > :nth-child(2).column p,
+.row > :nth-child(2).column li,
+.row > :nth-child(2).column h2 {
+  color: #c4c0b7;
 }
 
 /* Paragraphs, Lists Anchor Section*/
 
-a, p, li {
+a,
+p,
+li {
   color: #424755;
   font-family: "IBM Plex Sans", sans-serif;
   font-size: 1.4vw;
   line-height: 1.4;
 }
 
-a{
-  color: #838B55;
+a {
+  color: #838b55;
 }
-a:hover{
-  color: #BAA682;
+a:hover {
+  color: #baa682;
 }
 
 /* Headers Section*/
 
-h1, h2 {
+h1,
+h2 {
   color: #424755;
   font-family: "IBM Plex Sans", sans-serif;
 }
 
 h2 {
-  margin:2vw 0;
+  margin: 2vw 0;
 }
 
 h1 {
-  border-bottom-style: solid; 
-  text-align: left; 
-  font-size: 5vw; 
-  padding: 0px; 
+  border-bottom-style: solid;
+  text-align: left;
+  font-size: 5vw;
+  padding: 0px;
   text-indent: 60px;
   margin: 0%;
 }
@@ -95,6 +110,6 @@ img {
 /*Ingredients-Related Section*/
 
 .ingredients-related {
-  clear: both;       
-  max-width: 500px; 
+  clear: both;
+  max-width: 500px;
 }
