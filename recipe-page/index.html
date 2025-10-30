@@ -23,45 +23,55 @@
   </head>
 
   <body>
-    <section id="nav-bar">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><img src="./Assets/NBLogo.png" /> </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="fa-solid fa-paw"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#"
-                >Home <span class="sr-only">(current)</span></a
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <section id="nav-bar">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand" href="#"
+                ><img src="./Assets/NBLogo.png" />
+              </a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
               >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Recipes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-          </ul>
+                <i class="fa-solid fa-paw"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"
+                      >Home <span class="sr-only">(current)</span></a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Recipes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </section>
         </div>
-      </nav>
-    </section>
+      </div>
 
-    <div id="Title">
-      <h1>Tea with the Void</h1>
+      <div class="row">
+        <div id="Title" class="col-12">
+          <h1>Tea with the Void</h1>
+        </div>
+      </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div id="Background" class="column">
+        <div id="Background" class="col-6">
           <h2>Background</h2>
           <p class="desc">
             <em
@@ -80,21 +90,16 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div id="image" class="column">
+        <div id="image" class="col-6">
           <img
             class="img_cat"
             src="./Assets/void-tea.png"
             alt="Drawn cartoon black cat sitting next to a tea cup"
           />
         </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div id="Instructions" class="column">
+        <div id="Instructions" class="col-6">
           <h2>Instructions</h2>
           <ol>
             <li>Sit beside the cat.</li>
@@ -116,9 +121,9 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div id="Ingredients" class="column">
+        <div id="Ingredients" class="col-6">
           <h2>Ingredients</h2>
           <ul>
             <li>One cat staring into nothing</li>
@@ -128,12 +133,7 @@
             <li>Optional: one tea cake to help anchor you to this world</li>
           </ul>
         </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div id="Related" class="column">
+        <div id="Related" class="col-6">
           <h2>Related</h2>
           <a
             href="https://www.reddit.com/r/Awww/comments/1d5kmxt/new_recipe/"
