@@ -1,80 +1,151 @@
 <!DOCTYPE html>
-<html>
-
- <!-- Head/Meta Section -->
-
-  <head> 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Matangi:wght@300..900&family=Playwrite+ID:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/f5eda95ee3.js"
+      crossorigin="anonymous"
+    ></script>
+
     <title>Recipe - Tea with the Void</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Matangi:wght@300..900&family=Playwrite+ID:wght@100..400&display=swap" rel="stylesheet">
-    
   </head>
 
-<!-- Body Section -->
-
   <body>
-    <div id="Title">
-        <h1>Tea with the Void</h1>
-    </div>
-
-<!-- Background/Description Section -->
-
-    <div class="row">
-        <div id="Background" class="column">
-            <h2>Background</h2>
-            <p class="desc"><em>No one remembers when the tradition of Tea with the Void began. Some say the first cat discovered it while gazing too long into a patch of moonlight and accidentally made eye contact with eternity. Ever since, cats have been known to sit perfectly still at odd hours, peering into corners where nothing seems to exist. Humans, ever curious (and slightly envious), started joining them — tea in hand — hoping to glimpse the secrets of the universe. No one ever sees what the cat sees. But for a few quiet minutes, everything feels both infinite and wonderfully small.</em></p>
-        </div>
-    </div>
-     <div class="row">
-
-<!-- Image Section -->
-
-        <div id="image" class="column">
-            <img class="img_cat" src="./Assets/void-tea.png" alt="Drawn cartoon black cat sitting next to a tea cup" />
-        </div>
-
-<!-- Instructions Section -->    
-
-        <div id="Instructions" class="column">
-            <h2>Instructions</h2>
-                <ol>
-                    <li>Sit beside the cat.</li> 
-                    <li>Let the silence stretch.</li> 
-                    <li>Watch the still air ripple with unseen meaning.</li>
-                    <li>Question everything, from the nature of being to the reason for teabags.</li> 
-                    <li>Sip. Realize the tea has gone cold, and perhaps that's the point.</li> 
-                    <li>Nibble your tea cake (if you have one) and pretend everything makes sense. It doesn't. That's fine.</li>
-                </ol>
-        </div>        
-    </div>
-    <div class="row">
-
-<!-- Ingredients Section-->
-
-        <div id="Ingredients" class="column">
-            <h2>Ingredients</h2>
-                <ul>
-                    <li>One cat staring into nothing</li>
-                    <li>A few sprinkles of existential curiosity</li>
-                    <li>One cup of tea cooling slowly</li> 
-                    <li>A quiet, unnerving sense of cosmic mystery</li>
-                    <li>Optional: one tea cake to help anchor you to this world</li>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <section id="nav-bar">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand" href="#"
+                ><img src="./Assets/NBLogo.png" />
+              </a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <i class="fa-solid fa-paw"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"
+                      >Home <span class="sr-only">(current)</span></a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Recipes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                  </li>
                 </ul>
+              </div>
+            </nav>
+          </section>
         </div>
+      </div>
 
- <!-- Related Section -->        
-
-        <div id="Related" class="column">
-            <h2>Related</h2>
-            <a href="https://www.reddit.com/r/Awww/comments/1d5kmxt/new_recipe/" style="font-size: 21px;">Cat Ceviche</a>
-        </div>            
+      <div class="row">
+        <div id="Title" class="col-12">
+          <h1>Tea with the Void</h1>
+        </div>
+      </div>
     </div>
-    
-<!-- Endings Section -->
 
+    <div class="container-fluid">
+      <div class="row">
+        <div id="Background" class="col-6">
+          <h2>Background</h2>
+          <p class="desc">
+            <em
+              >No one remembers when the tradition of Tea with the Void began.
+              Some say the first cat discovered it while gazing too long into a
+              patch of moonlight and accidentally made eye contact with
+              eternity. Ever since, cats have been known to sit perfectly still
+              at odd hours, peering into corners where nothing seems to exist.
+              Humans, ever curious (and slightly envious), started joining them
+              — tea in hand — hoping to glimpse the secrets of the universe. No
+              one ever sees what the cat sees. But for a few quiet minutes,
+              everything feels both infinite and wonderfully small.</em
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div id="image" class="col-6">
+          <img
+            class="img_cat"
+            src="./Assets/void-tea.png"
+            alt="Drawn cartoon black cat sitting next to a tea cup"
+          />
+        </div>
+        <div id="Instructions" class="col-6">
+          <h2>Instructions</h2>
+          <ol>
+            <li>Sit beside the cat.</li>
+            <li>Let the silence stretch.</li>
+            <li>Watch the still air ripple with unseen meaning.</li>
+            <li>
+              Question everything, from the nature of being to the reason for
+              teabags.
+            </li>
+            <li>
+              Sip. Realize the tea has gone cold, and perhaps that's the point.
+            </li>
+            <li>
+              Nibble your tea cake (if you have one) and pretend everything
+              makes sense. It doesn't. That's fine.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div id="Ingredients" class="col-6">
+          <h2>Ingredients</h2>
+          <ul>
+            <li>One cat staring into nothing</li>
+            <li>A few sprinkles of existential curiosity</li>
+            <li>One cup of tea cooling slowly</li>
+            <li>A quiet, unnerving sense of cosmic mystery</li>
+            <li>Optional: one tea cake to help anchor you to this world</li>
+          </ul>
+        </div>
+        <div id="Related" class="col-6">
+          <h2>Related</h2>
+          <a
+            href="https://www.reddit.com/r/Awww/comments/1d5kmxt/new_recipe/"
+            style="font-size: 21px"
+            >Cat Ceviche</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
   </body>
-
 </html>
