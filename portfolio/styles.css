@@ -1,7 +1,9 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Poppins, sans-serif";
+  font-family: "Elms Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
   box-sizing: border-box;
 }
 
@@ -10,7 +12,7 @@ body {
   color: #fff;
 }
 
-/* ----- Main Landing Section ----- */
+/* ----- ABOUT SECTION ----- */
 
 #header {
   width: 100%;
@@ -116,13 +118,9 @@ nav ul li a:hover::after {
   flex-basis: 55%;
 }
 
-.about-col-2 .sub-title {
-  font-size: 50px;
-}
-
-.header-text h1.sub-title {
+h1.sub-title {
   margin-bottom: 5px;
-  font-size: 35px;
+  font-size: 50px;
   font-weight: 600;
   color: #f2ead8;
 }
@@ -173,4 +171,49 @@ nav ul li a:hover::after {
 
 .tab-contents.active-tab {
   display: block;
+}
+
+/* ----- PORTFOLIO SECTION ----- */
+#portfolio {
+  padding: 30px 0;
+}
+
+#portfolio .container {
+    padding: 20px 0% 20px 10%;
+}
+
+.portfolio-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 40px;
+  margin-top: 50px;
+}
+
+.portfolio-list div {
+  background: #262626;
+  padding: 40px;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 10px;
+}
+
+.portfolio-list div i {
+    color: #f2ead8;
+  font-size: 50px;
+  margin-bottom: :30px;  
+}
+
+.portfolio-list div h2{
+    color: #f2ead8;
+    font-size: 30px;
+    font-weight: 500;;
+    margin-bottom: 15px;
+}
+
+.portfolio-list div a{
+    text-decoration: none;
+    color: #f2ead8;
+    font-size: 12px;
+    margin-top: 20px;
+    display: inline-block;
 }
