@@ -29,7 +29,7 @@ nav{
 }
 
 .logo{
-    width: 200px;  
+    width: 300px;  
 }
 
 nav ul li {
@@ -142,4 +142,12 @@ margin: 20px 0 40px;
 .tab-contents ul li span{
     color:#8a8e74;
     font-size: 14px;
+}
+
+.tab-contents{
+    display: none;
+}
+
+.tab-contents.active-tab{
+    display: block;
 }
