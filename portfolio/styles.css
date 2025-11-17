@@ -175,7 +175,179 @@ h1.sub-title {
 
 /* ----- PERSONAL SECTION ----- */
 
+.personal-section {
+  padding: 80px 0;
+  color: #f2ead8;
+}
+
+.personal-container {
+  padding: 20px 0% 20px 10%;
+}
+
+.section-header {
+  margin-bottom: 40px;
+}
+
+.section-header h2 {
+  margin-bottom: 5px;
+  font-size: 50px;
+  font-weight: 600;
+  color: #f2ead8;
+}
+
+.section-header p {
+  max-width: 600px;
+  margin-top: 10px;
+  color: #8a8e74;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.cats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.cat-card {
+  background: #262626;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: background 0.5s, transform 0.5s;
+}
+
+.cat-card:hover {
+  background: #8a8e74;
+  transform: translateY(-10px);
+}
+
+.cat-image {
+  width: 100%;
+  height: 260px;
+  display: block;
+  object-fit: cover;
+}
+
+.cat-info {
+  padding: 25px;
+}
+
+.cat-name {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #8a8e74;
+}
+
+.cat-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #d5c6ae;
+}
+
+.cat-card:hover .cat-name,
+.cat-card:hover .cat-description {
+  color: #f2ead8;
+}
+
+@media (max-width: 768px) {
+  .personal-section {
+    padding: 60px 0;
+  }
+
+  .personal-container {
+    padding: 0 5%;
+  }
+
+  .section-header h2 {
+    font-size: 36px;
+  }
+
+  .section-header p {
+    font-size: 18px;
+  }
+
+  .cats-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+/* ----- PERSONAL SECTION 2 ----- */
+.celeb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.celeb-card {
+  background: #262626;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: background 0.5s, transform 0.5s;
+}
+
+.celeb-card:hover {
+  background: #8a8e74;
+  transform: translateY(-10px);
+}
+
+.celeb-image {
+  width: 100%;
+  height: 260px;
+  display: block;
+  object-fit: cover;
+}
+
+.celeb-info {
+  padding: 25px;
+}
+
+.celeb-name {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #8a8e74;
+}
+
+.celeb-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #d5c6ae;
+}
+
+.celeb-card:hover .celeb-name,
+.celeb-card:hover .celeb-description {
+  color: #f2ead8;
+}
+
+@media (max-width: 768px) {
+  .personal-section {
+    padding: 60px 0;
+  }
+
+  .personal-container {
+    padding: 0 5%;
+  }
+
+  .section-header h2 {
+    font-size: 36px;
+  }
+
+  .section-header p {
+    font-size: 18px;
+  }
+
+  .celeb-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
 /* ----- PORTFOLIO SECTION ----- */
+
 #portfolio {
   padding: 30px 0;
 }
