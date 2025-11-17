@@ -7,87 +7,132 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-  <header id="header">
-    <div class="container">
-    <nav>
-      <img src="assets/logo-hd.PNG" class="logo">
-      <ul>
-        <li><a href="#">Professional</a></li>
-        <li><a href="#">Personal</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-  <div class="header-text">
-    <p>Apprentice Software Engineer</p>
-    <h1>Hi, I'm <span>Paige<br>Li</span> from California</h1>
-  </div>
-  </div>
-  </header>
-
-  <!--ABOUT SECTION-->
-
-  <section id="about">
-    <div class="container">
-      <div class="row">
-        <div class="about-col-1">
-          <img src="assets/user.JPG" alt="A woman's self-portrait with a sunset and wheatfield background">
-        </div>
-        <div class="about-col-2">
-          <h1 class="sub-title"> Personal</h1>
-          <p>I’m Paige and my pronouns are she/her. I am a former Ecologist who loves white-water rafting, animals, and studying natural networks. I’m passionate about merging technology and nature through ethical, sustainable design. I’d make a good software engineer because I bring a systems-thinking mindset and the ability to analyze ecosystems, both which are skills that translate well to designing sustainable software solutions. I want to contribute to building technology that drives environmental stewardship and social good, helping the tech industry create tools that are innovative, responsible, and inclusive. </p>
-
-          <div class="tab-titles">
-            <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-            <p class="tab-links" onclick="opentab('experience')">Experience</p>
-            <p class="tab-links" onclick="opentab('education')">Education</p>
-          </div>
-  <div class="tab-contents active-tab" id="skills">
-    <ul>
-      <li><span>Programming Language</span><br>JavaScript, HTML, CSS</li>
-      <li><span>Tools</span><br>GitHub, Visual Studio Code, CLI, Chrome Dev Tools</li>
-      <li><span>Soft Skills</span><br>Leadership ability, Time management, Collaboration, Communication, Problem-Solving</li>
-      <li><span>Accessibility/DEI Advocate</span><br>Neurodivergency, Communication & Learning Styles, Conflict Resolution</li>
-    </ul>
-  </div>
-  <div class="tab-contents" id="experience">
-    <ul>
-      <li><span>2024 - 2025</span><br>Executive Operations Manager</li>
-      <li><span>2015 - 2025</span><br>Executive Operations Coordinator</li>
-      <li><span>2017 - 2019</span><br>Assistant Ecologist</li>
-      <li><span>2005 - 2017</span><br>Biological Science Technician</li>
-    </ul>
-  </div>
-  <div class="tab-contents" id="education">
-    <ul>
-      <li><span>2025 - Techtonica</span><br>Software Engineering</li>
-      <li><span>2025 - University of North Florida</span><br> AI for Work & Life (Professional Development Workshop)</li>
-      <li><span>2021 - Johns Hopkins University</span><br>MS Environmental Sciences & Policy</li>
-      <li><span>2017 - University of North Florida</span><br>BS Ecology & Evolutionary Biology</li>
-    </ul>
-  </div>
+    <header id="header">
+      <div class="container">
+        <nav>
+          <img src="assets/logo.png" class="logo" />
+          <ul>
+            <li><a href="#">Professional</a></li>
+            <li><a href="#">Personal</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-text">
+          <p>Apprentice Software Engineer</p>
+          <h1>
+            Hi, I'm <span>Paige<br />Li</span> from California
+          </h1>
+          <p>
+            I am a former Ecologist who loves white-water rafting, animals, and
+            studying natural environments. I’m passionate about merging
+            technology and nature through ethical, sustainable design. I bring a
+            systems-thinking mindset and the ability to analyze ecosystems, both
+            which are skills that translate well to designing sustainable
+            software solutions. I contribute to building technology that drives
+            environmental stewardship and social good, helping the tech industry
+            create tools that are innovative, responsible, and inclusive.
+          </p>
         </div>
       </div>
+    </header>
 
-    </div>  
-  </section>
-    
-<script>
+    <!--ABOUT SECTION-->
 
-  let tablinks = document.getElementsByClassName("tab-links");
-  let tabcontents = document.getElementsByClassName("tab-contents");
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="about-col-1">
+            <img
+              src="assets/user.JPG"
+              alt="A woman's self-portrait with a sunset and wheatfield background"
+            />
+          </div>
+          <div class="about-col-2">
+            <h1 class="sub-title">Professional</h1>
+            <div class="tab-titles">
+              <p class="tab-links active-link" onclick="opentab('skills')">
+                Skills
+              </p>
+              <p class="tab-links" onclick="opentab('experience')">
+                Experience
+              </p>
+              <p class="tab-links" onclick="opentab('education')">Education</p>
+            </div>
+            <div class="tab-contents active-tab" id="skills">
+              <ul>
+                <li>
+                  <span>Programming Language</span><br />JavaScript, HTML, CSS
+                </li>
+                <li>
+                  <span>Tools</span><br />GitHub, Visual Studio Code, CLI,
+                  Chrome Dev Tools
+                </li>
+                <li>
+                  <span>Soft Skills</span><br />Leadership ability, Time
+                  management, Collaboration, Communication, Problem-Solving
+                </li>
+                <li>
+                  <span>Accessibility/DEI Advocate</span><br />Neurodivergency,
+                  Communication & Learning Styles, Conflict Resolution
+                </li>
+              </ul>
+            </div>
+            <div class="tab-contents" id="experience">
+              <ul>
+                <li>
+                  <span>2024 - 2025</span><br />Executive Operations Manager
+                </li>
+                <li>
+                  <span>2015 - 2025</span><br />Executive Operations Coordinator
+                </li>
+                <li><span>2017 - 2019</span><br />Assistant Ecologist</li>
+                <li>
+                  <span>2005 - 2017</span><br />Biological Science Technician
+                </li>
+              </ul>
+            </div>
+            <div class="tab-contents" id="education">
+              <ul>
+                <li>
+                  <span>2025 - Techtonica</span><br />Software Engineering
+                </li>
+                <li>
+                  <span>2025 - University of North Florida</span><br />
+                  AI for Work & Life (Professional Development Workshop)
+                </li>
+                <li>
+                  <span>2021 - Johns Hopkins University</span><br />MS
+                  Environmental Sciences & Policy
+                </li>
+                <li>
+                  <span>2017 - University of North Florida</span><br />BS
+                  Ecology & Evolutionary Biology
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-function opentab(tabname){
-  for(tablink of tablinks){
-    tablink.classList.remove("active-link");
-  }
-   for(tabcontent of tabcontents){
-    tabcontent.classList.remove("active-tab");
-}
-event.currentTarget.classList.add("active-link");
-document.getElementById(tabname).classList.add("active-tab");
-}
+    <!--PORTFOLIO SECTION-->
 
-</script>
+    <!--SCRIPTS-->
 
+    <script>
+      let tablinks = document.getElementsByClassName("tab-links");
+      let tabcontents = document.getElementsByClassName("tab-contents");
+
+      function opentab(tabname) {
+        for (tablink of tablinks) {
+          tablink.classList.remove("active-link");
+        }
+        for (tabcontent of tabcontents) {
+          tabcontent.classList.remove("active-tab");
+        }
+        event.currentTarget.classList.add("active-link");
+        document.getElementById(tabname).classList.add("active-tab");
+      }
+    </script>
   </body>
 </html>
