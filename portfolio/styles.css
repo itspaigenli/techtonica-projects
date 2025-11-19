@@ -207,6 +207,59 @@ h1.sub-title {
   display: block;
 }
 
+/* ---------- PORTFOLIO ---------- */
+#portfolio {
+  padding: 30px 0;
+}
+
+#portfolio .container {
+  padding: 20px 5%;
+  text-align: left;
+}
+
+.portfolio-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.portfolio-list > div {
+  background: #262626;
+  padding: 40px;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 10px;
+  transition: background 0.5s, transform 0.5s;
+  overflow-wrap: break-word;
+}
+
+.portfolio-list div i {
+  color: #f2ead8;
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+.portfolio-list div h2 {
+  color: #f2ead8;
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.portfolio-list div a {
+  text-decoration: none;
+  color: #f2ead8;
+  font-size: 12px;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.portfolio-list div:hover {
+  background: #8a8e74;
+  transform: translateY(-10px);
+}
+
 /* ---------- PERSONAL SECTION 1 ---------- */
 .personal-section {
   padding: 80px 0;
@@ -331,59 +384,6 @@ h1.sub-title {
 .celeb-card:hover .celeb-name,
 .celeb-card:hover .celeb-description {
   color: #f2ead8;
-}
-
-/* ---------- PORTFOLIO ---------- */
-#portfolio {
-  padding: 30px 0;
-}
-
-#portfolio .container {
-  padding: 20px 5%;
-  text-align: left;
-}
-
-.portfolio-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  margin-top: 50px;
-}
-
-.portfolio-list > div {
-  background: #262626;
-  padding: 40px;
-  font-size: 13px;
-  font-weight: 300;
-  border-radius: 10px;
-  transition: background 0.5s, transform 0.5s;
-  overflow-wrap: break-word;
-}
-
-.portfolio-list div i {
-  color: #f2ead8;
-  font-size: 50px;
-  margin-bottom: 30px;
-}
-
-.portfolio-list div h2 {
-  color: #f2ead8;
-  font-size: 30px;
-  font-weight: 500;
-  margin-bottom: 15px;
-}
-
-.portfolio-list div a {
-  text-decoration: none;
-  color: #f2ead8;
-  font-size: 12px;
-  margin-top: 20px;
-  display: inline-block;
-}
-
-.portfolio-list div:hover {
-  background: #8a8e74;
-  transform: translateY(-10px);
 }
 
 /* ---------- CONTACT SECTION ---------- */
