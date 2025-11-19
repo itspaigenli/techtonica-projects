@@ -1,39 +1,28 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Elms Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
   box-sizing: border-box;
-  letter-spacing: -0.25px;
+  font-family: "Elms Sans", sans-serif;
+  word-break: break-word;
 }
 
+html,
 body {
   background: #080808;
   color: #fff;
 }
 
-/* ----- ABOUT SECTION ----- */
-
-#header {
-  width: 100%;
-  height: 100vh;
-  background-image: url(assets/background-grey.JPG);
-  background-size: fit;
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-color: #2e2f23;
-}
-
-#header p {
-  font-size: 20px;
-  width: 50%;
-  margin-top: 10%;
-  line-height: 40px;
-}
-
 .container {
   padding: 20px 5%;
+}
+
+/* ---------- NAV SECTION ---------- */
+
+.logo {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 nav {
@@ -43,20 +32,20 @@ nav {
   flex-wrap: wrap;
 }
 
-.logo {
-  width: 300px;
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
 }
 
 nav ul li {
   display: inline-block;
-  list-style: none;
-  margin: 10px 20px;
 }
 
 nav ul li a {
   color: #fff;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 18px;
   position: relative;
 }
 
@@ -75,6 +64,23 @@ nav ul li a:hover::after {
   width: 100%;
 }
 
+nav .fa-solid {
+  display: none;
+}
+
+/* ---------- HEADER SECTION ---------- */
+#header {
+  width: 100%;
+  background-image: url(assets/background-grey.JPG);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-color: #2e2f23;
+  background-size: cover;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+}
+
 .header-text {
   margin-top: 5%;
   font-size: 30px;
@@ -89,15 +95,33 @@ nav ul li a:hover::after {
   color: #d5c6ae;
 }
 
-/* ----- PROFESSIONAL SECTION -----*/
+.header-text h1 span.name {
+  display: inline-block; /* keeps text as a single unit */
+  white-space: normal; /* allows wrapping naturally */
+  word-spacing: normal; /* resets word spacing */
+  letter-spacing: normal; /* resets letter spacing */
+}
 
+.header-text h1 {
+  line-height: 1.2; /* adjusts vertical spacing */
+}
+
+#header p {
+  font-size: 20px;
+  width: 50%;
+  margin-top: 10%;
+  line-height: 40px;
+  overflow-wrap: break-word;
+}
+
+/* ---------- PROFESSIONAL / ABOUT SECTION ---------- */
 #about {
   padding: 80px 0;
   color: #f2ead8;
 }
 
 #about .container {
-  padding: 20px 0% 20px 10%;
+  padding: 20px 5%;
 }
 
 .row {
@@ -112,7 +136,10 @@ nav ul li a:hover::after {
 
 .about-col-1 img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 15px;
+  display: block;
 }
 
 .about-col-2 {
@@ -129,6 +156,7 @@ h1.sub-title {
 .tab-titles {
   display: flex;
   margin: 20px 0 40px;
+  flex-wrap: wrap;
 }
 
 .tab-links {
@@ -159,6 +187,7 @@ h1.sub-title {
   margin: 10px 0;
   font-size: 20px;
   line-height: 25px;
+  overflow-wrap: break-word;
 }
 
 .tab-contents ul li span {
@@ -174,15 +203,14 @@ h1.sub-title {
   display: block;
 }
 
-/* ----- PERSONAL SECTION ----- */
-
+/* ---------- PERSONAL SECTION 1 ---------- */
 .personal-section {
   padding: 80px 0;
   color: #f2ead8;
 }
 
 .personal-container {
-  padding: 20px 0% 20px 10%;
+  padding: 20px 5%;
 }
 
 .section-header {
@@ -252,30 +280,7 @@ h1.sub-title {
   color: #f2ead8;
 }
 
-@media (max-width: 768px) {
-  .personal-section {
-    padding: 60px 0;
-  }
-
-  .personal-container {
-    padding: 0 5%;
-  }
-
-  .section-header h2 {
-    font-size: 36px;
-  }
-
-  .section-header p {
-    font-size: 18px;
-  }
-
-  .cats-grid {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-}
-
-/* ----- PERSONAL SECTION 2 ----- */
+/* ---------- PERSONAL SECTION 2 ---------- */
 .celeb-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -324,53 +329,31 @@ h1.sub-title {
   color: #f2ead8;
 }
 
-@media (max-width: 768px) {
-  .personal-section {
-    padding: 60px 0;
-  }
-
-  .personal-container {
-    padding: 0 5%;
-  }
-
-  .section-header h2 {
-    font-size: 36px;
-  }
-
-  .section-header p {
-    font-size: 18px;
-  }
-
-  .celeb-grid {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-}
-
-/* ----- PORTFOLIO SECTION ----- */
-
+/* ---------- PORTFOLIO ---------- */
 #portfolio {
   padding: 30px 0;
 }
 
 #portfolio .container {
-  padding: 20px 0% 20px 10%;
+  padding: 20px 5%;
+  text-align: left;
 }
 
 .portfolio-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 40px;
+  gap: 40px;
   margin-top: 50px;
 }
 
-.portfolio-list div {
+.portfolio-list > div {
   background: #262626;
   padding: 40px;
   font-size: 13px;
   font-weight: 300;
   border-radius: 10px;
   transition: background 0.5s, transform 0.5s;
+  overflow-wrap: break-word;
 }
 
 .portfolio-list div i {
@@ -399,7 +382,7 @@ h1.sub-title {
   transform: translateY(-10px);
 }
 
-/* ----- CONTACT SECTION ----- */
+/* ---------- CONTACT SECTION ---------- */
 .contact-left {
   flex-basis: 35%;
 }
@@ -440,7 +423,7 @@ h1.sub-title {
   display: block;
   margin: 50px auto;
   width: fit-content;
-  border: 1px solid #0000;
+  border: 1px solid transparent;
   padding: 14px 50px;
   border-radius: 6px;
   text-decoration: none;
@@ -488,27 +471,91 @@ form .btn2 {
   color: #bdc5a5;
 }
 
-/* ----- MEDIA QUERIES ----- */
+/* ---------- MEDIA QUERY 1 (TABLET) ---------- */
+@media (max-width: 768px) {
+  .personal-section,
+  .celeb-grid {
+    padding: 60px 0;
+  }
 
-nav .fa-solid {
-  display: none;
+  .personal-container {
+    padding: 0 5%;
+  }
+
+  .section-header h2 {
+    font-size: 36px;
+  }
+
+  .section-header p {
+    font-size: 18px;
+  }
+
+  .cats-grid,
+  .celeb-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  #about .container {
+    padding: 20px 5%;
+  }
+
+  .about-col-1,
+  .about-col-2 {
+    flex-basis: 100%;
+    width: 100%;
+    padding: 0;
+  }
+
+  .about-col-1 {
+    margin-bottom: 30px;
+  }
+
+  .about-col-1 img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  nav .logo {
+    max-width: 180px;
+    width: auto;
+  }
 }
 
-@media only screen and (max-width: 600px) {
-  /*#header {
-    background-image: url(assets/phone-bkg-grey.JPG);
-  }*/
+/* ---------- MEDIA QUERY 2 (PHONE) ---------- */
+@media (max-width: 600px) {
+  #header {
+    height: auto;
+    padding: 40px 0;
+    background-image: url(assets/phone-filler.png);
+    background-size: cover;
+  }
+
   .header-text {
-    margin-top: 100%;
+    margin-top: 20px;
+    padding: 0 5%;
+    text-align: center;
     font-size: 16px;
   }
+
   .header-text h1 {
     font-size: 30px;
   }
+
+  #header p {
+    width: 100%;
+    max-width: 720px;
+    margin: 12px auto 0;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+  }
+
   nav .fa-solid {
     display: block;
     font-size: 25px;
   }
+
   nav ul {
     background: #68604c;
     position: fixed;
@@ -517,41 +564,75 @@ nav .fa-solid {
     width: 200px;
     height: 100vh;
     padding-top: 50px;
-    z-index: 2;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
+
   nav ul li {
     display: block;
     margin: 25px;
   }
+
   nav ul .fa-solid {
     position: absolute;
     top: 25px;
     left: 25px;
     cursor: pointer;
   }
+
   .sub-title {
     font-size: 40px;
   }
+
   .about-col-1,
   .about-col-2 {
     flex-basis: 100%;
   }
-  .about-col-1 {
-    margin-bottom: 30px;
-  }
+
   .about-col-2 {
     font-size: 14px;
   }
+
   .tab-links {
     font-size: 16px;
     margin-right: 20px;
   }
 
+  #portfolio .container {
+    padding: 20px 5%;
+    text-align: center;
+  }
+
+  #portfolio .sub-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+
+  .portfolio-list {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .portfolio-list > div {
+    padding: 20px;
+  }
+
   .contact-left,
   .contact-right {
     flex-basis: 100%;
+    width: 100%;
   }
+
   .copyright {
     font-size: 14px;
+  }
+
+  nav .logo {
+    max-width: 140px;
+    width: auto;
   }
 }
