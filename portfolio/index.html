@@ -21,11 +21,13 @@
       <div class="container">
         <nav>
           <img src="assets/logo.png" class="logo" />
-          <ul>
+          <ul id="sidemenu">
             <li><a href="#">Professional</a></li>
             <li><a href="#">Personal</a></li>
             <li><a href="#">Contact</a></li>
+            <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
           </ul>
+          <i class="fa-solid fa-bars" onclick="openmenu()"></i>
         </nav>
         <!--ABOUT SECTION-->
 
@@ -302,7 +304,7 @@
       <div class="copyright">
         <p>
           Copyright <i class="fa-regular fa-copyright"></i> Paige Li. Made with
-          <i class="fa-solid fa-heart"></i>.
+          help from <i class="fa-solid fa-cat"></i>s.
         </p>
       </div>
     </div>
@@ -322,6 +324,15 @@
         }
         event.currentTarget.classList.add("active-link");
         document.getElementById(tabname).classList.add("active-tab");
+      }
+    </script>
+    <script>
+      let sideMenu = document.getElementById("sidemenu");
+      function openmenu() {
+        sidemenu.style.right = "0";
+      }
+      function closemenu() {
+        sidemenu.style.right = "-200px";
       }
     </script>
   </body>
