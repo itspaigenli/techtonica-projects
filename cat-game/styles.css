@@ -13,15 +13,13 @@
   background-color: #f0f0f0;
 }
 
-
 /* CAT */
 #cat {
- width:
-  height:
-  background-color: 
+  width: 40px;
+  height: 40px;
+  background-color: orange;
   position: absolute;
   bottom: 0px;
-  left: 180px;
 }
 
 /* FISH */
