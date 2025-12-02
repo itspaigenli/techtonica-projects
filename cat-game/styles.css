@@ -6,10 +6,11 @@
 
 /* GAME STAGE */
 #gameStage {
-  width:
-  height:
-  border:
+  width: ;
+  height: ;
+  border: ;
   position: relative;
+  background-color: ;
 }
 
 /* CAT */
@@ -18,8 +19,12 @@
   height:
   background-color: 
   position: absolute;
-  initial: left bottom
+  bottom: 0px;
+  left: 180px;
 }
+
+/* FISH */
+top: 0px;
 
 /* SCORE DISPLAY */
 #scoreDisplay {
