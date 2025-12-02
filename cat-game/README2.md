@@ -80,4 +80,24 @@
 
 If you want, we can **start with Step 1**, and I’ll guide you through it interactively. I’ll ask a question, you answer, and I’ll nudge you in the right direction until we have a plan.
 
-Do you want to start with Step 1?
+Recap of Overarching Steps We’ve Covered
+
+Define the game and rules – Cat moves left/right, catch fish, avoid losing all lives.
+
+Set up project files – HTML, CSS, JS.
+
+Create game area and player – <div> for stage and cat.
+
+Represent game state – Variables for score, lives, positions, and fish array.
+
+Handle player input – Keyboard events to move cat, keep it inside stage.
+
+Create falling objects – <div> fish that spawn at random horizontal positions.
+
+Update the game loop – Use timer (setInterval) to move fish and check collisions.
+
+Update score and lives – Increment/decrement and show on screen.
+
+Handle game over – Stop the game and notify player.
+
+Test and refine – Play, debug, tweak positions, speeds, etc.
