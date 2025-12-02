@@ -6,11 +6,11 @@
 
 /* GAME STAGE */
 #gameStage {
-  width: ;
-  height: ;
-  border: ;
+  width: 600px;
+  height: 600px;
+  border: 3px solid #444;
   position: relative;
-  background-color: ;
+  background-color: light gray: #f0f0f0;
 }
 
 /* CAT */
