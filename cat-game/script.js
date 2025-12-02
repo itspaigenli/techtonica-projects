@@ -1,4 +1,6 @@
 // Variables
+let playerScore = 0;
+let playerLives = 3;
 // Move cat with arrow keys
 // Function to create fish
 // Update game: move fish, check collisions

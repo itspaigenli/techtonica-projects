@@ -9,17 +9,25 @@
   width:
   height:
   border:
-  position: relative
+  position: relative;
 }
 
 /* CAT */
 #cat {
  width:
   height:
-  background-color:
-  position: absolute
+  background-color: 
+  position: absolute;
   initial: left bottom
 }
 
 /* SCORE DISPLAY */
+#scoreDisplay {
+  margin: ;
+  font-size: ;
+}
 /* LIVES DISPLAY */
+#livesDisplay {
+  margin: ;
+  font-size: ;
+}
