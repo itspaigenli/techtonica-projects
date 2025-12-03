@@ -63,4 +63,6 @@ function spawnFish() {
     x: randomX,
     y: 0,
   });
+
+  setInterval(spawnFish, 1500); // create a new fish every 1.5 seconds
 }
