@@ -43,3 +43,24 @@ document.addEventListener("keydown", function (event) {
 
   cat.style.left = catPosition + "px";
 });
+
+// My fish section
+function spawnFish() {
+  const fish = document.createElement("div");
+  fish.classList.add("fish");
+
+  const stageWidth = gameStage.offsetWidth;
+  const fishWidth = 20;
+  const randomX = Math.random() * (stageWidth - fishWidth);
+  fish.style.left = randomX + "px";
+
+  fish.style.top = "0px";
+
+  gameStage.appendChild(fish);
+
+  fishArray.push({
+    element: fish,
+    x: randomX,
+    y: 0,
+  });
+}
