@@ -2,67 +2,92 @@
 let playerScore = 0;
 let playerLives = 3;
 
-//Display score and lives
 document.getElementById("scoreDisplay").textContent = playerScore;
 document.getElementById("livesDisplay").textContent = playerLives;
 
-// Access and move cat with arrow keys
 const gameStage = document.getElementById("gameStage");
 const cat = document.getElementById("cat");
+
+// Track fish
+let fishArray = [];
 
 // Get widths
 const stageWidth = gameStage.offsetWidth;
 const catWidth = cat.offsetWidth;
 
-// Calculate center position
+// Center cat
 const startingLeft = stageWidth / 2 - catWidth / 2;
-
-// Position the cat
 cat.style.left = startingLeft + "px";
 
-// Track the cat's current horizontal position
 let catPosition = startingLeft;
 const catSpeed = 20;
 
-// Move the cat and make sure it doesn't fall off the stage
+// Cat movement
 document.addEventListener("keydown", function (event) {
   if (event.key === "ArrowLeft") {
     catPosition -= catSpeed;
-    if (catPosition < 0) {
-      catPosition = 0;
-    }
+    if (catPosition < 0) catPosition = 0;
   }
 
   if (event.key === "ArrowRight") {
-    catPosition += catSpeed;
     const maxRight = stageWidth - catWidth;
-    if (catPosition > maxRight) {
-      catPosition = maxRight;
-    }
+    catPosition += catSpeed;
+    if (catPosition > maxRight) catPosition = maxRight;
   }
 
   cat.style.left = catPosition + "px";
 });
 
-// My fish section
+// Spawn fish
 function spawnFish() {
   const fish = document.createElement("div");
   fish.classList.add("fish");
 
-  const stageWidth = gameStage.offsetWidth;
   const fishWidth = 20;
   const randomX = Math.random() * (stageWidth - fishWidth);
   fish.style.left = randomX + "px";
-
   fish.style.top = "0px";
 
   gameStage.appendChild(fish);
 
-  fishArray.push({
-    element: fish,
-    x: randomX,
-    y: 0,
-  });
-
-  setInterval(spawnFish, 1500); // create a new fish every 1.5 seconds
+  fishArray.push({ element: fish, x: randomX, y: 0 });
 }
+
+// Make fish fall
+function updateGame() {
+  const fallSpeed = 3;
+  const stageHeight = gameStage.offsetHeight;
+  const fishWidth = 20;
+  const fishHeight = 20;
+  const catHeight = cat.offsetHeight;
+  const catTop = stageHeight - catHeight;
+
+  for (let i = fishArray.length - 1; i >= 0; i--) {
+    const fish = fishArray[i];
+
+    fish.y += fallSpeed;
+    fish.element.style.top = fish.y + "px";
+
+    const fishLeft = fish.x;
+    const fishRight = fish.x + fishWidth;
+    const fishBottom = fish.y + fishHeight;
+
+    const catLeft = catPosition;
+    const catRight = catPosition + catWidth;
+
+    const verticalHit = fishBottom >= catTop;
+    const horizontalHit = fishRight >= catLeft && fishLeft <= catRight;
+
+    if (verticalHit && horizontalHit) {
+      playerScore++;
+      document.getElementById("scoreDisplay").textContent = playerScore;
+
+      gameStage.removeChild(fish.element);
+      fishArray.splice(i, 1);
+    }
+  }
+}
+
+// Run game loop
+setInterval(spawnFish, 1500);
+setInterval(updateGame, 50);
