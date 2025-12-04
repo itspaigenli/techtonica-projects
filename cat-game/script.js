@@ -63,11 +63,9 @@ function updateGame() {
   for (let i = fishArray.length - 1; i >= 0; i--) {
     const fish = fishArray[i];
 
-    // ===== 1. MOVE FISH =====
     fish.y += fallSpeed;
     fish.element.style.top = fish.y + "px";
 
-    // ===== 2. COLLISION DETECTION =====
     const fishLeft = fish.x;
     const fishRight = fish.x + fishWidth;
     const fishBottom = fish.y + fishHeight;
@@ -88,7 +86,6 @@ function updateGame() {
       continue;
     }
 
-    // ===== 3. MISSED FISH =====
     if (fish.y > stageHeight) {
       playerLives--;
       document.getElementById("livesDisplay").textContent =
