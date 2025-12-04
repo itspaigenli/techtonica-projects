@@ -3,8 +3,8 @@ let playerScore = 0;
 let playerLives = 3;
 let fishArray = [];
 
-document.getElementById("scoreDisplay").textContent = playerScore;
-document.getElementById("livesDisplay").textContent = playerLives;
+document.getElementById("scoreDisplay").textContent = "Score: " + playerScore;
+document.getElementById("livesDisplay").textContent = "Lives: " + playerLives;
 
 const gameStage = document.getElementById("gameStage");
 const cat = document.getElementById("cat");
@@ -80,7 +80,9 @@ function updateGame() {
 
     if (verticalHit && horizontalHit) {
       playerScore++;
-      document.getElementById("scoreDisplay").textContent = playerScore;
+      document.getElementById("scoreDisplay").textContent =
+        "Score: " + playerScore;
+
       gameStage.removeChild(fish.element);
       fishArray.splice(i, 1);
       continue;
@@ -89,7 +91,8 @@ function updateGame() {
     // ===== 3. MISSED FISH =====
     if (fish.y > stageHeight) {
       playerLives--;
-      document.getElementById("livesDisplay").textContent = playerLives;
+      document.getElementById("livesDisplay").textContent =
+        "Lives: " + playerLives;
 
       gameStage.removeChild(fish.element);
       fishArray.splice(i, 1);
