@@ -5,10 +5,14 @@ import Blossom from "./Blossom";
 
 export default function Game() {
   const [score, setScore] = useState(0);
+  function addOneToScore() {
+    setScore((s) => s + 1);
+  }
 
   return (
     <div className="gameWrap">
-      <Controls />
+      <Controls onAddScore={addOneToScore} />
+
       <ScoreBoard score={score} />
 
       <div className="arena">
