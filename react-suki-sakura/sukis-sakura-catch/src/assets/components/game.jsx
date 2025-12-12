@@ -9,27 +9,23 @@ export default function Game({
   difficulty,
   onChangeDifficulty,
 }) {
-  // --- state ---
-  const fallSpeed = 2; // percent per tick
-  const [score, setScore] = useState(0);
-  const [misses, setMisses] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [blossoms, setBlossoms] = useState([
-    { id: 1, x: 25, y: 20 },
-    { id: 2, x: 50, y: 40 },
-    { id: 3, x: 75, y: 30 },
-  ]);
+  const fallSpeed = 2;
 
-  // --- functions that change state ---
+  const [score, setScore] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const [game, setGame] = useState({
+    blossoms: [],
+    misses: 0,
+  });
+
   function addOneToScore() {
     setScore((s) => s + 1);
   }
 
-  function addOneToMisses() {
-    setMisses((m) => m + 1);
-  }
-
   function startGame() {
+    setScore(0);
+    setGame({ blossoms: [], misses: 0 });
     setIsRunning(true);
   }
 
@@ -37,19 +33,19 @@ export default function Game({
     setIsRunning(false);
   }
 
-  //TESTING SECTION
   function spawnBlossom() {
-    setBlossoms((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        x: Math.floor(Math.random() * 90) + 5,
-        y: 0,
-      },
-    ]);
-  } //TESTING SECTION
+    const newBlossom = {
+      id: Date.now(),
+      x: Math.floor(Math.random() * 90) + 5,
+      y: 0,
+    };
 
-  // auto-spawn blossoms
+    setGame((prev) => ({
+      ...prev,
+      blossoms: [...prev.blossoms, newBlossom],
+    }));
+  }
+
   useEffect(() => {
     if (!isRunning) return;
 
@@ -60,27 +56,31 @@ export default function Game({
     return () => clearInterval(timerId);
   }, [isRunning]);
 
-  // move blossoms down
   useEffect(() => {
     if (!isRunning) return;
 
     const tickId = setInterval(() => {
-      setBlossoms((prev) =>
-        prev
-          .map((b) => ({ ...b, y: b.y + fallSpeed }))
-          .filter((b) => b.y <= 110)
-      );
+      setGame((prev) => {
+        const moved = prev.blossoms.map((b) => ({ ...b, y: b.y + fallSpeed }));
+        const stillOnScreen = moved.filter((b) => b.y <= 110);
+        const fellOffCount = moved.length - stillOnScreen.length;
+
+        return {
+          ...prev,
+          blossoms: stillOnScreen,
+          misses: prev.misses + fellOffCount,
+        };
+      });
     }, 50);
 
     return () => clearInterval(tickId);
   }, [isRunning, fallSpeed]);
 
-  // --- UI ---
   return (
     <div className="gameWrap">
       <Controls
         onAddScore={addOneToScore}
-        onAddMiss={addOneToMisses}
+        onAddMiss={() => {}} // temporary; we’ll remove this button soon
         playerName={playerName}
         onChangePlayerName={onChangePlayerName}
         difficulty={difficulty}
@@ -92,14 +92,14 @@ export default function Game({
 
       <ScoreBoard
         score={score}
-        misses={misses}
+        misses={game.misses}
         playerName={playerName}
         difficulty={difficulty}
         isRunning={isRunning}
       />
 
       <div className="arena">
-        {blossoms.map((b) => (
+        {game.blossoms.map((b) => (
           <Blossom key={b.id} x={b.x} y={b.y} />
         ))}
       </div>
