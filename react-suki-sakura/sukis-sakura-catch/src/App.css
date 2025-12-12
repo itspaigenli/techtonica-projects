@@ -43,3 +43,13 @@
   display: grid;
   gap: 4px;
 }
+
+.catcher {
+  position: absolute;
+  bottom: 10px;
+  transform: translateX(-50%);
+  font-size: 34px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+}

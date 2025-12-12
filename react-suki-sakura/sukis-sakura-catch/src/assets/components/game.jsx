@@ -10,7 +10,7 @@ export default function Game({
   onChangeDifficulty,
 }) {
   const fallSpeed = 2;
-
+  const [catcherX, setCatcherX] = useState(50); // percent
   const [score, setScore] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -102,6 +102,14 @@ export default function Game({
         {game.blossoms.map((b) => (
           <Blossom key={b.id} x={b.x} y={b.y} />
         ))}
+
+        <div
+          className="catcher"
+          style={{ left: `${catcherX}%` }}
+          aria-label="Suki catcher"
+        >
+          🐾🐾
+        </div>
       </div>
     </div>
   );
