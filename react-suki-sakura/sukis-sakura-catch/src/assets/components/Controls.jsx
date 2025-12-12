@@ -5,6 +5,9 @@ export default function Controls({
   onChangePlayerName,
   difficulty,
   onChangeDifficulty,
+  isRunning,
+  onStart,
+  onStop,
 }) {
   return (
     <div className="controls">
@@ -27,6 +30,11 @@ export default function Controls({
           <option value="hard">hard</option>
         </select>
       </label>
+      {!isRunning ? (
+        <button onClick={onStart}>Start</button>
+      ) : (
+        <button onClick={onStop}>Stop</button>
+      )}
 
       <button onClick={onAddScore}>+1 Score</button>
       <button onClick={onAddMiss}>+1 Miss</button>

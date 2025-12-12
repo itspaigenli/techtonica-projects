@@ -9,9 +9,12 @@ export default function Game({
   difficulty,
   onChangeDifficulty,
 }) {
+  // --- state ---
   const [score, setScore] = useState(0);
   const [misses, setMisses] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
+  // --- functions that change state ---
   function addOneToScore() {
     setScore((s) => s + 1);
   }
@@ -20,6 +23,15 @@ export default function Game({
     setMisses((m) => m + 1);
   }
 
+  function startGame() {
+    setIsRunning(true);
+  }
+
+  function stopGame() {
+    setIsRunning(false);
+  }
+
+  // --- UI ---
   return (
     <div className="gameWrap">
       <Controls
@@ -29,6 +41,9 @@ export default function Game({
         onChangePlayerName={onChangePlayerName}
         difficulty={difficulty}
         onChangeDifficulty={onChangeDifficulty}
+        isRunning={isRunning}
+        onStart={startGame}
+        onStop={stopGame}
       />
 
       <ScoreBoard
@@ -36,6 +51,7 @@ export default function Game({
         misses={misses}
         playerName={playerName}
         difficulty={difficulty}
+        isRunning={isRunning}
       />
 
       <div className="arena">
