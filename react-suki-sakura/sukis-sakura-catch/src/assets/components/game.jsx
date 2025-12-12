@@ -3,7 +3,7 @@ import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
 import Blossom from "./Blossom";
 
-export default function Game({ playerName }) {
+export default function Game({ playerName, onChangePlayerName }) {
   const [score, setScore] = useState(0);
   const [misses, setMisses] = useState(0);
 
@@ -17,7 +17,12 @@ export default function Game({ playerName }) {
 
   return (
     <div className="gameWrap">
-      <Controls onAddScore={addOneToScore} onAddMiss={addOneToMisses} />
+      <Controls
+        onAddScore={addOneToScore}
+        onAddMiss={addOneToMisses}
+        playerName={playerName}
+        onChangePlayerName={onChangePlayerName}
+      />
 
       <ScoreBoard score={score} misses={misses} playerName={playerName} />
 
