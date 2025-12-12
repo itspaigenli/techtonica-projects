@@ -15,4 +15,13 @@
   background: #fff;
   display: grid;
   place-content: center;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.blossom {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
 }

@@ -9,7 +9,7 @@ export default function Game() {
       <ScoreBoard />
 
       <div className="arena">
-        <Blossom />
+        <Blossom x={50} y={20} />
       </div>
     </div>
   );
