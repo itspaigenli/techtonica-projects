@@ -16,6 +16,7 @@ export default function Controls({
         <input
           value={playerName}
           onChange={(e) => onChangePlayerName(e.target.value)}
+          disabled={isRunning}
         />
       </label>
 
@@ -24,6 +25,7 @@ export default function Controls({
         <select
           value={difficulty}
           onChange={(e) => onChangeDifficulty(e.target.value)}
+          disabled={isRunning}
         >
           <option value="easy">easy</option>
           <option value="normal">normal</option>
