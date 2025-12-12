@@ -11,9 +11,13 @@ export default function Game() {
     setScore((s) => s + 1);
   }
 
+  function addOneToMisses() {
+    setMisses((m) => m + 1);
+  }
+
   return (
     <div className="gameWrap">
-      <Controls onAddScore={addOneToScore} />
+      <Controls onAddScore={addOneToScore} onAddMiss={addOneToMisses} />
 
       <ScoreBoard score={score} misses={misses} />
 
