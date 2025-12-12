@@ -76,6 +76,23 @@ export default function Game({
     return () => clearInterval(tickId);
   }, [isRunning, fallSpeed]);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (!isRunning) return;
+
+      if (e.key === "ArrowLeft") {
+        setCatcherX((x) => Math.max(0, x - 5));
+      }
+
+      if (e.key === "ArrowRight") {
+        setCatcherX((x) => Math.min(100, x + 5));
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isRunning]);
+
   return (
     <div className="gameWrap">
       <Controls
