@@ -71,7 +71,6 @@ export default function Game({
         isRunning={isRunning}
         onStart={startGame}
         onStop={stopGame}
-        onSpawnBlossom={spawnBlossom}
       />
 
       <ScoreBoard

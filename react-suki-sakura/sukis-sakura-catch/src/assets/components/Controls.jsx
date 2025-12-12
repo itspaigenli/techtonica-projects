@@ -39,7 +39,6 @@ export default function Controls({
       ) : (
         <button onClick={onStop}>Stop</button>
       )}
-      <button onClick={onSpawnBlossom}>Spawn Blossom</button>
 
       <button onClick={onAddScore}>+1 Score</button>
       <button onClick={onAddMiss}>+1 Miss</button>
