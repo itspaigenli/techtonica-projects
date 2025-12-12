@@ -1,5 +1,6 @@
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
+import Blossom from "./Blossom";
 
 export default function Game() {
   return (
@@ -7,7 +8,9 @@ export default function Game() {
       <Controls />
       <ScoreBoard />
 
-      <div className="arena">Arena goes here</div>
+      <div className="arena">
+        <Blossom />
+      </div>
     </div>
   );
 }
