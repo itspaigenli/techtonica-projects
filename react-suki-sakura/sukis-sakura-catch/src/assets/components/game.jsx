@@ -39,6 +39,9 @@ export default function Game({
   function stopGame() {
     setIsRunning(false);
   }
+  function resumeGame() {
+    setIsRunning(true);
+  }
 
   function spawnBlossom() {
     const newBlossom = {
@@ -173,12 +176,25 @@ export default function Game({
           <div className="overlay">
             {game.misses >= maxMisses ? (
               <div>Game over! Final score: {game.score}</div>
+            ) : game.score > 0 || game.misses > 0 ? (
+              <div>Paused</div>
             ) : (
               <div>Press Start to play 🌸</div>
             )}
-            <button className="overlayBtn" onClick={startGame}>
-              {game.misses >= maxMisses ? "Restart" : "Start"}
-            </button>
+
+            {game.misses >= maxMisses ? (
+              <button className="overlayBtn" onClick={startGame}>
+                Restart
+              </button>
+            ) : game.score > 0 || game.misses > 0 ? (
+              <button className="overlayBtn" onClick={resumeGame}>
+                Resume
+              </button>
+            ) : (
+              <button className="overlayBtn" onClick={startGame}>
+                Start
+              </button>
+            )}
           </div>
         )}
       </div>
