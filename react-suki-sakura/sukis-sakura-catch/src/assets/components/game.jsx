@@ -10,6 +10,7 @@ export default function Game({
   onChangeDifficulty,
 }) {
   // --- state ---
+  const fallSpeed = 2; // percent per tick
   const [score, setScore] = useState(0);
   const [misses, setMisses] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -48,6 +49,7 @@ export default function Game({
     ]);
   } //TESTING SECTION
 
+  // auto-spawn blossoms
   useEffect(() => {
     if (!isRunning) return;
 
@@ -57,6 +59,17 @@ export default function Game({
 
     return () => clearInterval(timerId);
   }, [isRunning]);
+
+  // move blossoms down
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const tickId = setInterval(() => {
+      setBlossoms((prev) => prev.map((b) => ({ ...b, y: b.y + fallSpeed })));
+    }, 50);
+
+    return () => clearInterval(tickId);
+  }, [isRunning, fallSpeed]);
 
   // --- UI ---
   return (
