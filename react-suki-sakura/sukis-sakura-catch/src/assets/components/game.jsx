@@ -13,6 +13,11 @@ export default function Game({
   const [score, setScore] = useState(0);
   const [misses, setMisses] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [blossoms, setBlossoms] = useState([
+    { id: 1, x: 25, y: 20 },
+    { id: 2, x: 50, y: 40 },
+    { id: 3, x: 75, y: 30 },
+  ]);
 
   // --- functions that change state ---
   function addOneToScore() {
@@ -55,7 +60,9 @@ export default function Game({
       />
 
       <div className="arena">
-        <Blossom x={50} y={20} />
+        {blossoms.map((b) => (
+          <Blossom key={b.id} x={b.x} y={b.y} />
+        ))}
       </div>
     </div>
   );
