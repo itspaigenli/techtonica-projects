@@ -1,3 +1,12 @@
+import Controls from "./Controls";
+import ScoreBoard from "./ScoreBoard";
+
 export default function Game() {
-  return <div>Game coming soon…</div>;
+  return (
+    <div>
+      <Controls />
+      <ScoreBoard />
+      <div>Game coming soon…</div>
+    </div>
+  );
 }

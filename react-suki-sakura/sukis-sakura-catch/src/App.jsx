@@ -1,5 +1,5 @@
 import "./App.css";
-import Game from "./assets/components/game.jsx";
+import Game from "./assets/components/Game.jsx";
 
 export default function App() {
   return (
