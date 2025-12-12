@@ -1,6 +1,4 @@
 export default function Controls({
-  onAddScore,
-  onAddMiss,
   playerName,
   onChangePlayerName,
   difficulty,
@@ -8,7 +6,6 @@ export default function Controls({
   isRunning,
   onStart,
   onStop,
-  onSpawnBlossom,
 }) {
   return (
     <div className="controls">

@@ -53,3 +53,14 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.7);
 }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 18px;
+  padding: 16px;
+}

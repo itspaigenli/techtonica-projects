@@ -13,6 +13,7 @@ export default function Game({
   const catchLineY = 85; // where catching happens (percent)
   const catchWindowX = 6; // how close in X (%) counts as a catch
   const catchZoneHeight = 6; // vertical thickness of the catch zone
+  const maxMisses = difficulty === "easy" ? 10 : difficulty === "hard" ? 5 : 7;
 
   const [catcherX, setCatcherX] = useState(50); // percent
   const [score, setScore] = useState(0);
@@ -127,6 +128,13 @@ export default function Game({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isRunning]);
 
+  useEffect(() => {
+    if (!isRunning) return;
+
+    if (game.misses >= maxMisses) {
+      setIsRunning(false);
+    }
+  }, [game.misses, maxMisses, isRunning]);
   return (
     <div className="gameWrap">
       <Controls
@@ -145,6 +153,7 @@ export default function Game({
         playerName={playerName}
         difficulty={difficulty}
         isRunning={isRunning}
+        maxMisses={maxMisses}
       />
 
       <div className="arena">
@@ -159,6 +168,9 @@ export default function Game({
         >
           🐾🐾
         </div>
+        {!isRunning && game.misses >= maxMisses && (
+          <div className="overlay">Game over! Final score: {score}</div>
+        )}
       </div>
     </div>
   );
