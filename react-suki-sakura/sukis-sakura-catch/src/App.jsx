@@ -4,11 +4,17 @@ import Game from "./assets/components/Game";
 
 export default function App() {
   const [playerName, setPlayerName] = useState("Player");
+  const [difficulty, setDifficulty] = useState("normal");
 
   return (
     <div className="app">
       <h1>Suki’s Sakura Catch!</h1>
-      <Game playerName={playerName} onChangePlayerName={setPlayerName} />
+      <Game
+        playerName={playerName}
+        onChangePlayerName={setPlayerName}
+        difficulty={difficulty}
+        onChangeDifficulty={setDifficulty}
+      />
     </div>
   );
 }
