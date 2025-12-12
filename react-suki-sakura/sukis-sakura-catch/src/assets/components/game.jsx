@@ -1,5 +1,5 @@
 import Controls from "./Controls";
-import ScoreBoard from "./ScoreBoard";
+import ScoreBoard from "./Scoreboard";
 
 export default function Game() {
   return (
