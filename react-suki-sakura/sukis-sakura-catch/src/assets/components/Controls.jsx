@@ -6,6 +6,7 @@ export default function Controls({
   isRunning,
   onStart,
   onStop,
+  onReset,
 }) {
   return (
     <div className="controls">
@@ -36,6 +37,7 @@ export default function Controls({
       ) : (
         <button onClick={onStop}>Stop</button>
       )}
+      <button onClick={onReset}>Reset</button>
     </div>
   );
 }

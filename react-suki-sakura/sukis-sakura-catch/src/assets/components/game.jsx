@@ -42,6 +42,11 @@ export default function Game({
   function resumeGame() {
     setIsRunning(true);
   }
+  function resetGame() {
+    setGame({ blossoms: [], misses: 0, score: 0 });
+    setCatcherX(50);
+    setIsRunning(false);
+  }
 
   function spawnBlossom() {
     const newBlossom = {
@@ -148,6 +153,7 @@ export default function Game({
         isRunning={isRunning}
         onStart={startGame}
         onStop={stopGame}
+        onReset={resetGame}
       />
 
       <ScoreBoard
