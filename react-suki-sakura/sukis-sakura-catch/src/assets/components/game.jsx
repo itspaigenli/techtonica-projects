@@ -65,7 +65,11 @@ export default function Game({
     if (!isRunning) return;
 
     const tickId = setInterval(() => {
-      setBlossoms((prev) => prev.map((b) => ({ ...b, y: b.y + fallSpeed })));
+      setBlossoms((prev) =>
+        prev
+          .map((b) => ({ ...b, y: b.y + fallSpeed }))
+          .filter((b) => b.y <= 110)
+      );
     }, 50);
 
     return () => clearInterval(tickId);
