@@ -1,3 +1,3 @@
-export default function ScoreBoard() {
-  return <div>Scoreboard goes here</div>;
+export default function ScoreBoard({ score }) {
+  return <div>Score: {score}</div>;
 }
