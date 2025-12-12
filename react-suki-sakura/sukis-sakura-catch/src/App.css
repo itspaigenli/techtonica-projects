@@ -2,3 +2,17 @@
   font-family: system-ui, Arial, sans-serif;
   padding: 24px;
 }
+.gameWrap {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.arena {
+  height: 420px;
+  border: 2px solid #333;
+  border-radius: 12px;
+  background: #fff;
+  display: grid;
+  place-content: center;
+}
