@@ -70,3 +70,12 @@
   padding: 16px;
   color: #222;
 }
+
+.overlayBtn {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #333;
+  cursor: pointer;
+}

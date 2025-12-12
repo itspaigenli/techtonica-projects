@@ -173,6 +173,9 @@ export default function Game({
             ) : (
               <div>Press Start to play 🌸</div>
             )}
+            <button className="overlayBtn" onClick={startGame}>
+              {game.misses >= maxMisses ? "Restart" : "Start"}
+            </button>
           </div>
         )}
       </div>
