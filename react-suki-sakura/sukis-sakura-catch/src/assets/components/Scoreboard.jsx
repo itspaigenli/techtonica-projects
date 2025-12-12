@@ -1,10 +1,10 @@
 export default function ScoreBoard({
   score,
   misses,
+  maxMisses,
   playerName,
   difficulty,
   isRunning,
-  maxMisses,
 }) {
   return (
     <div className="scoreBoard">

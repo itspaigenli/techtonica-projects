@@ -2,6 +2,7 @@
   font-family: system-ui, Arial, sans-serif;
   padding: 24px;
 }
+
 .gameWrap {
   display: grid;
   gap: 12px;
@@ -13,9 +14,6 @@
   border: 2px solid #333;
   border-radius: 12px;
   background: #fff;
-  display: grid;
-  place-content: center;
-
   position: relative;
   overflow: hidden;
 }
@@ -29,6 +27,13 @@
 .controls {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.controls label {
+  display: grid;
+  gap: 6px;
 }
 
 .controls button {

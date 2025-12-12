@@ -9,28 +9,27 @@ export default function Game({
   difficulty,
   onChangeDifficulty,
 }) {
-  const fallSpeed = 2;
-  const catchLineY = 85; // where catching happens (percent)
-  const catchWindowX = 6; // how close in X (%) counts as a catch
-  const catchZoneHeight = 6; // vertical thickness of the catch zone
+  // --- constants ---
+  const fallSpeed = 2; // % per tick
+  const catchLineY = 85;
+  const catchWindowX = 6;
+  const catchZoneHeight = 6;
+
   const maxMisses = difficulty === "easy" ? 10 : difficulty === "hard" ? 5 : 7;
 
-  const [catcherX, setCatcherX] = useState(50); // percent
-  const [score, setScore] = useState(0);
+  // --- state ---
   const [isRunning, setIsRunning] = useState(false);
+  const [catcherX, setCatcherX] = useState(50);
 
+  // Keep score + misses INSIDE ONE state object to avoid race/StrictMode issues
   const [game, setGame] = useState({
     blossoms: [],
     misses: 0,
+    score: 0,
   });
 
-  function addOneToScore() {
-    setScore((s) => s + 1);
-  }
-
   function startGame() {
-    setScore(0);
-    setGame({ blossoms: [], misses: 0 });
+    setGame({ blossoms: [], misses: 0, score: 0 });
     setIsRunning(true);
   }
 
@@ -51,6 +50,7 @@ export default function Game({
     }));
   }
 
+  // --- auto-spawn blossoms ---
   useEffect(() => {
     if (!isRunning) return;
 
@@ -61,6 +61,7 @@ export default function Game({
     return () => clearInterval(timerId);
   }, [isRunning]);
 
+  // --- move blossoms + catch + misses ---
   useEffect(() => {
     if (!isRunning) return;
 
@@ -69,34 +70,29 @@ export default function Game({
         const moved = prev.blossoms.map((b) => ({ ...b, y: b.y + fallSpeed }));
 
         let caughtCount = 0;
+        const keptAfterCatch = [];
 
-        const kept = [];
         for (const b of moved) {
           const inCatchZone =
             b.y >= catchLineY && b.y <= catchLineY + catchZoneHeight;
-
           const closeToCatcher = Math.abs(b.x - catcherX) <= catchWindowX;
 
           if (inCatchZone && closeToCatcher) {
             caughtCount += 1;
-            continue; // remove blossom (caught)
+            continue; // caught -> remove
           }
 
-          kept.push(b);
+          keptAfterCatch.push(b);
         }
 
-        // After catching, handle misses (fell off-screen)
-        const stillOnScreen = kept.filter((b) => b.y <= 110);
-        const fellOffCount = kept.length - stillOnScreen.length;
-
-        if (caughtCount > 0) {
-          setScore((s) => s + caughtCount);
-        }
+        const stillOnScreen = keptAfterCatch.filter((b) => b.y <= 110);
+        const fellOffCount = keptAfterCatch.length - stillOnScreen.length;
 
         return {
           ...prev,
           blossoms: stillOnScreen,
           misses: prev.misses + fellOffCount,
+          score: prev.score + caughtCount,
         };
       });
     }, 50);
@@ -111,6 +107,15 @@ export default function Game({
     catchZoneHeight,
   ]);
 
+  // --- game over ---
+  useEffect(() => {
+    if (!isRunning) return;
+    if (game.misses >= maxMisses) {
+      setIsRunning(false);
+    }
+  }, [game.misses, maxMisses, isRunning]);
+
+  // --- keyboard movement ---
   useEffect(() => {
     function handleKeyDown(e) {
       if (!isRunning) return;
@@ -118,7 +123,6 @@ export default function Game({
       if (e.key === "ArrowLeft") {
         setCatcherX((x) => Math.max(0, x - 5));
       }
-
       if (e.key === "ArrowRight") {
         setCatcherX((x) => Math.min(100, x + 5));
       }
@@ -128,13 +132,6 @@ export default function Game({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isRunning]);
 
-  useEffect(() => {
-    if (!isRunning) return;
-
-    if (game.misses >= maxMisses) {
-      setIsRunning(false);
-    }
-  }, [game.misses, maxMisses, isRunning]);
   return (
     <div className="gameWrap">
       <Controls
@@ -148,12 +145,12 @@ export default function Game({
       />
 
       <ScoreBoard
-        score={score}
+        score={game.score}
         misses={game.misses}
+        maxMisses={maxMisses}
         playerName={playerName}
         difficulty={difficulty}
         isRunning={isRunning}
-        maxMisses={maxMisses}
       />
 
       <div className="arena">
@@ -168,8 +165,15 @@ export default function Game({
         >
           🐾🐾
         </div>
-        {!isRunning && game.misses >= maxMisses && (
-          <div className="overlay">Game over! Final score: {score}</div>
+
+        {!isRunning && (
+          <div className="overlay">
+            {game.misses >= maxMisses ? (
+              <div>Game over! Final score: {game.score}</div>
+            ) : (
+              <div>Press Start to play 🌸</div>
+            )}
+          </div>
         )}
       </div>
     </div>
