@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
 import Blossom from "./Blossom";
@@ -47,6 +47,16 @@ export default function Game({
       },
     ]);
   } //TESTING SECTION
+
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const timerId = setInterval(() => {
+      spawnBlossom();
+    }, 800);
+
+    return () => clearInterval(timerId);
+  }, [isRunning]);
 
   // --- UI ---
   return (
