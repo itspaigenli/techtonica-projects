@@ -130,8 +130,6 @@ export default function Game({
   return (
     <div className="gameWrap">
       <Controls
-        onAddScore={addOneToScore}
-        onAddMiss={() => {}} // temporary; we’ll remove this button soon
         playerName={playerName}
         onChangePlayerName={onChangePlayerName}
         difficulty={difficulty}
