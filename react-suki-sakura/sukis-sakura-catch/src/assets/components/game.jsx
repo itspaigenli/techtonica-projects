@@ -10,7 +10,10 @@ export default function Game({
   onChangeDifficulty,
 }) {
   // --- constants ---
-  const fallSpeed = 2; // % per tick
+  const fallSpeed =
+    difficulty === "easy" ? 1.6 : difficulty === "hard" ? 2.8 : 2.2;
+  const spawnMs =
+    difficulty === "easy" ? 900 : difficulty === "hard" ? 450 : 650;
   const catchLineY = 85;
   const catchWindowX = 6;
   const catchZoneHeight = 6;
@@ -56,10 +59,10 @@ export default function Game({
 
     const timerId = setInterval(() => {
       spawnBlossom();
-    }, 800);
+    }, spawnMs);
 
     return () => clearInterval(timerId);
-  }, [isRunning]);
+  }, [isRunning, spawnMs]);
 
   // --- move blossoms + catch + misses ---
   useEffect(() => {
