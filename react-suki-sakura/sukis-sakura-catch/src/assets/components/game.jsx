@@ -36,6 +36,18 @@ export default function Game({
     setIsRunning(false);
   }
 
+  //TESTING SECTION
+  function spawnBlossom() {
+    setBlossoms((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        x: Math.floor(Math.random() * 90) + 5,
+        y: 0,
+      },
+    ]);
+  } //TESTING SECTION
+
   // --- UI ---
   return (
     <div className="gameWrap">
@@ -49,6 +61,7 @@ export default function Game({
         isRunning={isRunning}
         onStart={startGame}
         onStop={stopGame}
+        onSpawnBlossom={spawnBlossom}
       />
 
       <ScoreBoard
