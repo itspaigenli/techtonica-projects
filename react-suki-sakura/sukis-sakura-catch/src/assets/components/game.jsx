@@ -10,6 +10,10 @@ export default function Game({
   onChangeDifficulty,
 }) {
   const fallSpeed = 2;
+  const catchLineY = 85; // where catching happens (percent)
+  const catchWindowX = 6; // how close in X (%) counts as a catch
+  const catchZoneHeight = 6; // vertical thickness of the catch zone
+
   const [catcherX, setCatcherX] = useState(50); // percent
   const [score, setScore] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -62,8 +66,31 @@ export default function Game({
     const tickId = setInterval(() => {
       setGame((prev) => {
         const moved = prev.blossoms.map((b) => ({ ...b, y: b.y + fallSpeed }));
-        const stillOnScreen = moved.filter((b) => b.y <= 110);
-        const fellOffCount = moved.length - stillOnScreen.length;
+
+        let caughtCount = 0;
+
+        const kept = [];
+        for (const b of moved) {
+          const inCatchZone =
+            b.y >= catchLineY && b.y <= catchLineY + catchZoneHeight;
+
+          const closeToCatcher = Math.abs(b.x - catcherX) <= catchWindowX;
+
+          if (inCatchZone && closeToCatcher) {
+            caughtCount += 1;
+            continue; // remove blossom (caught)
+          }
+
+          kept.push(b);
+        }
+
+        // After catching, handle misses (fell off-screen)
+        const stillOnScreen = kept.filter((b) => b.y <= 110);
+        const fellOffCount = kept.length - stillOnScreen.length;
+
+        if (caughtCount > 0) {
+          setScore((s) => s + caughtCount);
+        }
 
         return {
           ...prev,
@@ -74,7 +101,14 @@ export default function Game({
     }, 50);
 
     return () => clearInterval(tickId);
-  }, [isRunning, fallSpeed]);
+  }, [
+    isRunning,
+    fallSpeed,
+    catcherX,
+    catchLineY,
+    catchWindowX,
+    catchZoneHeight,
+  ]);
 
   useEffect(() => {
     function handleKeyDown(e) {
