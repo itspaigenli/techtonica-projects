@@ -13,39 +13,39 @@ export default function Game({
   const catcherMinX = 5;
   const catcherMaxX = 95;
 
-  const catchLineY = 85;
-  const catchZoneHeight = 12;
+  const catchLineY = 70;
+  const catchZoneHeight = 18;
 
-  // Difficulty-tuned constants (memoized so effects don't churn)
+  // Difficulty-tuned constants
   const { fallSpeed, spawnMs, maxMisses, moveStep, catchWindowX, maxOnScreen } =
     useMemo(() => {
       if (difficulty === "easy") {
         return {
-          fallSpeed: 0.8,
+          fallSpeed: 1.1,
           spawnMs: 1150,
           maxMisses: 10,
           moveStep: 6,
-          catchWindowX: 12,
-          maxOnScreen: 5,
+          catchWindowX: 10,
+          maxOnScreen: 7,
         };
       }
       if (difficulty === "hard") {
         return {
-          fallSpeed: 1.5,
-          spawnMs: 900,
+          fallSpeed: 2.0,
+          spawnMs: 500,
           maxMisses: 5,
           moveStep: 10,
-          catchWindowX: 12,
-          maxOnScreen: 7,
+          catchWindowX: 10,
+          maxOnScreen: 10,
         };
       }
       return {
-        fallSpeed: 1.2,
+        fallSpeed: 1.4,
         spawnMs: 800,
         maxMisses: 7,
         moveStep: 8,
-        catchWindowX: 12,
-        maxOnScreen: 6,
+        catchWindowX: 10,
+        maxOnScreen: 8,
       };
     }, [difficulty]);
 
@@ -56,20 +56,19 @@ export default function Game({
   const [catcherX, setCatcherX] = useState(50);
 
   const dirRef = useRef(0); // -1 left, 0 none, +1 right
-  const catcherXRef = useRef(50); // <-- NEW: stable catcher position for tick loop
+  const catcherXRef = useRef(50); // stable reference for collision checks
 
-  // Keep catcherXRef in sync with state
   useEffect(() => {
     catcherXRef.current = catcherX;
   }, [catcherX]);
 
-  // Keep score + misses together to avoid race/StrictMode surprises
   const [game, setGame] = useState({
     blossoms: [],
     misses: 0,
     score: 0,
   });
 
+  // --- game control helpers ---
   const resetGameState = useCallback(() => {
     setGame({ blossoms: [], misses: 0, score: 0 });
   }, []);
@@ -94,6 +93,7 @@ export default function Game({
     setIsRunning(false);
   }, [resetGameState]);
 
+  // --- blossom spawning ---
   const spawnBlossom = useCallback(() => {
     setGame((prev) => {
       if (prev.blossoms.length >= maxOnScreen) return prev;
@@ -109,60 +109,58 @@ export default function Game({
     });
   }, [catcherMinX, catcherMaxX, maxOnScreen]);
 
-  // --- spawn loop ---
   useEffect(() => {
     if (!isRunning) return;
     const id = setInterval(spawnBlossom, spawnMs);
     return () => clearInterval(id);
   }, [isRunning, spawnMs, spawnBlossom]);
 
-  // --- tick loop (move + catch + misses) ---
+  // --- blossom tick loop (movement + collision) ---
   useEffect(() => {
     if (!isRunning) return;
 
+    const tickMs = 16;
+    const speedScale = tickMs / 50; // preserves old fall speed feel
+
     const id = setInterval(() => {
       setGame((prev) => {
-        const moved = prev.blossoms.map((b) => ({ ...b, y: b.y + fallSpeed }));
+        const moved = prev.blossoms.map((b) => ({
+          ...b,
+          y: b.y + fallSpeed * speedScale,
+        }));
 
         let caughtCount = 0;
-        const keptAfterCatch = [];
+        const remaining = [];
 
         for (const b of moved) {
           const inCatchZone =
             b.y >= catchLineY && b.y <= catchLineY + catchZoneHeight;
 
-          // <-- CHANGED: use ref instead of state (prevents interval resets while moving)
           const closeToCatcher =
             Math.abs(b.x - catcherXRef.current) <= catchWindowX;
 
           if (inCatchZone && closeToCatcher) {
             caughtCount += 1;
-            continue;
+            continue; // caught → remove immediately
           }
-          keptAfterCatch.push(b);
+
+          remaining.push(b);
         }
 
-        const stillOnScreen = keptAfterCatch.filter((b) => b.y <= 110);
-        const fellOffCount = keptAfterCatch.length - stillOnScreen.length;
+        const stillOnScreen = remaining.filter((b) => b.y <= 110);
+        const fellOff = remaining.length - stillOnScreen.length;
 
         return {
           ...prev,
           blossoms: stillOnScreen,
-          misses: prev.misses + fellOffCount,
+          misses: prev.misses + fellOff,
           score: prev.score + caughtCount,
         };
       });
-    }, 50);
+    }, tickMs);
 
     return () => clearInterval(id);
-  }, [
-    isRunning,
-    fallSpeed,
-    catchLineY,
-    catchWindowX,
-    catchZoneHeight,
-    // <-- REMOVED catcherX dependency
-  ]);
+  }, [isRunning, fallSpeed, catchLineY, catchWindowX, catchZoneHeight]);
 
   // --- game over ---
   useEffect(() => {
@@ -170,7 +168,7 @@ export default function Game({
     if (game.misses >= maxMisses) setIsRunning(false);
   }, [game.misses, maxMisses, isRunning]);
 
-  // --- keyboard movement (direction refs) ---
+  // --- keyboard input ---
   useEffect(() => {
     function handleKeyDown(e) {
       if (!isRunning) return;
@@ -191,13 +189,14 @@ export default function Game({
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
     window.addEventListener("keyup", handleKeyUp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, [isRunning]);
 
-  // --- smooth movement loop (no key-repeat lag) ---
+  // --- smooth cat movement loop ---
   useEffect(() => {
     if (!isRunning) return;
 
@@ -208,7 +207,7 @@ export default function Game({
       setCatcherX((x) =>
         Math.min(catcherMaxX, Math.max(catcherMinX, x + dir * holdStep))
       );
-    }, 33); // ~30fps
+    }, 33);
 
     return () => clearInterval(id);
   }, [isRunning, catcherMinX, catcherMaxX, holdStep]);
@@ -216,6 +215,7 @@ export default function Game({
   const isGameOver = game.misses >= maxMisses;
   const hasStarted = game.score > 0 || game.misses > 0;
 
+  // --- render ---
   return (
     <div className="gameWrap">
       <div className="uiColumn">
@@ -238,6 +238,9 @@ export default function Game({
           difficulty={difficulty}
           isRunning={isRunning}
         />
+
+        {/* Decorative banner panel (wide + short) */}
+        <div className="sakuraPanel sakuraArt" aria-hidden="true" />
       </div>
 
       <div className="arena">

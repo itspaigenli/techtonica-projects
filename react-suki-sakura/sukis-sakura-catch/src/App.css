@@ -9,9 +9,18 @@ body,
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 20% 10%, #ffe7f0 0%, transparent 45%),
+  /* background: radial-gradient(circle at 20% 10%, #ffe7f0 0%, transparent 45%),
     radial-gradient(circle at 80% 0%, #fff1f7 0%, transparent 50%),
-    linear-gradient(#fffafc, #fff3f8);
+    linear-gradient(#fffafc, #fff3f8);*/
+  background-image: linear-gradient(
+      rgba(255, 240, 246, 0.7),
+      rgba(255, 240, 246, 0.7)
+    ),
+    url("/public/bk-sakura.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   justify-content: center;
 }
 
@@ -102,14 +111,16 @@ h1 {
   width: 100%;
   display: grid;
   grid-template-columns: minmax(300px, 380px) minmax(640px, 1fr);
-  gap: clamp(14px, 2vw, 28px);
+  gap: clamp(18px, 2.5vw, 36px);
   margin-top: 12px;
   align-items: start;
   justify-content: center;
 }
 
 .uiColumn {
-  display: 100%;
+  display: grid;
+  gap: 16px;
+  align-items: stretch;
   justify-self: stretch;
 }
 
@@ -219,8 +230,12 @@ h1 {
 .blossom {
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: 28px;
+  font-size: 40px;
+  background: transparent;
+  line-height: 1;
+  display: block;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.18));
 }
 
 /* Catcher */
@@ -230,8 +245,8 @@ h1 {
   transform: translateX(-50%);
   pointer-events: none;
 
-  width: 200px;
-  height: 200px;
+  width: 260px;
+  height: 260px;
 
   display: grid;
   place-items: center;
@@ -239,6 +254,7 @@ h1 {
   background: transparent;
   padding: 0;
   border: 0;
+  background: transparent !important;
 }
 
 .catcherImage {
@@ -248,6 +264,7 @@ h1 {
   display: block;
   background: transparent;
   transform: translateY(6px);
+  background: transparent !important;
 }
 
 /* Overlay */
@@ -270,6 +287,64 @@ h1 {
   border: 1px solid #333;
   background: #333;
   cursor: pointer;
+}
+
+.sakuraPanel {
+  padding: 16px 18px;
+  border-radius: 18px;
+  width: 100%;
+  box-sizing: border-box;
+
+  background: radial-gradient(circle at 10% 10%, #ffe7f0 0%, transparent 40%),
+    linear-gradient(#fff8fb, #fff1f7);
+
+  border: 2px solid #f1b6cc;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  color: #5a3a45;
+}
+
+.sakuraPanelHeader {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #c64c78;
+  margin-bottom: 8px;
+}
+
+.sakuraPanelBody {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.sakuraPanelBody p {
+  margin: 4px 0;
+}
+
+.sakuraPanel::after {
+  content: "🌸 🌸 🌸";
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.sakuraArt {
+  height: 120px; /* short & wide */
+  width: 100%;
+
+  border-radius: 18px;
+  border: 2px solid #f1b6cc;
+
+  background-image: url("/banner.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 /* Responsive */
