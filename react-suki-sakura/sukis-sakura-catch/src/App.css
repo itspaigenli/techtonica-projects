@@ -181,10 +181,10 @@ h1 {
 }
 
 .scoreRow {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 12px;
 
   padding: 8px 12px;
   border-radius: 12px;
@@ -193,6 +193,22 @@ h1 {
   border: 1px solid rgba(229, 183, 200, 0.7);
 
   font-size: 14px;
+}
+
+.scoreLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.scoreLabel {
+  color: #5a3a45;
+}
+
+.scoreValue {
+  color: #6a2d46;
+  font-weight: 700;
 }
 
 .sakuraIcon {

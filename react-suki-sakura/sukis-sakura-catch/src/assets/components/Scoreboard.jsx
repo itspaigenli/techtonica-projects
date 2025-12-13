@@ -11,35 +11,47 @@ export default function ScoreBoard({
   return (
     <div className="scoreBoard">
       <div className="scoreRow">
-        <span className="sakuraIcon">🌸</span>
-        <span>Player:</span>
-        <strong>{playerName}</strong>
+        <span className="scoreLeft">
+          <span className="sakuraIcon">🌸</span>
+          <span className="scoreLabel">Player:</span>
+        </span>
+        <strong className="scoreValue">{playerName}</strong>
       </div>
 
       <div className="scoreRow">
-        <span className="sakuraIcon">🌸</span>
-        <span>Difficulty:</span>
-        <strong>{difficulty}</strong>
+        <span className="scoreLeft">
+          <span className="sakuraIcon">🌸</span>
+          <span className="scoreLabel">Difficulty:</span>
+        </span>
+        <strong className="scoreValue">{difficulty}</strong>
       </div>
 
       <div className="scoreRow">
-        <span className="sakuraIcon">🌸</span>
-        <span>Score:</span>
-        <strong>{score}</strong>
+        <span className="scoreLeft">
+          <span className="sakuraIcon">🌸</span>
+          <span className="scoreLabel">Score:</span>
+        </span>
+        <strong className="scoreValue">{score}</strong>
       </div>
 
       <div className="scoreRow">
-        <span className="sakuraIcon">🌸</span>
-        <span>Misses:</span>
-        <strong>
+        <span className="scoreLeft">
+          <span className="sakuraIcon">🌸</span>
+          <span className="scoreLabel">Misses:</span>
+        </span>
+        <strong className="scoreValue">
           {misses} / {maxMisses}
         </strong>
       </div>
 
       <div className="scoreRow">
-        <span className="sakuraIcon">🌸</span>
-        <span>Status:</span>
-        <strong>{isRunning ? "Running" : "Stopped"}</strong>
+        <span className="scoreLeft">
+          <span className="sakuraIcon">🌸</span>
+          <span className="scoreLabel">Status:</span>
+        </span>
+        <strong className="scoreValue">
+          {isRunning ? "Running" : "Stopped"}
+        </strong>
       </div>
     </div>
   );
