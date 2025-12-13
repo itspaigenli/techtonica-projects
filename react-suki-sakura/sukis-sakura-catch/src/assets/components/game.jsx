@@ -156,25 +156,27 @@ export default function Game({
 
   return (
     <div className="gameWrap">
-      <Controls
-        playerName={playerName}
-        onChangePlayerName={onChangePlayerName}
-        difficulty={difficulty}
-        onChangeDifficulty={onChangeDifficulty}
-        isRunning={isRunning}
-        onStart={startGame}
-        onStop={stopGame}
-        onReset={resetGame}
-      />
+      <div className="uiColumn">
+        <Controls
+          playerName={playerName}
+          onChangePlayerName={onChangePlayerName}
+          difficulty={difficulty}
+          onChangeDifficulty={onChangeDifficulty}
+          isRunning={isRunning}
+          onStart={startGame}
+          onStop={stopGame}
+          onReset={resetGame}
+        />
 
-      <ScoreBoard
-        score={game.score}
-        misses={game.misses}
-        maxMisses={maxMisses}
-        playerName={playerName}
-        difficulty={difficulty}
-        isRunning={isRunning}
-      />
+        <ScoreBoard
+          score={game.score}
+          misses={game.misses}
+          maxMisses={maxMisses}
+          playerName={playerName}
+          difficulty={difficulty}
+          isRunning={isRunning}
+        />
+      </div>
 
       <div className="arena">
         {game.blossoms.map((b) => (
