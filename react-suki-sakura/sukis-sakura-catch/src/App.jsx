@@ -10,7 +10,13 @@ export default function App() {
     <div className="app appKawaii">
       <div className="petalLayer" aria-hidden="true" />
 
-      <h1>Suki’s Sakura Catch!</h1>
+      <div className="topBar">
+        <img
+          className="logoTitle"
+          src="/titlebanner.png"
+          alt="Suki’s Sakura Catch!"
+        />
+      </div>
 
       <Game
         playerName={playerName}
