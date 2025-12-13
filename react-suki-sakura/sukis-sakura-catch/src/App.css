@@ -12,6 +12,7 @@ body {
   background: radial-gradient(circle at 20% 10%, #ffe7f0 0%, transparent 45%),
     radial-gradient(circle at 80% 0%, #fff1f7 0%, transparent 50%),
     linear-gradient(#fffafc, #fff3f8);
+  justify-content: center;
 }
 
 .app {
@@ -19,10 +20,8 @@ body {
   padding: clamp(16px, 2vw, 32px);
   color: #3a2b32;
 
-  width: min(1400px, 100%);
+  max-width: 1400px;
   margin: 0 auto;
-  display: grid;
-  justify-items: center;
 }
 
 /* Title */
@@ -100,16 +99,13 @@ h1 {
 
 /* Main layout: UI left, Arena right */
 .gameWrap {
-  width: min(
-    1200px,
-    100%
-  ); /* keeps it centered and prevents weird stretching */
-  margin: 12px auto 0;
-
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(300px, 380px) minmax(640px, 1fr);
   gap: clamp(14px, 2vw, 28px);
+  margin-top: 12px;
   align-items: start;
+  justify-content: center;
 }
 
 .uiColumn {
