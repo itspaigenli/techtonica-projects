@@ -10,50 +10,42 @@ export default function Controls({
 }) {
   return (
     <div className="controls">
-      {/* Row 1: inputs */}
-      <div className="controlsRow">
+      {/* Left stack: inputs + buttons */}
+      <div className="controls-left">
         <label>
-          Player name:
+          Player Name
           <input
+            type="text"
             value={playerName}
             onChange={(e) => onChangePlayerName(e.target.value)}
-            disabled={isRunning}
+            placeholder="Type your name…"
           />
         </label>
 
         <label>
-          Difficulty:
+          Difficulty
           <select
             value={difficulty}
             onChange={(e) => onChangeDifficulty(e.target.value)}
-            disabled={isRunning}
           >
-            <option value="easy">easy</option>
-            <option value="normal">normal</option>
-            <option value="hard">hard</option>
+            <option value="easy">Easy</option>
+            <option value="normal">Normal</option>
+            <option value="hard">Hard</option>
           </select>
         </label>
+
+        <div className="controlsRow controlsButtons">
+          {!isRunning ? (
+            <button onClick={onStart}>Start</button>
+          ) : (
+            <button onClick={onStop}>Pause</button>
+          )}
+          <button onClick={onReset}>Reset</button>
+        </div>
       </div>
 
-      {/* Row 2: buttons */}
-      <div className="controlsRow controlsButtons">
-        {!isRunning ? (
-          <button onClick={onStart}>Start</button>
-        ) : (
-          <button onClick={onStop}>Pause</button>
-        )}
-        <button onClick={onReset}>Reset</button>
-
-        {/* Spacer button to keep 3-column grid stable */}
-        <button
-          type="button"
-          aria-hidden="true"
-          tabIndex={-1}
-          style={{ visibility: "hidden" }}
-        >
-          Spacer
-        </button>
-      </div>
+      {/* Right side stays empty so the blossom background shows */}
+      <div className="controls-art" aria-hidden="true" />
     </div>
   );
 }

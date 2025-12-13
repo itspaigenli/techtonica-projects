@@ -188,10 +188,20 @@ body {
 
 /* Controls */
 .controls {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: end;
+  background-image: url("/blossom.png");
+  background-repeat: no-repeat;
+
+  /* anchor the art */
+  background-position: 20% center;
+
+  /* make it intentionally oversized */
+  background-size: 150% auto;
+
+  /* clipping + shape */
+  border-radius: 16px;
+  overflow: hidden;
+
+  padding: 24px;
 }
 
 .controls label {
@@ -210,6 +220,13 @@ body {
 .controls button {
   padding: 8px 12px;
   cursor: pointer;
+}
+
+/* optional: on small screens, remove the empty right column */
+@media (max-width: 640px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Score rows (works with your ScoreBoard.jsx row structure) */
