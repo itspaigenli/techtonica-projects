@@ -26,6 +26,7 @@ export default function Game({
           maxMisses: 10,
           moveStep: 6,
           catchWindowX: 9,
+          maxOnScreen: 5,
         };
       }
       if (difficulty === "hard") {
@@ -35,6 +36,7 @@ export default function Game({
           maxMisses: 5,
           moveStep: 10,
           catchWindowX: 9,
+          maxOnScreen: 7,
         };
       }
       return {
@@ -43,6 +45,7 @@ export default function Game({
         maxMisses: 7,
         moveStep: 8,
         catchWindowX: 9,
+        maxOnScreen: 6,
       };
     }, [difficulty]);
 
