@@ -21,8 +21,8 @@ export default function Game({
     useMemo(() => {
       if (difficulty === "easy") {
         return {
-          fallSpeed: 1.6,
-          spawnMs: 950,
+          fallSpeed: 0.8,
+          spawnMs: 1150,
           maxMisses: 10,
           moveStep: 6,
           catchWindowX: 9,
@@ -30,15 +30,15 @@ export default function Game({
       }
       if (difficulty === "hard") {
         return {
-          fallSpeed: 2.2,
-          spawnMs: 650,
+          fallSpeed: 1.5,
+          spawnMs: 950,
           maxMisses: 5,
           moveStep: 10,
           catchWindowX: 9,
         };
       }
       return {
-        fallSpeed: 1.9,
+        fallSpeed: 1.2,
         spawnMs: 800,
         maxMisses: 7,
         moveStep: 8,
