@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
 import Blossom from "./Blossom";
@@ -14,10 +14,10 @@ export default function Game({
   const catcherMaxX = 95;
 
   const catchLineY = 85;
-  const catchZoneHeight = 10;
+  const catchZoneHeight = 12;
 
   // Difficulty-tuned constants (memoized so effects don't churn)
-  const { fallSpeed, spawnMs, maxMisses, moveStep, catchWindowX } =
+  const { fallSpeed, spawnMs, maxMisses, moveStep, catchWindowX, maxOnScreen } =
     useMemo(() => {
       if (difficulty === "easy") {
         return {
@@ -25,17 +25,17 @@ export default function Game({
           spawnMs: 1150,
           maxMisses: 10,
           moveStep: 6,
-          catchWindowX: 9,
+          catchWindowX: 12,
           maxOnScreen: 5,
         };
       }
       if (difficulty === "hard") {
         return {
           fallSpeed: 1.5,
-          spawnMs: 950,
+          spawnMs: 900,
           maxMisses: 5,
           moveStep: 10,
-          catchWindowX: 9,
+          catchWindowX: 12,
           maxOnScreen: 7,
         };
       }
@@ -44,14 +44,24 @@ export default function Game({
         spawnMs: 800,
         maxMisses: 7,
         moveStep: 8,
-        catchWindowX: 9,
+        catchWindowX: 12,
         maxOnScreen: 6,
       };
     }, [difficulty]);
 
+  const holdStep = Math.max(1, Math.round(moveStep / 3));
+
   // --- state ---
   const [isRunning, setIsRunning] = useState(false);
   const [catcherX, setCatcherX] = useState(50);
+
+  const dirRef = useRef(0); // -1 left, 0 none, +1 right
+  const catcherXRef = useRef(50); // <-- NEW: stable catcher position for tick loop
+
+  // Keep catcherXRef in sync with state
+  useEffect(() => {
+    catcherXRef.current = catcherX;
+  }, [catcherX]);
 
   // Keep score + misses together to avoid race/StrictMode surprises
   const [game, setGame] = useState({
@@ -80,21 +90,24 @@ export default function Game({
   const resetGame = useCallback(() => {
     resetGameState();
     setCatcherX(50);
+    dirRef.current = 0;
     setIsRunning(false);
   }, [resetGameState]);
 
   const spawnBlossom = useCallback(() => {
-    const newBlossom = {
-      id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
-      x: Math.floor(Math.random() * (catcherMaxX - catcherMinX)) + catcherMinX,
-      y: 0,
-    };
+    setGame((prev) => {
+      if (prev.blossoms.length >= maxOnScreen) return prev;
 
-    setGame((prev) => ({
-      ...prev,
-      blossoms: [...prev.blossoms, newBlossom],
-    }));
-  }, [catcherMinX, catcherMaxX]);
+      const newBlossom = {
+        id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
+        x:
+          Math.floor(Math.random() * (catcherMaxX - catcherMinX)) + catcherMinX,
+        y: 0,
+      };
+
+      return { ...prev, blossoms: [...prev.blossoms, newBlossom] };
+    });
+  }, [catcherMinX, catcherMaxX, maxOnScreen]);
 
   // --- spawn loop ---
   useEffect(() => {
@@ -117,7 +130,10 @@ export default function Game({
         for (const b of moved) {
           const inCatchZone =
             b.y >= catchLineY && b.y <= catchLineY + catchZoneHeight;
-          const closeToCatcher = Math.abs(b.x - catcherX) <= catchWindowX;
+
+          // <-- CHANGED: use ref instead of state (prevents interval resets while moving)
+          const closeToCatcher =
+            Math.abs(b.x - catcherXRef.current) <= catchWindowX;
 
           if (inCatchZone && closeToCatcher) {
             caughtCount += 1;
@@ -142,10 +158,10 @@ export default function Game({
   }, [
     isRunning,
     fallSpeed,
-    catcherX,
     catchLineY,
     catchWindowX,
     catchZoneHeight,
+    // <-- REMOVED catcherX dependency
   ]);
 
   // --- game over ---
@@ -154,23 +170,48 @@ export default function Game({
     if (game.misses >= maxMisses) setIsRunning(false);
   }, [game.misses, maxMisses, isRunning]);
 
-  // --- keyboard movement ---
+  // --- keyboard movement (direction refs) ---
   useEffect(() => {
     function handleKeyDown(e) {
       if (!isRunning) return;
 
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        setCatcherX((x) => Math.max(catcherMinX, x - moveStep));
+        dirRef.current = -1;
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        setCatcherX((x) => Math.min(catcherMaxX, x + moveStep));
+        dirRef.current = 1;
       }
     }
 
+    function handleKeyUp(e) {
+      if (e.key === "ArrowLeft" && dirRef.current === -1) dirRef.current = 0;
+      if (e.key === "ArrowRight" && dirRef.current === 1) dirRef.current = 0;
+    }
+
     window.addEventListener("keydown", handleKeyDown, { passive: false });
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isRunning, catcherMinX, catcherMaxX, moveStep]);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [isRunning]);
+
+  // --- smooth movement loop (no key-repeat lag) ---
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const id = setInterval(() => {
+      const dir = dirRef.current;
+      if (dir === 0) return;
+
+      setCatcherX((x) =>
+        Math.min(catcherMaxX, Math.max(catcherMinX, x + dir * holdStep))
+      );
+    }, 33); // ~30fps
+
+    return () => clearInterval(id);
+  }, [isRunning, catcherMinX, catcherMaxX, holdStep]);
 
   const isGameOver = game.misses >= maxMisses;
   const hasStarted = game.score > 0 || game.misses > 0;
