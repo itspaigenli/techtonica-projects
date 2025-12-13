@@ -14,19 +14,37 @@ export default function Game({
   const catcherMaxX = 95;
 
   const catchLineY = 85;
-  const catchWindowX = 6;
-  const catchZoneHeight = 6;
+  const catchZoneHeight = 10;
 
   // Difficulty-tuned constants (memoized so effects don't churn)
-  const { fallSpeed, spawnMs, maxMisses } = useMemo(() => {
-    if (difficulty === "easy") {
-      return { fallSpeed: 1.6, spawnMs: 900, maxMisses: 10 };
-    }
-    if (difficulty === "hard") {
-      return { fallSpeed: 2.8, spawnMs: 450, maxMisses: 5 };
-    }
-    return { fallSpeed: 2.2, spawnMs: 650, maxMisses: 7 };
-  }, [difficulty]);
+  const { fallSpeed, spawnMs, maxMisses, moveStep, catchWindowX } =
+    useMemo(() => {
+      if (difficulty === "easy") {
+        return {
+          fallSpeed: 1.6,
+          spawnMs: 950,
+          maxMisses: 10,
+          moveStep: 6,
+          catchWindowX: 9,
+        };
+      }
+      if (difficulty === "hard") {
+        return {
+          fallSpeed: 2.2,
+          spawnMs: 650,
+          maxMisses: 5,
+          moveStep: 10,
+          catchWindowX: 9,
+        };
+      }
+      return {
+        fallSpeed: 1.9,
+        spawnMs: 800,
+        maxMisses: 7,
+        moveStep: 8,
+        catchWindowX: 9,
+      };
+    }, [difficulty]);
 
   // --- state ---
   const [isRunning, setIsRunning] = useState(false);
@@ -140,16 +158,16 @@ export default function Game({
 
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        setCatcherX((x) => Math.max(catcherMinX, x - 5));
+        setCatcherX((x) => Math.max(catcherMinX, x - moveStep));
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        setCatcherX((x) => Math.min(catcherMaxX, x + 5));
+        setCatcherX((x) => Math.min(catcherMaxX, x + moveStep));
       }
     }
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isRunning, catcherMinX, catcherMaxX]);
+  }, [isRunning, catcherMinX, catcherMaxX, moveStep]);
 
   const isGameOver = game.misses >= maxMisses;
   const hasStarted = game.score > 0 || game.misses > 0;
