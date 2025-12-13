@@ -1,7 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap");
+
 .app {
-  font-family: system-ui, Arial, sans-serif;
+  font-family: "Zen Maru Gothic", system-ui, Arial, sans-serif;
   padding: 24px;
-  color: #3a2b32; /* soft plum ink */
+  color: #3a2b32;
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: 0.06em;
 }
 
 .appKawaii {
@@ -77,11 +84,16 @@ h1 {
   color: #c64c78;
 }
 
-.scoreBoard,
-.controls {
-  background: rgba(255, 240, 246, 0.92); /* sakura blush */
-  border-radius: 14px;
-  border: 1px solid #f2c6d6;
+.controls,
+.scoreBoard {
+  border: 2px solid #f1b6cc;
+  border-radius: 18px;
+
+  background: linear-gradient(#fff7fb, #fff1f7) padding-box,
+    linear-gradient(135deg, #f6c1d6, #e7a9c3) border-box;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .controls label {
@@ -181,18 +193,9 @@ h1 {
 }
 
 .scoreRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  padding: 8px 12px;
-  border-radius: 12px;
-
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(229, 183, 200, 0.7);
-
-  font-size: 14px;
+  border: 1px solid #eab3c7;
+  border-radius: 14px;
+  background: linear-gradient(#ffffffcc, #fff3f8cc);
 }
 
 .scoreLeft {
