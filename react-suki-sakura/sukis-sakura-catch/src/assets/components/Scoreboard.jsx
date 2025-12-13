@@ -1,4 +1,6 @@
-export default function ScoreBoard({
+import React from "react";
+
+function ScoreBoard({
   score,
   misses,
   maxMisses,
@@ -18,3 +20,5 @@ export default function ScoreBoard({
     </div>
   );
 }
+
+export default React.memo(ScoreBoard);

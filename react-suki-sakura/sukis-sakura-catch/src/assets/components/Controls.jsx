@@ -1,4 +1,6 @@
-export default function Controls({
+import React from "react";
+
+function Controls({
   playerName,
   onChangePlayerName,
   difficulty,
@@ -41,3 +43,5 @@ export default function Controls({
     </div>
   );
 }
+
+export default React.memo(Controls);

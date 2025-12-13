@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
 import Blossom from "./Blossom";
@@ -9,51 +9,63 @@ export default function Game({
   difficulty,
   onChangeDifficulty,
 }) {
-  // --- constants ---
-  const fallSpeed =
-    difficulty === "easy" ? 1.6 : difficulty === "hard" ? 2.8 : 2.2;
-  const spawnMs =
-    difficulty === "easy" ? 900 : difficulty === "hard" ? 450 : 650;
-  const catchLineY = 85;
-  const catchWindowX = 6;
-  const catchZoneHeight = 6;
+  // --- arena + gameplay constants ---
   const catcherMinX = 5;
   const catcherMaxX = 95;
 
-  const maxMisses = difficulty === "easy" ? 10 : difficulty === "hard" ? 5 : 7;
+  const catchLineY = 85;
+  const catchWindowX = 6;
+  const catchZoneHeight = 6;
+
+  // Difficulty-tuned constants (memoized so effects don't churn)
+  const { fallSpeed, spawnMs, maxMisses } = useMemo(() => {
+    if (difficulty === "easy") {
+      return { fallSpeed: 1.6, spawnMs: 900, maxMisses: 10 };
+    }
+    if (difficulty === "hard") {
+      return { fallSpeed: 2.8, spawnMs: 450, maxMisses: 5 };
+    }
+    return { fallSpeed: 2.2, spawnMs: 650, maxMisses: 7 };
+  }, [difficulty]);
 
   // --- state ---
   const [isRunning, setIsRunning] = useState(false);
   const [catcherX, setCatcherX] = useState(50);
 
-  // Keep score + misses INSIDE ONE state object to avoid race/StrictMode issues
+  // Keep score + misses together to avoid race/StrictMode surprises
   const [game, setGame] = useState({
     blossoms: [],
     misses: 0,
     score: 0,
   });
 
-  function startGame() {
+  const resetGameState = useCallback(() => {
     setGame({ blossoms: [], misses: 0, score: 0 });
-    setIsRunning(true);
-  }
+  }, []);
 
-  function stopGame() {
-    setIsRunning(false);
-  }
-  function resumeGame() {
+  const startGame = useCallback(() => {
+    resetGameState();
     setIsRunning(true);
-  }
-  function resetGame() {
-    setGame({ blossoms: [], misses: 0, score: 0 });
+  }, [resetGameState]);
+
+  const stopGame = useCallback(() => {
+    setIsRunning(false);
+  }, []);
+
+  const resumeGame = useCallback(() => {
+    setIsRunning(true);
+  }, []);
+
+  const resetGame = useCallback(() => {
+    resetGameState();
     setCatcherX(50);
     setIsRunning(false);
-  }
+  }, [resetGameState]);
 
-  function spawnBlossom() {
+  const spawnBlossom = useCallback(() => {
     const newBlossom = {
-      id: Date.now(),
-      x: Math.floor(Math.random() * 90) + 5,
+      id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
+      x: Math.floor(Math.random() * (catcherMaxX - catcherMinX)) + catcherMinX,
       y: 0,
     };
 
@@ -61,24 +73,20 @@ export default function Game({
       ...prev,
       blossoms: [...prev.blossoms, newBlossom],
     }));
-  }
+  }, [catcherMinX, catcherMaxX]);
 
-  // --- auto-spawn blossoms ---
+  // --- spawn loop ---
+  useEffect(() => {
+    if (!isRunning) return;
+    const id = setInterval(spawnBlossom, spawnMs);
+    return () => clearInterval(id);
+  }, [isRunning, spawnMs, spawnBlossom]);
+
+  // --- tick loop (move + catch + misses) ---
   useEffect(() => {
     if (!isRunning) return;
 
-    const timerId = setInterval(() => {
-      spawnBlossom();
-    }, spawnMs);
-
-    return () => clearInterval(timerId);
-  }, [isRunning, spawnMs]);
-
-  // --- move blossoms + catch + misses ---
-  useEffect(() => {
-    if (!isRunning) return;
-
-    const tickId = setInterval(() => {
+    const id = setInterval(() => {
       setGame((prev) => {
         const moved = prev.blossoms.map((b) => ({ ...b, y: b.y + fallSpeed }));
 
@@ -92,9 +100,8 @@ export default function Game({
 
           if (inCatchZone && closeToCatcher) {
             caughtCount += 1;
-            continue; // caught -> remove
+            continue;
           }
-
           keptAfterCatch.push(b);
         }
 
@@ -110,7 +117,7 @@ export default function Game({
       });
     }, 50);
 
-    return () => clearInterval(tickId);
+    return () => clearInterval(id);
   }, [
     isRunning,
     fallSpeed,
@@ -123,9 +130,7 @@ export default function Game({
   // --- game over ---
   useEffect(() => {
     if (!isRunning) return;
-    if (game.misses >= maxMisses) {
-      setIsRunning(false);
-    }
+    if (game.misses >= maxMisses) setIsRunning(false);
   }, [game.misses, maxMisses, isRunning]);
 
   // --- keyboard movement ---
@@ -135,18 +140,19 @@ export default function Game({
 
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        setCatcherX((x) => Math.max(5, x - 5));
-      }
-
-      if (e.key === "ArrowRight") {
+        setCatcherX((x) => Math.max(catcherMinX, x - 5));
+      } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        setCatcherX((x) => Math.min(95, x + 5));
+        setCatcherX((x) => Math.min(catcherMaxX, x + 5));
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { passive: false });
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isRunning]);
+  }, [isRunning, catcherMinX, catcherMaxX]);
+
+  const isGameOver = game.misses >= maxMisses;
+  const hasStarted = game.score > 0 || game.misses > 0;
 
   return (
     <div className="gameWrap">
@@ -185,19 +191,19 @@ export default function Game({
 
         {!isRunning && (
           <div className="overlay">
-            {game.misses >= maxMisses ? (
+            {isGameOver ? (
               <div>Game over! Final score: {game.score}</div>
-            ) : game.score > 0 || game.misses > 0 ? (
+            ) : hasStarted ? (
               <div>Paused</div>
             ) : (
               <div>Press Start to play 🌸</div>
             )}
 
-            {game.misses >= maxMisses ? (
+            {isGameOver ? (
               <button className="overlayBtn" onClick={startGame}>
                 Restart
               </button>
-            ) : game.score > 0 || game.misses > 0 ? (
+            ) : hasStarted ? (
               <button className="overlayBtn" onClick={resumeGame}>
                 Resume
               </button>
