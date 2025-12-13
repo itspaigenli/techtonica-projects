@@ -186,7 +186,12 @@ export default function Game({
           style={{ left: `${catcherX}%` }}
           aria-label="Suki catcher"
         >
-          🐾🐾
+          <img
+            src="/suki-sprite.png"
+            alt=""
+            className="catcherImage"
+            draggable="false"
+          />
         </div>
 
         {!isRunning && (

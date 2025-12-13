@@ -1,6 +1,99 @@
 .app {
   font-family: system-ui, Arial, sans-serif;
   padding: 24px;
+  color: #3a2b32; /* soft plum ink */
+}
+
+.appKawaii {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  /* soft kawaii gradient */
+  background: radial-gradient(circle at 20% 10%, #ffe7f0 0%, transparent 45%),
+    radial-gradient(circle at 80% 0%, #fff1f7 0%, transparent 50%),
+    linear-gradient(#fffafc, #fff3f8);
+}
+
+/* floating petals overlay */
+.petalLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+
+  background-image: radial-gradient(
+      circle at 12% 20%,
+      rgba(255, 183, 210, 0.8) 0 6px,
+      transparent 7px
+    ),
+    radial-gradient(
+      circle at 28% 60%,
+      rgba(255, 200, 225, 0.75) 0 5px,
+      transparent 6px
+    ),
+    radial-gradient(
+      circle at 45% 35%,
+      rgba(255, 170, 205, 0.7) 0 4px,
+      transparent 5px
+    ),
+    radial-gradient(
+      circle at 70% 25%,
+      rgba(255, 205, 230, 0.75) 0 6px,
+      transparent 7px
+    ),
+    radial-gradient(
+      circle at 82% 70%,
+      rgba(255, 180, 215, 0.75) 0 5px,
+      transparent 6px
+    ),
+    radial-gradient(
+      circle at 92% 45%,
+      rgba(255, 210, 235, 0.7) 0 4px,
+      transparent 5px
+    );
+
+  background-size: 420px 420px;
+  animation: petalsDrift 14s linear infinite;
+}
+
+/* ensure content sits above petals */
+.appKawaii > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes petalsDrift {
+  from {
+    transform: translateY(-40px);
+  }
+  to {
+    transform: translateY(40px);
+  }
+}
+
+h1 {
+  color: #c64c78;
+}
+
+.scoreBoard,
+.controls {
+  background: rgba(255, 240, 246, 0.92); /* sakura blush */
+  border-radius: 14px;
+  border: 1px solid #f2c6d6;
+}
+
+.controls label {
+  color: #5a3a45;
+  padding-right: 6px;
+}
+
+.controls input,
+.controls select {
+  border-radius: 10px;
+  border: 1px solid #e5b7c8;
+  padding: 6px 8px;
 }
 
 .gameWrap {
@@ -10,10 +103,26 @@
 }
 
 .arena {
-  height: 420px;
-  border: 2px solid #333;
-  border-radius: 12px;
-  background: #fff;
+  height: 520px;
+
+  width: 100%; /* <-- required */
+  max-width: 720px;
+  min-width: 320px; /* prevents collapsing to a line */
+  margin: 0 auto;
+
+  border: 2px solid #e5b7c8;
+  border-radius: 18px;
+
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0.55)
+    ),
+    url("/background.png"); /* <-- put image in /public */
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   position: relative;
   overflow: hidden;
 }
@@ -22,11 +131,13 @@
   position: absolute;
   transform: translate(-50%, -50%);
   font-size: 28px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
 }
 
 .controls {
+  padding: 14px 16px; /* ← this fixes the “hugging” */
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
   align-items: end;
 }
@@ -42,22 +153,78 @@
 }
 
 .scoreBoard {
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid #f2c6d6;
+  background: rgba(255, 240, 246, 0.92);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Make each line look like a cute “stat row” */
+.scoreBoard > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(229, 183, 200, 0.7);
+
+  font-size: 14px;
+}
+
+/* Emphasize the right-side values */
+.scoreBoard > div strong {
+  font-weight: 700;
+  color: #6a2d46;
+}
+
+.scoreRow {
   display: grid;
-  gap: 4px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(229, 183, 200, 0.7);
+
+  font-size: 14px;
+}
+
+.sakuraIcon {
+  font-size: 16px;
+  opacity: 0.85;
 }
 
 .catcher {
   position: absolute;
   bottom: 10px;
   transform: translateX(-50%);
-  font-size: 34px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
+  pointer-events: none;
+
+  width: 200px;
+  height: 200px;
+
+  display: grid;
+  place-items: center;
+
+  background: transparent;
+  padding: 0;
+  border: 0;
+}
+
+.catcherImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+  object-fit: contain;
+  transform: translateY(6px);
 }
 
 .overlay {
@@ -79,4 +246,13 @@
   border: 1px solid #333;
   background: #333;
   cursor: pointer;
+}
+
+.gameWrap {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }

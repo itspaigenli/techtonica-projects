@@ -7,7 +7,9 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("normal");
 
   return (
-    <div className="app">
+    <div className="app appKawaii">
+      <div className="petalLayer" aria-hidden="true" />
+
       <h1>Suki’s Sakura Catch!</h1>
 
       <Game
