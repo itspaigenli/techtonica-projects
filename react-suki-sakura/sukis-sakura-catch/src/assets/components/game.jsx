@@ -17,6 +17,8 @@ export default function Game({
   const catchLineY = 85;
   const catchWindowX = 6;
   const catchZoneHeight = 6;
+  const catcherMinX = 5;
+  const catcherMaxX = 95;
 
   const maxMisses = difficulty === "easy" ? 10 : difficulty === "hard" ? 5 : 7;
 
@@ -132,10 +134,13 @@ export default function Game({
       if (!isRunning) return;
 
       if (e.key === "ArrowLeft") {
-        setCatcherX((x) => Math.max(0, x - 5));
+        e.preventDefault();
+        setCatcherX((x) => Math.max(5, x - 5));
       }
+
       if (e.key === "ArrowRight") {
-        setCatcherX((x) => Math.min(100, x + 5));
+        e.preventDefault();
+        setCatcherX((x) => Math.min(95, x + 5));
       }
     }
 
