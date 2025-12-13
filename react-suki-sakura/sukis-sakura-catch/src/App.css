@@ -21,6 +21,8 @@ body {
 
   width: min(1400px, 100%);
   margin: 0 auto;
+  display: grid;
+  justify-items: center;
 }
 
 /* Title */
@@ -97,10 +99,15 @@ h1 {
 
 /* Main layout: UI left, Arena right */
 .gameWrap {
+  width: min(
+    1200px,
+    100%
+  ); /* keeps it centered and prevents weird stretching */
+  margin: 12px auto 0;
+
   display: grid;
   grid-template-columns: minmax(300px, 380px) minmax(640px, 1fr);
   gap: clamp(14px, 2vw, 28px);
-  margin-top: 12px;
   align-items: start;
 }
 
