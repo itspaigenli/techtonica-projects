@@ -1,28 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap");
 
+/* Page container */
 .app {
   font-family: "Zen Maru Gothic", system-ui, Arial, sans-serif;
   padding: 24px;
   color: #3a2b32;
+
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* Title */
 h1 {
   font-weight: 700;
   letter-spacing: 0.06em;
+  color: #c64c78;
 }
 
+/* Kawaii background */
 .appKawaii {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
 
-  /* soft kawaii gradient */
   background: radial-gradient(circle at 20% 10%, #ffe7f0 0%, transparent 45%),
     radial-gradient(circle at 80% 0%, #fff1f7 0%, transparent 50%),
     linear-gradient(#fffafc, #fff3f8);
 }
 
-/* floating petals overlay */
+/* Floating petals overlay */
 .petalLayer {
   position: absolute;
   inset: 0;
@@ -65,7 +71,7 @@ h1 {
   animation: petalsDrift 14s linear infinite;
 }
 
-/* ensure content sits above petals */
+/* Ensure content sits above petals */
 .appKawaii > * {
   position: relative;
   z-index: 1;
@@ -80,37 +86,10 @@ h1 {
   }
 }
 
-h1 {
-  color: #c64c78;
-}
-
-.controls,
-.scoreBoard {
-  border: 2px solid #f1b6cc;
-  border-radius: 18px;
-
-  background: linear-gradient(#fff7fb, #fff1f7) padding-box,
-    linear-gradient(135deg, #f6c1d6, #e7a9c3) border-box;
-
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-.controls label {
-  color: #5a3a45;
-  padding-right: 6px;
-}
-
-.controls input,
-.controls select {
-  border-radius: 10px;
-  border: 1px solid #e5b7c8;
-  padding: 6px 8px;
-}
-
+/* Main layout: UI left, Arena right */
 .gameWrap {
   display: grid;
-  grid-template-columns: 320px 1fr; /* UI | Arena */
+  grid-template-columns: minmax(320px, 380px) minmax(520px, 1fr);
   gap: 24px;
   margin-top: 12px;
   align-items: start;
@@ -121,19 +100,90 @@ h1 {
   gap: 16px;
 }
 
-@media (max-width: 900px) {
-  .gameWrap {
-    grid-template-columns: 1fr;
-  }
+/* Panels (Controls + Scoreboard) */
+.controls,
+.scoreBoard {
+  padding: 14px 16px;
+
+  border: 2px solid #f1b6cc;
+  border-radius: 18px;
+
+  background: linear-gradient(#fff7fb, #fff1f7) padding-box,
+    linear-gradient(135deg, #f6c1d6, #e7a9c3) border-box;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.arena {
-  height: 520px;
+/* Controls */
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: end;
+}
 
-  width: 100%; /* <-- required */
-  max-width: 720px;
-  min-width: 320px; /* prevents collapsing to a line */
-  margin: 0 auto;
+.controls label {
+  display: grid;
+  gap: 6px;
+  color: #5a3a45;
+}
+
+.controls input,
+.controls select {
+  border-radius: 10px;
+  border: 1px solid #e5b7c8;
+  padding: 6px 8px;
+}
+
+.controls button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* Score rows (works with your ScoreBoard.jsx row structure) */
+.scoreRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 8px 12px;
+  border-radius: 14px;
+
+  background: linear-gradient(#ffffffcc, #fff3f8cc);
+  border: 1px solid rgba(229, 183, 200, 0.7);
+
+  font-size: 14px;
+}
+
+.scoreLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.sakuraIcon {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.scoreLabel {
+  color: #5a3a45;
+}
+
+.scoreValue {
+  color: #6a2d46;
+  font-weight: 700;
+}
+
+/* Arena */
+.arena {
+  width: 100%;
+  min-width: 0;
+  height: 520px;
+  margin: 0;
 
   border: 2px solid #e5b7c8;
   border-radius: 18px;
@@ -142,7 +192,7 @@ h1 {
       rgba(255, 255, 255, 0.55),
       rgba(255, 255, 255, 0.55)
     ),
-    url("/background.png"); /* <-- put image in /public */
+    url("/background.png");
 
   background-size: cover;
   background-position: center;
@@ -159,79 +209,7 @@ h1 {
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
 }
 
-.controls {
-  padding: 14px 16px; /* ← this fixes the “hugging” */
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: end;
-}
-
-.controls label {
-  display: grid;
-  gap: 6px;
-}
-
-.controls button {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.scoreBoard {
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid #f2c6d6;
-  background: rgba(255, 240, 246, 0.92);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* Make each line look like a cute “stat row” */
-.scoreBoard > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(229, 183, 200, 0.7);
-
-  font-size: 14px;
-}
-
-/* Emphasize the right-side values */
-.scoreBoard > div strong {
-  font-weight: 700;
-  color: #6a2d46;
-}
-
-.scoreRow {
-  border: 1px solid #eab3c7;
-  border-radius: 14px;
-  background: linear-gradient(#ffffffcc, #fff3f8cc);
-}
-
-.scoreLeft {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.scoreLabel {
-  color: #5a3a45;
-}
-
-.scoreValue {
-  color: #6a2d46;
-  font-weight: 700;
-}
-
-.sakuraIcon {
-  font-size: 16px;
-  opacity: 0.85;
-}
-
+/* Catcher */
 .catcher {
   position: absolute;
   bottom: 10px;
@@ -255,10 +233,10 @@ h1 {
   object-fit: contain;
   display: block;
   background: transparent;
-  object-fit: contain;
   transform: translateY(6px);
 }
 
+/* Overlay */
 .overlay {
   position: absolute;
   inset: 0;
@@ -280,11 +258,9 @@ h1 {
   cursor: pointer;
 }
 
-.gameWrap {
-  display: grid;
-  gap: 12px;
-  margin-top: 12px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+/* Responsive */
+@media (max-width: 900px) {
+  .gameWrap {
+    grid-template-columns: 1fr;
+  }
 }
