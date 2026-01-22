@@ -9,6 +9,25 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 const { LAT, LON, OPENWEATHER_API_KEY } = process.env;
 
+if (!LAT || !LON || !OPENWEATHER_API_KEY) {
+  throw new Error("Missing LAT, LON, or OPENWEATHER_API_KEY in environment variables");
+}
+
 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
+
+app.get("/api/weather", async (req, res) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching weather data" });
+  }
+});
 
 app.listen(PORT, () => console.log(`Server has started on ${PORT}`));
