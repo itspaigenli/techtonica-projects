@@ -1,42 +1,73 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Minimalist Weather App Styles */
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.App {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-header {
+    margin-bottom: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.App-header h1 {
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin: 0;
 }
 
-.card {
-  padding: 2em;
+/* Data Display Container */
+.weather-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.read-the-docs {
-  color: #888;
+.weather-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Individual Data Cards */
+.weather-info .card {
+    background-color: #fafafa;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 15px;
+    transition: transform 0.2s ease;
+}
+
+.weather-info .card:hover {
+    transform: translateY(-2px);
+}
+
+.weather-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.weather-info .label {
+    font-weight: bold;
+    color: #666;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Footer Information */
+.footer {
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: #999;
 }
