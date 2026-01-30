@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   const [city, setCity] = useState("Half Moon Bay");
   const [weather, setWeather] = useState(null);
-  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [status, setStatus] = useState("idle"); 
   const [error, setError] = useState(null);
 
   const fetchWeather = async (cityName) => {
@@ -33,7 +33,6 @@ function App() {
 
   useEffect(() => {
     fetchWeather(city);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (e) => {

@@ -41,13 +41,12 @@ app.get("/api/weather", async (req, res) => {
     const data = await response.json();
 
     if (!response.ok) {
-      // OpenWeather sends useful error messages; pass them through cleanly
       return res.status(response.status).json({
         message: data?.message || "Failed to fetch weather data",
       });
     }
 
-    // Send only what the frontend needs (shows data shaping)
+  
     const payload = {
       city: data.name,
       temp: data.main.temp,
@@ -55,7 +54,7 @@ app.get("/api/weather", async (req, res) => {
       windSpeed: data.wind.speed,
       condition: data.weather?.[0]?.main,
       description: data.weather?.[0]?.description,
-      icon: data.weather?.[0]?.icon, // important for icon images
+      icon: data.weather?.[0]?.icon, 
     };
 
     res.json(payload);
