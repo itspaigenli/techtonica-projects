@@ -9,13 +9,17 @@ A full-stack weather application built with React, Express, and OpenWeatherMap A
 - Dynamic weather icons based on conditions.
 
 ## Visuals
-![Project Screenshot](https://via.placeholder.com/600x400?text=Insert+Your+Screenshot+Here)
-*(Tip: Replace this with a real screenshot or a GIF of your app in action)*
+[Project Screenshot](./public/weatherapp.png)
 
-## Setup Instructions
+## Frontend Setup Instructions
+- Open a new terminal and navigate to the client directory
+- Install dependencies: npm install
+- Start the frontend: npm run dev
+- Open browser to http://localhost:5173
 
 ### Prerequisites
 - [OpenWeatherMap API Key](https://openweathermap.org/api)
+- Node.js, Express, Nodemon, React+Vite, CORS, Dotenv
 
 ### 1. Backend Setup
 1. Navigate to `/server`.
