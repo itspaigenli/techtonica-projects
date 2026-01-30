@@ -25,23 +25,45 @@ if (!LAT || !LON || !OPENWEATHER_API_KEY) {
 
 // Route
 app.get("/api/weather", async (req, res) => {
-  const url =
-    `https://api.openweathermap.org/data/2.5/weather` +
-    `?lat=${LAT}&lon=${LON}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
+  const city = req.query.city;
+
+  // If you want to keep LAT/LON as a fallback:
+  const hasCity = typeof city === "string" && city.trim().length > 0;
+
+  const url = hasCity
+    ? `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+        city.trim()
+      )}&units=imperial&appid=${OPENWEATHER_API_KEY}`
+    : `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json(data);
+      // OpenWeather sends useful error messages; pass them through cleanly
+      return res.status(response.status).json({
+        message: data?.message || "Failed to fetch weather data",
+      });
     }
 
-    res.json(data);
+    // Send only what the frontend needs (shows data shaping)
+    const payload = {
+      city: data.name,
+      temp: data.main.temp,
+      humidity: data.main.humidity,
+      windSpeed: data.wind.speed,
+      condition: data.weather?.[0]?.main,
+      description: data.weather?.[0]?.description,
+      icon: data.weather?.[0]?.icon, // important for icon images
+    };
+
+    res.json(payload);
   } catch (error) {
     res.status(500).json({ message: "Error fetching weather data" });
   }
 });
+
 
 // Start server
 app.listen(PORT, () => {

@@ -1,66 +1,113 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [city, setCity] = useState("Half Moon Bay");
   const [weather, setWeather] = useState(null);
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Fetch data from your Express backend
-    const fetchWeather = async () => {
-      try {
-        const response = await fetch('http://localhost:5050/api/weather');
-        if (!response.ok) {
-          throw new Error('Failed to fetch weather data');
-        }
-        const data = await response.json();
-        setWeather(data);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
+  const fetchWeather = async (cityName) => {
+    setStatus("loading");
+    setError(null);
 
-    fetchWeather();
+    try {
+      const response = await fetch(
+        `http://localhost:5050/api/weather?city=${encodeURIComponent(cityName)}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Failed to fetch weather data");
+      }
+
+      setWeather(data);
+      setStatus("success");
+    } catch (err) {
+      setWeather(null);
+      setStatus("error");
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchWeather(city);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    fetchWeather(city);
+  };
+
+  const iconUrl =
+    weather?.icon
+      ? `https://openweathermap.org/img/wn/${weather.icon}@2x.png`
+      : null;
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Weather</h1>
+
+        <form className="search" onSubmit={onSubmit}>
+          <input
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Enter a city (e.g., Seattle)"
+            aria-label="City"
+          />
+          <button type="submit" disabled={status === "loading"}>
+            Search
+          </button>
+        </form>
       </header>
 
       <main>
-        {error && <p className="error">Error: {error}</p>}
+        {status === "error" && <p className="error">Error: {error}</p>}
+        {status === "loading" && <p>Loading...</p>}
 
-        {weather ? (
+        {status === "success" && weather && (
           <div className="weather-container">
-            <h2>{weather.name}</h2>
+            <h2>{weather.city}</h2>
+
+            {iconUrl && (
+              <div className="icon-row">
+                <img
+                  src={iconUrl}
+                  alt={weather.description || "Weather icon"}
+                  width="100"
+                  height="100"
+                />
+                <p className="condition">
+                  {weather.condition} — {weather.description}
+                </p>
+              </div>
+            )}
+
             <div className="weather-info">
               <div className="card">
                 <span className="label">Temperature</span>
-                <p>{Math.round(weather.main.temp)}°F</p>
+                <p>{Math.round(weather.temp)}°F</p>
               </div>
-              <div className="card">
-                <span className="label">Condition</span>
-                <p>{weather.weather[0].description}</p>
-              </div>
+
               <div className="card">
                 <span className="label">Humidity</span>
-                <p>{weather.main.humidity}%</p>
+                <p>{weather.humidity}%</p>
               </div>
+
               <div className="card">
                 <span className="label">Wind Speed</span>
-                <p>{weather.wind.speed} mph</p>
+                <p>{weather.windSpeed} mph</p>
               </div>
             </div>
           </div>
-        ) : (
-          !error && <p>Loading...</p>
         )}
       </main>
 
       <footer className="footer">
-        <p>Current conditions for your location.</p>
+        <p>Data from OpenWeather.</p>
       </footer>
     </div>
   );
