@@ -26,8 +26,6 @@ if (!LAT || !LON || !OPENWEATHER_API_KEY) {
 // Route
 app.get("/api/weather", async (req, res) => {
   const city = req.query.city;
-
-  // If you want to keep LAT/LON as a fallback:
   const hasCity = typeof city === "string" && city.trim().length > 0;
 
   const url = hasCity
