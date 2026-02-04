@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     item.textContent = "";
 
     const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
+    checkbox.type = "text";
 
     const label = document.createElement("span");
     label.textContent = " " + text;
