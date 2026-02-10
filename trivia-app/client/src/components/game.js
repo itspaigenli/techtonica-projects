@@ -16,17 +16,24 @@ const [questions, setQuestions] = useState([]);
         loadData();
     }, [])
 
-    return (
-        <div className="Container">
-            <div className='question-count'>
-                <span>Question 1</span>/{questions.length}
-            </div>
-            {questions.map((question, index) => {
-                return <QuestionCard key={index} question={question} />
-            })}
-        </div>
-    )
+    // Callback function to handle input from child components
+    const handleAnswer = (index, answer) => {
+        console.log(`Question ${index} answered with: ${answer}`);
+    };
 
+  return (
+        <div className="Container">
+            <h2>Science & Nature Quiz</h2>
+            {questions.map((question, index) => (
+                <QuestionCard 
+                    key={index} 
+                    index={index}
+                    question={question} 
+                    onAnswer={handleAnswer} 
+                />
+            ))}
+        </div>
+    );
 }
 
 export default Game;
