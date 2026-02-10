@@ -14,3 +14,16 @@ const QuestionCard = ({ question, index, onAnswer }) => {
         txt.innerHTML = html;
         return txt.value;
     };
+
+    return (
+      <div className="question-section">
+        <p><strong>Q{index + 1}:</strong> {decodeHTML(question.question)}</p>
+        <div className='answer-section'>
+            <button onClick={() => handleSelection("True")}>True</button>
+            <button onClick={() => handleSelection("False")}>False</button>
+        </div>
+      </div>
+    );
+};
+
+export default QuestionCard;
