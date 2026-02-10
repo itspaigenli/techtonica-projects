@@ -11,10 +11,10 @@ function App() {
 
   // Game setup settings (defaults)
   const [settings, setSettings] = useState({
-    amount: 20,
-    type: "",        // "" = any
-    difficulty: "",  // "" = any
-    category: "17",  // Science & Nature
+    amount: "",
+    type: "",        
+    difficulty: "",  
+    category: "", 
   });
 
   const handleUser = (text) => {
