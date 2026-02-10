@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import QuestionCard from "./questioncard";
 
 const Game = (props) => {
-
-    const [questions, setQuestions] = useState([]);
+const [questions, setQuestions] = useState([]);
 
     const loadData = () => {
         fetch('http://localhost:3000/api/game')
             .then((response) => response.json())
             .then(data => {
-                console.log("This is line 11", data.results);
                 setQuestions(data.results);
             })
     }
