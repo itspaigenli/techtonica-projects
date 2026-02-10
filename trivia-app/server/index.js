@@ -14,16 +14,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// //creates an endpoint for the route `/`
-app.get("/", (req, res) => {
-    res.json("Hello Techtonica Server for a Game");
-  });
-
 // Make the GET request for the GAME Api for grabbing all the questions 
 app.get("/api/game", async (req, res) => {
   try {
     const amount = req.query.amount || "10";      // default 10
-    const category = req.query.category || "";   // default: any
+    const category = req.query.category || "";   
     const difficulty = req.query.difficulty || "";
     const type = req.query.type || "";
 
