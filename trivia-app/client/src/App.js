@@ -10,14 +10,18 @@ function App() {
     setUser(text);
   }
 
-  return (
-    <div className="App">
-    <Header user={user} />
-    <UserForm grabUser={handleUser} />
-    {user ? <Game /> : null}
-      
+ return (
+  <div className="App">
+    <div className="top-glass">
+      <Header user={user} />
+      <UserForm grabUser={handleUser} />
     </div>
-  );
+
+    <Game />
+  </div>
+);
+
+
 }
 
 export default App;

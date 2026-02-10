@@ -1,3 +1,16 @@
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 12% 10%, rgba(255,255,255,0.18), transparent 60%),
+    radial-gradient(800px 520px at 88% 18%, rgba(255,255,255,0.12), transparent 55%),
+    radial-gradient(900px 600px at 28% 92%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
+}
+
 /* Page background that makes the glass effect visible */
 .Container {
   max-width: 780px;
@@ -5,17 +18,8 @@
   padding: 14px;
 }
 
-.Container::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(900px 500px at 12% 10%, rgba(255,255,255,0.18), transparent 60%),
-    radial-gradient(800px 520px at 88% 18%, rgba(255,255,255,0.12), transparent 55%),
-    radial-gradient(900px 600px at 28% 92%, rgba(255,255,255,0.10), transparent 60%),
-    linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
-}
+
+
 
 /* Glass card (compact) */
 .question-card {
@@ -137,4 +141,94 @@
   margin: 8px 0 0;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.82);
+}
+
+/* App wrapper */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Top glass container */
+.top-glass {
+  margin-top: 20px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  width: 100%;
+  max-width: 520px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Header text */
+.textHeader h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+}
+
+/* User form container */
+.ListMain {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* Inner wrapper (if present) */
+.ListMain .header {
+  width: 100%;
+}
+
+/* Form layout */
+.ListMain form {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Input: capped width */
+.ListMain input {
+  flex: 1;
+  max-width: 320px;
+  min-width: 0;
+
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.9rem;
+
+  backdrop-filter: blur(8px);
+}
+
+.ListMain input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Button stays compact */
+.ListMain button {
+  flex: 0 0 auto;
+}
+
+.Container h2 {
+  color: rgba(255, 255, 255, 0.95);
 }

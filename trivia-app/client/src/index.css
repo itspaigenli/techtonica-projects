@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 12% 10%, rgba(255,255,255,0.18), transparent 60%),
+    radial-gradient(800px 520px at 88% 18%, rgba(255,255,255,0.12), transparent 55%),
+    radial-gradient(900px 600px at 28% 92%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
+}
