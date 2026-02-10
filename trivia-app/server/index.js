@@ -7,12 +7,7 @@ const app = express();
 const PORT = 3001;
 
 // Configuring cors middleware
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["GET"],
-  })
-);
+app.use(cors());
 
 
 // Configuring body parser middleware
