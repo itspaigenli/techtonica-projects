@@ -30,11 +30,4 @@ app.get('/api/game', async (req, res) => {
     }
 });
 
-  // //hardcode the game response for testing reasons to don't saturate my API call. 
-app.get('/api/game', (req, res) =>{
-    res.json(fakedata);
-})
-
-
-
 app.listen(PORT, () => console.log(`Hola! Server running on Port http://localhost:${PORT}`));
