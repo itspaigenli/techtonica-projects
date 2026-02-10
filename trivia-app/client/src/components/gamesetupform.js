@@ -1,7 +1,24 @@
+import { useEffect, useState } from "react";
+
 const GameSetupForm = ({ settings, onChange }) => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch("https://opentdb.com/api_category.php")
+      .then((r) => r.json())
+      .then((data) => {
+        setCategories(Array.isArray(data.trivia_categories) ? data.trivia_categories : []);
+      })
+      .catch(() => setCategories([]));
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    onChange({ ...settings, [name]: value });
+
+    onChange({
+      ...settings,
+      [name]: name === "amount" ? Number(value) : value,
+    });
   };
 
   return (
@@ -40,8 +57,12 @@ const GameSetupForm = ({ settings, onChange }) => {
       <label>
         Category
         <select name="category" value={settings.category} onChange={handleChange}>
-          <option value="17">Science & Nature</option>
-          {/* can expand later */}
+          <option value="">Any Category</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={String(cat.id)}>
+              {cat.name}
+            </option>
+          ))}
         </select>
       </label>
     </form>
