@@ -9,4 +9,8 @@ const QuestionCard = ({ question, index, onAnswer }) => {
         onAnswer(index, selected);    // Calls the callback function
     };
 
-    
+    const decodeHTML = (html) => {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    };
