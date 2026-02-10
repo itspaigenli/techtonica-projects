@@ -30,12 +30,10 @@ const Game = ({ settings }) => {
         setQuestions(Array.isArray(data.results) ? data.results : []);
       })
       .catch((err) => {
-        // ✅ Ignore the abort that happens during StrictMode remount/unmount
+        // Ignore the abort that happens during StrictMode remount/unmount
         if (err.name === "AbortError") return;
 
         console.error("Failed to load trivia questions:", err);
-        // Optional: do NOT clear questions on error (prevents "vanish")
-        // setQuestions([]);
       });
 
     // Cleanup: abort in-flight request on unmount/re-run

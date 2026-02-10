@@ -1,3 +1,4 @@
+/* Background */
 body::before {
   content: "";
   position: fixed;
@@ -11,17 +12,128 @@ body::before {
     linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
 }
 
-/* Page background that makes the glass effect visible */
+/* Layout */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .Container {
   max-width: 780px;
   margin: 0 auto;
   padding: 14px;
 }
 
+.Container h2 {
+  color: rgba(255, 255, 255, 0.95);
+}
 
+/* Shared glass primitives */
+.glass-card {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
 
+.glass-control {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+  outline: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
 
-/* Glass card (compact) */
+/* Top glass container */
+.top-glass {
+  margin-top: 20px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  width: 100%;
+  max-width: 520px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+
+  border-radius: 16px;
+}
+
+.top-glass {
+  /* apply glass */
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.textHeader h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+}
+
+/* Setup form (top section) */
+.setup-form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+@media (min-width: 640px) {
+  .setup-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.setup-form label {
+  display: grid;
+  grid-template-rows: auto 36px;
+  row-gap: 4px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 0.2px;
+  line-height: 1.1;
+}
+
+.setup-form input,
+.setup-form select {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.9rem;
+  outline: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.setup-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.setup-form select {
+  cursor: pointer;
+}
+
+/* Question cards */
 .question-card {
   padding: 12px;
   margin: 10px 0;
@@ -52,7 +164,6 @@ body::before {
   color: rgba(255, 255, 255, 0.92);
 }
 
-/* Answers: compact grid */
 .answer-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -66,7 +177,6 @@ body::before {
   }
 }
 
-/* Glass buttons */
 .answer-btn {
   padding: 9px 10px;
   border-radius: 10px;
@@ -95,7 +205,6 @@ body::before {
   transform: none;
 }
 
-/* Selection + correctness */
 .answer-btn--selected {
   outline: 2px solid rgba(255, 255, 255, 0.35);
   outline-offset: 1px;
@@ -111,18 +220,15 @@ body::before {
   border-color: rgba(198, 40, 40, 0.55);
 }
 
-/* Compact glass badge */
+/* Badge + correct line */
 .badge {
   font-size: 0.72rem;
   padding: 3px 9px;
   border-radius: 999px;
-
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.10);
   color: rgba(255, 255, 255, 0.92);
-
   white-space: nowrap;
-
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -143,189 +249,48 @@ body::before {
   color: rgba(255, 255, 255, 0.82);
 }
 
-/* App wrapper */
-.App {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Top glass container */
-.top-glass {
-  margin-top: 20px;
-  margin-bottom: 18px;
-  padding: 14px 16px;
-  width: 100%;
-  max-width: 520px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-
-  background: rgba(255, 255, 255, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 16px;
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-/* Header text */
-.textHeader h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.95);
-  text-align: center;
-}
-
-/* User form container */
+/* Name form (single, non-duplicated) */
 .ListMain {
   width: 100%;
-  max-width: 520px;
 }
 
-/* Inner wrapper (if present) */
 .ListMain .header {
   width: 100%;
 }
 
-/* Form layout */
 .ListMain form {
+  width: 100%;
   display: flex;
   gap: 8px;
-  justify-content: center;
+  justify-content: stretch;
 }
 
-/* Input: capped width */
 .ListMain input {
   flex: 1;
-  max-width: 320px;
   min-width: 0;
+  max-width: 280px;
+  height: 34px;
+  padding: 0 10px;
 
-  padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.08);
 
   color: rgba(255, 255, 255, 0.92);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .ListMain input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Button stays compact */
 .ListMain button {
   flex: 0 0 auto;
-}
-
-.Container h2 {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-/* ---- Game setup form (top section) ---- */
-.setup-form {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-@media (min-width: 640px) {
-  .setup-form {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.setup-form label {
-  display: grid;
-  grid-template-rows: auto 36px; /* label auto-sizes, input stays fixed */
-  row-gap: 4px;
-
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.78);
-  letter-spacing: 0.2px;
-  line-height: 1.1;
-}
-
-
-/* Ensure inputs/selects match the fixed control row */
-.setup-form input,
-.setup-form select {
-  height: 36px;
-}
-
-
-.setup-form input,
-.setup-form select {
-  height: 36px;
-  padding: 0 10px;
-
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
-
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 0.9rem;
-
-  outline: none;
-
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.setup-form input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.setup-form select {
-  cursor: pointer;
-}
-
-
-
-/* Keep the name row aligned to the same width as setup form */
-.ListMain {
-  width: 100%;
-  max-width: none;
-}
-
-.ListMain .header {
-  width: 100%;
-}
-
-.ListMain form {
-  width: 100%;
-  justify-content: stretch;
-}
-
-/* Make the name input more compact */
-.ListMain input {
-  height: 34px;              /* slightly smaller than setup inputs */
-  padding: 0 10px;
-  font-size: 0.85rem;
-
-  max-width: 280px;          /* key: prevents it feeling oversized */
-}
-
-/* Keep button visually balanced with input */
-.ListMain button {
   height: 34px;
+  padding: 0 14px;
   font-size: 0.85rem;
-}
-
-
-.ListMain button {
-  height: 36px;
+  border-radius: 10px;
 }
