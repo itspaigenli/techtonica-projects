@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const QuestionCard = ({ question, index, onAnswer }) => {
   const answerRef = useRef(null);
+  const [isCorrect, setIsCorrect] = useState(null);
 
   const decodeHTML = (html) => {
     const txt = document.createElement("textarea");
@@ -9,19 +10,19 @@ const QuestionCard = ({ question, index, onAnswer }) => {
     return txt.value;
   };
 
-  // Build answer options (incorrect + correct)
+  const correctAnswer = decodeHTML(question.correct_answer);
+
   const options = [
     ...(question.incorrect_answers || []),
     question.correct_answer,
-  ]
-    .filter(Boolean)
-    .map(decodeHTML);
+  ].map(decodeHTML);
 
-  // Shuffle options so correct answer isn't always in the same spot
   const shuffled = [...options].sort(() => Math.random() - 0.5);
 
   const handleSelection = (selected) => {
     answerRef.current = selected;
+    const result = selected === correctAnswer;
+    setIsCorrect(result);
     onAnswer(index, selected);
   };
 
@@ -37,11 +38,18 @@ const QuestionCard = ({ question, index, onAnswer }) => {
             key={`${index}-${choice}`}
             type="button"
             onClick={() => handleSelection(choice)}
+            disabled={isCorrect !== null}
           >
             {choice}
           </button>
         ))}
       </div>
+
+      {isCorrect !== null && (
+        <p>
+          {isCorrect ? "✅ Correct!" : `❌ Incorrect. Correct answer: ${correctAnswer}`}
+        </p>
+      )}
     </div>
   );
 };
