@@ -161,7 +161,7 @@ body::before {
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
 
   background: rgba(255, 255, 255, 0.10);
@@ -231,4 +231,101 @@ body::before {
 
 .Container h2 {
   color: rgba(255, 255, 255, 0.95);
+}
+
+/* ---- Game setup form (top section) ---- */
+.setup-form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+@media (min-width: 640px) {
+  .setup-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.setup-form label {
+  display: grid;
+  grid-template-rows: auto 36px; /* label auto-sizes, input stays fixed */
+  row-gap: 4px;
+
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 0.2px;
+  line-height: 1.1;
+}
+
+
+/* Ensure inputs/selects match the fixed control row */
+.setup-form input,
+.setup-form select {
+  height: 36px;
+}
+
+
+.setup-form input,
+.setup-form select {
+  height: 36px;
+  padding: 0 10px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.9rem;
+
+  outline: none;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.setup-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.setup-form select {
+  cursor: pointer;
+}
+
+
+
+/* Keep the name row aligned to the same width as setup form */
+.ListMain {
+  width: 100%;
+  max-width: none;
+}
+
+.ListMain .header {
+  width: 100%;
+}
+
+.ListMain form {
+  width: 100%;
+  justify-content: stretch;
+}
+
+/* Make the name input more compact */
+.ListMain input {
+  height: 34px;              /* slightly smaller than setup inputs */
+  padding: 0 10px;
+  font-size: 0.85rem;
+
+  max-width: 280px;          /* key: prevents it feeling oversized */
+}
+
+/* Keep button visually balanced with input */
+.ListMain button {
+  height: 34px;
+  font-size: 0.85rem;
+}
+
+
+.ListMain button {
+  height: 36px;
 }
