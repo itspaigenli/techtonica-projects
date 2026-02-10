@@ -4,10 +4,16 @@ import cors from 'cors';
 import fetch from 'node-fetch';
 
 const app = express();
-const PORT = 5000;
+const PORT = 3001;
 
 // Configuring cors middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET"],
+  })
+);
+
 
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
