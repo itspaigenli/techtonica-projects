@@ -1,41 +1,140 @@
-.App {
-  background-color: #eaeff1;
-  font-family: "Raleway", sans-serif;
-  display:flex; 
-  flex-direction:column; 
-  justify-content:center;
-}
-
-.textHeader{
-  align-self: center;
-}
-
-.ListMain{
-  align-self: center;
-}
-
-.question-count{
-  margin-top: 25px;
-}
-
+/* Page background that makes the glass effect visible */
 .Container {
-  display: table-cell;
-  vertical-align: middle;
-  align-self: center;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 14px;
 }
 
-.question-section{
-  /* Change background color */
-  background-color: white;
+.Container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(900px 500px at 12% 10%, rgba(255,255,255,0.18), transparent 60%),
+    radial-gradient(800px 520px at 88% 18%, rgba(255,255,255,0.12), transparent 55%),
+    radial-gradient(900px 600px at 28% 92%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
+}
 
-  /* Add border */
-  border: 1px solid #bacdd8;
+/* Glass card (compact) */
+.question-card {
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 14px;
 
-  /* Add space between the border and the content */
-  padding: 8px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
-  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
-  width: 70%;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
 
+.question-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.question-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.25rem;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Answers: compact grid */
+.answer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+@media (min-width: 560px) {
+  .answer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Glass buttons */
+.answer-btn {
+  padding: 9px 10px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.92rem;
+  line-height: 1.1rem;
+  text-align: left;
+
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.answer-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.answer-btn:disabled {
+  cursor: default;
+  opacity: 0.92;
+  transform: none;
+}
+
+/* Selection + correctness */
+.answer-btn--selected {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 1px;
+}
+
+.answer-btn--correct {
+  background: rgba(46, 125, 50, 0.22);
+  border-color: rgba(46, 125, 50, 0.55);
+}
+
+.answer-btn--wrong {
+  background: rgba(198, 40, 40, 0.20);
+  border-color: rgba(198, 40, 40, 0.55);
+}
+
+/* Compact glass badge */
+.badge {
+  font-size: 0.72rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.92);
+
+  white-space: nowrap;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.badge--good {
+  background: rgba(46, 125, 50, 0.22);
+  border-color: rgba(46, 125, 50, 0.55);
+}
+
+.badge--bad {
+  background: rgba(198, 40, 40, 0.20);
+  border-color: rgba(198, 40, 40, 0.55);
+}
+
+.correct-line {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.82);
 }
