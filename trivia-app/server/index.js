@@ -17,6 +17,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // //creates an endpoint for the route `/`
+app.get("/", (req, res) => {
+    res.json("Hello Techtonica Server for a Game");
+  });
+
+// Make the GET request for the GAME Api for grabbing all the questions 
 app.get('/api/game', async (req, res) => {
     try {
         const url = 'https://opentdb.com/api.php?amount=20&category=17';
@@ -27,9 +32,6 @@ app.get('/api/game', async (req, res) => {
         res.status(500).json({ error: "Failed to fetch questions" });
     }
 });
-
-// Make the GET request for the GAME Api for grabbing all the questions 
-
 
   // //hardcode the game response for testing reasons to don't saturate my API call. 
 app.get('/api/game', (req, res) =>{
