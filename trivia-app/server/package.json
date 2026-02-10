@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "type": "module",
- "scripts": {
-  "dev": "concurrently \"npm run server\" \"cd .. && cd client && npm start\"",
-  "server": "nodemon index.js",
-  "start": "node index.js"
-}
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"cd .. && cd client && npm start\"",
+    "server": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,4 +19,4 @@
     "node-fetch": "^3.2.10",
     "nodemon": "^2.0.19"
   }
-
+}

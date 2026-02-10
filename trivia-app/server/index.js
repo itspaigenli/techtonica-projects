@@ -9,7 +9,7 @@ const PORT = 3001;
 // Configuring cors middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3002",
     methods: ["GET"],
   })
 );
