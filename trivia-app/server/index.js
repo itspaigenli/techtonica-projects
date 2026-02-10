@@ -20,16 +20,16 @@ app.get("/", (req, res) => {
   });
 
 // Make the GET request for the GAME Api for grabbing all the questions 
-app.get('/api/game', async (req, res) => {
-    try {
-        const url = 'https://opentdb.com/api.php?amount=20&category=17';
-        const response = await fetch(url);
-        const data = await response.json();
-        res.json(data); 
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch questions" });
-    }
+app.get("/api/game", async (req, res) => {
+  try {
+    const response = await fetch("https://opentdb.com/api.php?amount=10");
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch questions" });
+  }
 });
+
 
 
 app.listen(PORT, () => console.log(`Hola! Server running on Port http://localhost:${PORT}`));

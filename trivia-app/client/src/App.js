@@ -3,7 +3,7 @@ import { useState } from "react";
 import Header from "./components/header.js";
 import UserForm from "./components/user.js";
 import Game from "./components/game.js";
-import GameSetupForm from "./components/GameSetupForm.js"; // make sure this path/name matches your file
+import GameSetupForm from "./components/gamesetupform.js"; // make sure this path/name matches your file
 import "./App.css";
 
 function App() {
