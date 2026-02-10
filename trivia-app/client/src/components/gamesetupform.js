@@ -26,13 +26,19 @@ const GameSetupForm = ({ settings, onChange }) => {
       <label>
         Number of Questions
         <input
-          type="number"
-          name="amount"
-          min="1"
-          max="50"
-          value={settings.amount}
-          onChange={handleChange}
-        />
+  type="number"
+  name="amount"
+  min="1"
+  max="50"
+  value={settings.amount}
+  onChange={(e) =>
+    onChange({
+      ...settings,
+      amount: Number(e.target.value),
+    })
+  }
+/>
+
       </label>
 
       <label>
