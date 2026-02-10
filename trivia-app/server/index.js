@@ -22,7 +22,21 @@ app.get("/", (req, res) => {
 // Make the GET request for the GAME Api for grabbing all the questions 
 app.get("/api/game", async (req, res) => {
   try {
-    const response = await fetch("https://opentdb.com/api.php?amount=10");
+    const amount = req.query.amount || "10";      // default 10
+    const category = req.query.category || "";   // default: any
+    const difficulty = req.query.difficulty || "";
+    const type = req.query.type || "";
+
+    const params = new URLSearchParams();
+    params.set("amount", String(amount));
+
+    if (category) params.set("category", String(category));
+    if (difficulty) params.set("difficulty", String(difficulty));
+    if (type) params.set("type", String(type));
+
+    const url = `https://opentdb.com/api.php?${params.toString()}`;
+
+    const response = await fetch(url);
     const data = await response.json();
     res.json(data);
   } catch (error) {

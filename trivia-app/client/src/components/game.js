@@ -48,7 +48,7 @@ const Game = ({ settings }) => {
 
   return (
     <div className="Container">
-      <h2>Science & Nature Quiz</h2>
+      <h2> Quiz</h2>
 
       {questions.map((question, index) => (
         <QuestionCard
