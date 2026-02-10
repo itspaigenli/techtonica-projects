@@ -17,9 +17,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // //creates an endpoint for the route `/`
-app.get("/", (req, res) => {
-    res.json("Hello Techtonica Server for a Game");
-  });
+app.get('/api/game', async (req, res) => {
+    try {
+        const url = 'https://opentdb.com/api.php?amount=20&category=17';
+        const response = await fetch(url);
+        const data = await response.json();
+        res.json(data); 
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch questions" });
+    }
+});
 
 // Make the GET request for the GAME Api for grabbing all the questions 
 
