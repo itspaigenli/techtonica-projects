@@ -14,7 +14,7 @@
 
 4. Go to the client folder (`cd .. and cd client`) and run the command `npm install`
 
-6. This template has two servers already working. Both servers should run now with by running `npm run dev` from within the server directory in your terminal. Please note that in server 5000 you will have the Backend, and in server 3000 you will have dev from React. 
+6. This template has two servers already working. Both servers should run now with by running `npm run dev` from within the server directory in your terminal. Please note that in server 3001 you will have the Backend, and in server 3000 you will have dev from React. 
 
 ### Connection an API for the Game questions
 
@@ -27,7 +27,7 @@ We will use the [TRIVIA APP](https://opentdb.com/api_config.php) for this projec
 That will give you an URL to use for your fetch request (in the Backend). Please note that you don't need to ask the user for ANY of this information. 
 ![Screenshot](https://raw.githubusercontent.com/Yosolita1978/screenshoots/83689f3f5b3cff7d7def28efe112a21f97ffeb98/2023/H1/Screen%20Shot%202023-03-03%20at%202.45.33%20PM.png)
 
-### What you see in the Frontend (localhost:3000)
+### What you see in the Frontend (localhost:3001)
 
 ![Screenshoot](https://raw.githubusercontent.com/Yosolita1978/screenshoots/c9c027425a428f552232d821b943760b61be602d/2023/H1/Screen%20Shot%202023-03-03%20at%202.47.58%20PM.png)
 
@@ -47,8 +47,8 @@ This existing code will let you see an initial screen asking for the user name, 
 * Show a message to the user in case they win or lose the game. 
 * Use the right format to show text with special characters.
 
-### What you see in the Backend (localhost:5000)
+### What you see in the Backend (localhost:3000)
 ![Screenshoot](https://raw.githubusercontent.com/Yosolita1978/screenshoots/c9c027425a428f552232d821b943760b61be602d/2023/H1/Screen%20Shot%202023-03-03%20at%203.01.40%20PM.png)
 
 This existing code will let give you a single endpoint, `api/game`, that shows the information inside the file `fakedata.js`.
-The information is 5 questions. If you want to see that data in JSON format, go to `http://localhost:5000/api/game`
+The information is 5 questions. If you want to see that data in JSON format, go to `http://localhost:3000/api/game`
