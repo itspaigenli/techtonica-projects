@@ -14,17 +14,16 @@ const Game = ({ settings }) => {
     if (didFetch.current) return;
     didFetch.current = true;
 
-    const params = new URLSearchParams();
-    params.set("amount", settings.amount);
-    params.set("category", settings.category);
+   const params = new URLSearchParams();
+params.set("amount", String(settings.amount));
 
-    if (settings.difficulty) {
-      params.set("difficulty", settings.difficulty);
-    }
+if (settings.category) {
+  params.set("category", settings.category);
+}
 
-    if (settings.type) {
-      params.set("type", settings.type);
-    }
+if (settings.difficulty) params.set("difficulty", settings.difficulty);
+if (settings.type) params.set("type", settings.type);
+
 
     fetch(`http://localhost:3001/api/game?${params.toString()}`)
       .then((response) => {
