@@ -1,14 +1,12 @@
-const QuestionCard = (props) => {
-    
-    return (
-      <div className={"question-section"}>
-        <div className='question-text'>{props.question.question}</div>
-        <div className='answer-section'>
-		<button>True</button>
-		<button>False</button>
-        </div>
-      </div>
-    );
-  };
+import { useRef } from "react";
 
-export default QuestionCard;
+const QuestionCard = ({ question, index, onAnswer }) => {
+    // useRef to control the selected input value
+    const answerRef = useRef(null);
+
+    const handleSelection = (selected) => {
+        answerRef.current = selected; // Updates the ref without re-rendering
+        onAnswer(index, selected);    // Calls the callback function
+    };
+
+    
