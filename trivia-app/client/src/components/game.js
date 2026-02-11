@@ -75,14 +75,16 @@ const isFinished = answeredCount === total && total > 0 && lives > 0;
   return (
     <div className="Container">
       <h2>Quiz</h2>
-      {questions.map((question, index) => (
-        <QuestionCard
-          key={`${index}-${question.question}`}
-          index={index}
-          question={question}
-          onAnswer={handleAnswer}
-        />
-      ))}
+      {!isGameOver &&
+  questions.map((question, index) => (
+    <QuestionCard
+      key={`${index}-${question.question}`}
+      index={index}
+      question={question}
+      onAnswer={handleAnswer}
+    />
+  ))}
+
     </div>
   );
 };
