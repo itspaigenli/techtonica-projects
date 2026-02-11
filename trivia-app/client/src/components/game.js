@@ -7,6 +7,13 @@ const Game = ({ settings }) => {
   const [lives, setLives] = useState(3);
 const [answered, setAnswered] = useState({});
 
+const total = questions.length;
+const answeredCount = Object.keys(answered).length;
+
+const isGameOver = lives <= 0;
+const isFinished = answeredCount === total && total > 0 && lives > 0;
+
+
 
   // Build a stable query string from settings
   const queryString = useMemo(() => {
