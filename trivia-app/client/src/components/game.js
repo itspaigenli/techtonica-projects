@@ -14,6 +14,15 @@ const isGameOver = lives <= 0;
 const isFinished = answeredCount === total && total > 0 && lives > 0;
 
 
+<div className="scorebar">
+  <span>Lives: {lives}</span>
+  <span>Answered: {answeredCount} / {total}</span>
+</div>
+
+{isGameOver && <div className="result lose">Game Over</div>}
+{isFinished && <div className="result win">You Win!</div>}
+
+
 
   // Build a stable query string from settings
   const queryString = useMemo(() => {
