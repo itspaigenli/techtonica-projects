@@ -1,30 +1,11 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import QuestionCard from "./questioncard";
 
 const Game = ({ settings }) => {
   const [questions, setQuestions] = useState([]);
-
   const [lives, setLives] = useState(3);
-const [answered, setAnswered] = useState({});
+  const [answered, setAnswered] = useState({});
 
-const total = questions.length;
-const answeredCount = Object.keys(answered).length;
-
-const isGameOver = lives <= 0;
-const isFinished = answeredCount === total && total > 0 && lives > 0;
-
-
-<div className="scorebar">
-  <span>Lives: {lives}</span>
-  <span>Answered: {answeredCount} / {total}</span>
-</div>
-
-{isGameOver && <div className="result lose">Game Over</div>}
-{isFinished && <div className="result win">You Win!</div>}
-
-
-
-  // Build a stable query string from settings
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
     params.set("amount", String(settings.amount || 10));
@@ -39,6 +20,10 @@ const isFinished = answeredCount === total && total > 0 && lives > 0;
   useEffect(() => {
     const controller = new AbortController();
 
+    // reset game whenever we load a new set of questions
+    setLives(3);
+    setAnswered({});
+
     fetch(`http://localhost:3001/api/game?${queryString}`, {
       signal: controller.signal,
     })
@@ -50,41 +35,52 @@ const isFinished = answeredCount === total && total > 0 && lives > 0;
         setQuestions(Array.isArray(data.results) ? data.results : []);
       })
       .catch((err) => {
-        // Ignore the abort that happens during StrictMode remount/unmount
         if (err.name === "AbortError") return;
-
         console.error("Failed to load trivia questions:", err);
       });
 
-    // Cleanup: abort in-flight request on unmount/re-run
     return () => controller.abort();
   }, [queryString]);
 
+  const total = questions.length;
+  const answeredCount = Object.keys(answered).length;
+
+  const isGameOver = lives <= 0;
+  const isFinished = total > 0 && answeredCount === total && lives > 0;
+
   const handleAnswer = (index, _choice, isCorrect) => {
-  // Prevent double-answering same question
-  if (answered[index] !== undefined) return;
+    if (answered[index] !== undefined) return;
 
-  setAnswered((prev) => ({ ...prev, [index]: true }));
+    setAnswered((prev) => ({ ...prev, [index]: true }));
 
-  if (!isCorrect) {
-    setLives((prev) => prev - 1);
-  }
-};
-
+    if (!isCorrect) {
+      setLives((prev) => prev - 1);
+    }
+  };
 
   return (
     <div className="Container">
       <h2>Quiz</h2>
-      {!isGameOver &&
-  questions.map((question, index) => (
-    <QuestionCard
-      key={`${index}-${question.question}`}
-      index={index}
-      question={question}
-      onAnswer={handleAnswer}
-    />
-  ))}
 
+      <div className="scorebar">
+        <span>Lives: {lives}</span>
+        <span>
+          Answered: {answeredCount} / {total}
+        </span>
+      </div>
+
+      {isGameOver && <div className="result lose">Game Over</div>}
+      {isFinished && <div className="result win">You Win!</div>}
+
+      {!isGameOver &&
+        questions.map((question, index) => (
+          <QuestionCard
+            key={`${index}-${question.question}`}
+            index={index}
+            question={question}
+            onAnswer={handleAnswer}
+          />
+        ))}
     </div>
   );
 };

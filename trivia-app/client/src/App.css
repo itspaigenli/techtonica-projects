@@ -294,3 +294,25 @@ body::before {
   font-size: 0.85rem;
   border-radius: 10px;
 }
+
+.scorebar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.result {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.result.win {
+  color: #4caf50;
+}
+
+.result.lose {
+  color: #f44336;
+}
