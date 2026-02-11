@@ -44,9 +44,17 @@ const [answered, setAnswered] = useState({});
     return () => controller.abort();
   }, [queryString]);
 
-  const handleAnswer = (index, answer) => {
-    console.log(`Question ${index + 1} answered with: ${answer}`);
-  };
+  const handleAnswer = (index, _choice, isCorrect) => {
+  // Prevent double-answering same question
+  if (answered[index] !== undefined) return;
+
+  setAnswered((prev) => ({ ...prev, [index]: true }));
+
+  if (!isCorrect) {
+    setLives((prev) => prev - 1);
+  }
+};
+
 
   return (
     <div className="Container">
