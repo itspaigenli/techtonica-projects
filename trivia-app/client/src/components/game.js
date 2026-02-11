@@ -4,6 +4,10 @@ import QuestionCard from "./questioncard";
 const Game = ({ settings }) => {
   const [questions, setQuestions] = useState([]);
 
+  const [lives, setLives] = useState(3);
+const [answered, setAnswered] = useState({});
+
+
   // Build a stable query string from settings
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
