@@ -24,7 +24,8 @@ const QuestionCard = ({ question, index, onAnswer }) => {
   const handleSelection = (choice) => {
     answerRef.current = choice;
     setSelected(choice);
-    onAnswer(index, choice);
+    onAnswer(index, choice, choice === correct);
+
   };
 
   const answered = selected !== null;
