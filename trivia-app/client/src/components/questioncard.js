@@ -22,10 +22,11 @@ const QuestionCard = ({ question, index, onAnswer }) => {
   const shuffled = [...options].sort(() => Math.random() - 0.5);
 
   const handleSelection = (choice) => {
+    if (selected !== null) return; // ✅ prevent double-answer
+
     answerRef.current = choice;
     setSelected(choice);
     onAnswer(index, choice, choice === correct);
-
   };
 
   const answered = selected !== null;
@@ -70,7 +71,9 @@ const QuestionCard = ({ question, index, onAnswer }) => {
       </div>
 
       {answered && !gotItRight && (
-        <p className="correct-line">Correct answer: <strong>{correct}</strong></p>
+        <p className="correct-line">
+          Correct answer: <strong>{correct}</strong>
+        </p>
       )}
     </div>
   );
