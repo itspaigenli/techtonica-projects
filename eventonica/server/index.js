@@ -11,8 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 // Generic API Route 
-app.get("/api/example", (req, res) => {
-  res.json({ message: "Example route works" });
+app.get("/", (req, res) => {
+  res.json({ message: "你好，这是我的 ExpressJS 和 React-Vite 模板" });
 });
 
 // Server
