@@ -13,7 +13,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:5050/api/weatherrrr?city=${encodeURIComponent(cityName)}`
+        `http://localhost:5050/api/weather?city=${encodeURIComponent(cityName)}`
       );
 
       const data = await response.json();
