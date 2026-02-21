@@ -32,7 +32,10 @@
         {daysOfWeek.map((day) => <span key={day}>{day}</span>)}
       </div>
       <div className="days">
-        
+        {[...Array(firstDayOfMonth).keys()].map((_, index) => (
+          <span key={`empty-${index}`} />
+        ))}
+        {[...Array(daysInMonth).keys()].map((day) => <span key={day+1}>{day+1}</span>)}
       </div>
       </div>
       <div className="events">
