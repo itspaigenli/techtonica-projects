@@ -41,7 +41,7 @@
         {[...Array(firstDayOfMonth).keys()].map((_, index) => (
           <span key={`empty-${index}`} />
         ))}
-        {[...Array(daysInMonth).keys()].map((day) => <span key={day+1}>{day+1}</span>)}
+        {[...Array(daysInMonth).keys()].map((day) => <span key={day+1} className={day + 1 === currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear() ? 'current-day' : ''}>{day+1}</span>)}
       </div>
       </div>
       <div className="events">
