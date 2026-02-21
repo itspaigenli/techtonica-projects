@@ -3,7 +3,7 @@
   <div className="calendar-app">
     <div className="calendar">
       <h1 className="heading">Calendar</h1>
-      <div className="navigate-date"></div>
+      <div className="navigate-date">
       <h2 className="month">January</h2>
       <h2 className="year">2026</h2>
       <div className="buttons">
@@ -53,6 +53,15 @@
         <span>30</span>
         <span>31</span>
       </div>
+      </div>
+      <div className="events">
+        <div className="event-popup">
+          <div className="time-input">
+            <div className="event-popup-time">Time</div>
+            <input type="number" name="hours" min={0} max={24} className="hours" />
+            </div>
+          </div>
+        </div>
       </div>
   )
 }
