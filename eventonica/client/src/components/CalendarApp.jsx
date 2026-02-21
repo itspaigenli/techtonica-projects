@@ -54,6 +54,9 @@
       }
 
       setEvents([...events, newEvent])
+      setEventTime({hours: "00", minutes: "00"})
+      setEventText('')
+      setShowEventPopup(false)
     }
 
   return (
