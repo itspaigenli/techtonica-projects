@@ -12,8 +12,9 @@
      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
      const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
-     console.log(currentMonth, currentYear, currentDate)
-     console.log(daysInMonth, firstDayOfMonth)
+     const prevMonth = () => {
+      setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1))
+     }
 
 
   return (
