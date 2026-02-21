@@ -11,6 +11,15 @@
         <i className="bx bx-chevron-right"></i>
       </div>
       </div>
+      <div className="weekdays">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       </div>
   )
 }
