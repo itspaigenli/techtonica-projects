@@ -10,8 +10,10 @@
      const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
 
      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
      console.log(currentMonth, currentYear, currentDate)
+     console.log(daysInMonth, firstDayOfMonth)
 
 
   return (
