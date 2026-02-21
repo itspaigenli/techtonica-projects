@@ -59,7 +59,10 @@
           <div className="time-input">
             <div className="event-popup-time">Time</div>
             <input type="number" name="hours" min={0} max={24} className="hours" />
+            <input type="number" name="minutes" min={0} max={60} className="minutes" />
             </div>
+            <textarea placeholder="Enter Event Text (Maximum 60 characters)"></textarea>
+            <div className="button event-popup-btn">Add Event</div>
           </div>
         </div>
       </div>
