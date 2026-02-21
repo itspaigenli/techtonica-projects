@@ -26,6 +26,12 @@
 
      const handleDayClick = (day) => {
       const clickedDate = new Date(currentYear, currentMonth, day)
+      const today = new Date()
+
+      if (clickedDate >= today) {
+        setSelectedDate(clickedDate)
+        setShowEventPopup(true)
+      }
      }
 
   return (
