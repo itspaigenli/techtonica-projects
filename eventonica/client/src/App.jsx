@@ -3,7 +3,7 @@ import './components/eventsapp.css'
 
 const App = () => {
   return (
-    <div><EventsApp /></div>
+    <div className='container'><EventsApp /></div>
   )
 }
 
