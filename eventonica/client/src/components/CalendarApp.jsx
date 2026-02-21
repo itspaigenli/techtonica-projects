@@ -17,6 +17,10 @@
       setCurrentYear((prevYear) => (currentMonth === 0 ? prevYear - 1 : prevYear))
      }
 
+     const nextMonth = () => {
+      setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1))
+      setCurrentYear((prevYear) => (currentMonth === 11 ? prevYear + 1 : prevYear))
+     }
 
   return (
   <div className="calendar-app">
@@ -26,8 +30,8 @@
       <h2 className="month">January</h2>
       <h2 className="year">2026</h2>
       <div className="buttons">
-        <i className="bx bx-chevron-left"></i>
-        <i className="bx bx-chevron-right"></i>
+        <i className="bx bx-chevron-left" onClick={prevMonth}></i>
+        <i className="bx bx-chevron-right" onClick={nextMonth}></i>
       </div>
       </div>
       <div className="weekdays">
