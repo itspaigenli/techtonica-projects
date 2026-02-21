@@ -8,6 +8,8 @@
 
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
      const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
+     const [selectedDate, setSelectedDate] = useState(currentDate)
+     const [showEventPopup, setShowEventPopup] = useState(false)
 
      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
      const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
