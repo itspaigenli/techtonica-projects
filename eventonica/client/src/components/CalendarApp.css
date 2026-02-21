@@ -373,6 +373,11 @@
   }
 }
 
+/*.event-day {
+    background-color: #00a3ff;
+} */
+
+
 @media (max-width: 375px) {
   .calendar-app {
     aspect-ratio: 3 / 2;
