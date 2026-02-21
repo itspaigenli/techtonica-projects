@@ -58,6 +58,7 @@
       </div>
       </div>
       <div className="events">
+        {showEventPopup}
         <div className="event-popup">
           <div className="time-input">
             <div className="event-popup-time">Time</div>
