@@ -28,7 +28,7 @@
       const clickedDate = new Date(currentYear, currentMonth, day)
       const today = new Date()
 
-      if (clickedDate >= today) {
+      if (clickedDate >= today || isSameDay(clickedDate, today)) {
         setSelectedDate(clickedDate)
         setShowEventPopup(true)
       }
