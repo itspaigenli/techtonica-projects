@@ -1,4 +1,5 @@
   const CalendarApp = () => {
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   return (
   <div className="calendar-app">
     <div className="calendar">
