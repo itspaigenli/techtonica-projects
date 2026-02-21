@@ -12,13 +12,13 @@
       </div>
       </div>
       <div className="weekdays">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <span>Sun</span>
+        <span>Mon</span>
+        <span>Tues</span>
+        <span>Wed</span>
+        <span>Thur</span>
+        <span>Fri</span>
+        <span>Sat</span>
       </div>
       </div>
   )
