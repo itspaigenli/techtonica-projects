@@ -34,6 +34,8 @@
       if (clickedDate >= today || isSameDay(clickedDate, today)) {
         setSelectedDate(clickedDate)
         setShowEventPopup(true)
+        setEventTime({hours: "00", minutes: "00"})
+        setEventText("")
       }
      }
 
