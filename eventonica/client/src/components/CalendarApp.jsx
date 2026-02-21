@@ -28,7 +28,7 @@
       <h1 className="heading">Calendar</h1>
       <div className="navigate-date">
       <h2 className="month">{monthsOfYear[currentMonth]}</h2>
-      <h2 className="year">2026</h2>
+      <h2 className="year">{currentYear}</h2>
       <div className="buttons">
         <i className="bx bx-chevron-left" onClick={prevMonth}></i>
         <i className="bx bx-chevron-right" onClick={nextMonth}></i>
