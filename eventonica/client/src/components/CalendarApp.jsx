@@ -34,6 +34,14 @@
       }
      }
 
+     const isSameDay = (date1, date2) => {
+      return (
+        date1.getFullYear() === date2.getFullYear() &&
+         date1.getMonth() === date2.getMonth() &&
+          date1.getDate() === date2.getDate()
+      )
+    }
+
   return (
   <div className="calendar-app">
     <div className="calendar">
@@ -66,7 +74,7 @@
             </div>
             <textarea placeholder="Enter Event Text (Maximum 60 characters)"></textarea>
             <button className="event-popup-btn">Add Event</button>
-            <button className="close-event-popup">
+            <button className="close-event-popup" onClick={() => setShowEventPopup(false)}>
               <i className="bx bx-x"></i>
             </button>
           </div>}
