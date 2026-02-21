@@ -83,10 +83,13 @@
       </div>
       </div>
       <div className="events">
-        {showEventPopup && <div className="event-popup">
+        {showEventPopup && (
+          <div className="event-popup">
           <div className="time-input">
             <div className="event-popup-time">Time</div>
-            <input type="number" name="hours" min={0} max={24} className="hours" />
+            <input type="number" name="hours" min={0} max={24} className="hours" value={eventTime.hours} onChange={(e) =>
+              setEventTime({ ...eventTime, hours: e.target.value })
+             }/>
             <input type="number" name="minutes" min={0} max={60} className="minutes" />
             </div>
             <textarea placeholder="Enter Event Text (Maximum 60 characters)"></textarea>
@@ -94,8 +97,8 @@
             <button className="close-event-popup" onClick={() => setShowEventPopup(false)}>
               <i className="bx bx-x"></i>
             </button>
-          </div>}
-        
+          </div>
+            )}
           <div className="event">
             <div className="event-date-wrapper">
               <div className="event-date">January 1, 2026</div>
