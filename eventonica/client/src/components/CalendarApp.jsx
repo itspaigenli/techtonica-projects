@@ -3,9 +3,17 @@
   const CalendarApp = () => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     const monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
     const currentDate = new Date()
+
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
-     const [currentYear, setCurrentYear] = useState(currentDate.getYear())
+     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
+
+     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+
+     console.log(currentMonth, currentYear, currentDate)
+
+
   return (
   <div className="calendar-app">
     <div className="calendar">
