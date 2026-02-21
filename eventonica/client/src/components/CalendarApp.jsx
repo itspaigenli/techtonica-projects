@@ -58,8 +58,7 @@
       </div>
       </div>
       <div className="events">
-        {showEventPopup}
-        <div className="event-popup">
+        {showEventPopup && <div className="event-popup">
           <div className="time-input">
             <div className="event-popup-time">Time</div>
             <input type="number" name="hours" min={0} max={24} className="hours" />
@@ -70,7 +69,8 @@
             <button className="close-event-popup">
               <i className="bx bx-x"></i>
             </button>
-          </div>
+          </div>}
+        
           <div className="event">
             <div className="event-date-wrapper">
               <div className="event-date">January 1, 2026</div>
