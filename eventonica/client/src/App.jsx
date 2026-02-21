@@ -1,4 +1,4 @@
-import EventsApp from "./components/EventsApp"
+import EventsApp from './components/EventsApp'
 import './components/eventsapp.css'
 
 const App = () => {
