@@ -47,6 +47,13 @@
       )
     }
 
+    const handleEventSubmit = () => {
+      const newEvent = {
+        date: selectedDate, time: `${eventTime.hours.padStart(2, '0')}:${eventTime.minutes.padStart(2, '0')}`,
+        text: eventText
+      }
+    }
+
   return (
   <div className="calendar-app">
     <div className="calendar">
