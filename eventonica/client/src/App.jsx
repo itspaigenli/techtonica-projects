@@ -1,9 +1,9 @@
-import EventsApp from './components/EventsApp'
-import './components/eventsapp.css'
+import EventsApp from './components/CalendarApp'
+import './components/CalendarApp.css'
 
 const App = () => {
   return (
-    <div className='container'><EventsApp /></div>
+    <div className="container"><CalendarApp /></div>
   )
 }
 
