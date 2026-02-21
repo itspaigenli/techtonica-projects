@@ -1,6 +1,11 @@
+  import {useState} from 'react'
+  
   const CalendarApp = () => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     const monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    const currentDate = new Date()
+    const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
+     const [currentYear, setCurrentYear] = useState(currentDate.getYear())
   return (
   <div className="calendar-app">
     <div className="calendar">
