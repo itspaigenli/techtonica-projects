@@ -24,6 +24,10 @@
       setCurrentYear((prevYear) => (currentMonth === 11 ? prevYear + 1 : prevYear))
      }
 
+     const handleDayClick = (day) => {
+      const clickedDate = new Date(currentYear, currentMonth, day)
+     }
+
   return (
   <div className="calendar-app">
     <div className="calendar">
