@@ -29,13 +29,6 @@
       </div>
       </div>
       <div className="weekdays">
-        <span>Sun</span>
-        <span>Mon</span>
-        <span>Tues</span>
-        <span>Wed</span>
-        <span>Thur</span>
-        <span>Fri</span>
-        <span>Sat</span>
       </div>
       <div className="days">
         <span>1</span>
