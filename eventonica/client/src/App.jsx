@@ -1,4 +1,4 @@
-import EventsApp from './components/CalendarApp'
+import CalendarApp from './components/CalendarApp'
 import './components/CalendarApp.css'
 
 const App = () => {
