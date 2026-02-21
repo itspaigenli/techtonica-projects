@@ -29,6 +29,7 @@
       </div>
       </div>
       <div className="weekdays">
+        {daysOfWeek.map((day) => <span key={day}>{day}</span>)}
       </div>
       <div className="days">
         <span>1</span>
