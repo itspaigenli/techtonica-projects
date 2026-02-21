@@ -62,7 +62,21 @@
             <input type="number" name="minutes" min={0} max={60} className="minutes" />
             </div>
             <textarea placeholder="Enter Event Text (Maximum 60 characters)"></textarea>
-            <div className="button event-popup-btn">Add Event</div>
+            <button className="event-popup-btn">Add Event</button>
+            <button className="close-event-popup">
+              <i className="bx bx-x"></i>
+            </button>
+          </div>
+          <div className="event">
+            <div className="event-date-wrapper">
+              <div className="event-date">January 1, 2026</div>
+              <div className="event-time">00:01</div>
+            </div>
+            <div className="event-text">New Year's Day</div>
+            <div className="event-buttons">
+              <i className="bx bxs-edit-alt"></i>
+              <i className="bx bxs-message-alt-x"></i>
+            </div>
           </div>
         </div>
       </div>
