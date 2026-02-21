@@ -1,6 +1,8 @@
+import EventsApp from "./components/EventsApp"
+
 const App = () => {
   return (
-    <div>App</div>
+    <div><EventsApp /></div>
   )
 }
 
