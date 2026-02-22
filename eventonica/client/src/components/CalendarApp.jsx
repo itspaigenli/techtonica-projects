@@ -174,6 +174,15 @@ const CalendarApp = () => {
     }
   };
 
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+
+    setEventTime((prevTime) => ({
+      ...prevTime,
+      [name]: value.padStart(2, "0"),
+    }));
+  };
+
   return (
     <div className="calendar-app">
       <div className="calendar">
