@@ -48,6 +48,40 @@ app.post("/api/events", async (req, res) => {
   }
 });
 
+// UPDATE
+app.put("/api/events/:id", async (req, res) => {
+  const { id } = req.params;
+  const { event_date, event_time, title, is_favorite = false } = req.body;
+
+  if (!event_date || !event_time || !title) {
+    return res
+      .status(400)
+      .json({ error: "event_date, event_time, and title are required." });
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE events
+       SET event_date = $1,
+           event_time = $2,
+           title = $3,
+           is_favorite = $4
+       WHERE id = $5
+       RETURNING id, event_date, event_time, title, is_favorite`,
+      [event_date, event_time, title, is_favorite, id],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Event not found." });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update event." });
+  }
+});
+
 // Server
 const PORT = process.env.PORT || 3000;
 
