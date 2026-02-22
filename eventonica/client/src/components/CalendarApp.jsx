@@ -160,18 +160,18 @@ const CalendarApp = () => {
     setShowEventPopup(true);
   };
 
-  const handleDeleteEvent = (eventId) => {
-    const updatedEvents = events.filter((event) => event.id !== eventId);
-    setEvents(updatedEvents);
-  };
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      setError(null);
 
-  const handleTimeChange = (e) => {
-    const { name, value } = e.target;
+      const res = await fetch(`/api/events/${eventId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(`Failed to delete event (${res.status})`);
 
-    setEventTime((prevTime) => ({
-      ...prevTime,
-      [name]: value.padStart(2, "0"),
-    }));
+      setEvents((prev) => prev.filter((e) => e.id !== eventId));
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to delete event");
+    }
   };
 
   return (
