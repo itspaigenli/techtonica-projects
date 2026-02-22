@@ -103,6 +103,10 @@ const CalendarApp = () => {
   };
 
   const handleEventSubmit = async () => {
+    if (!eventText.trim()) {
+      setError("Event title is required.");
+      return;
+    }
     const payload = {
       event_date: selectedDate.toISOString().split("T")[0],
       event_time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
@@ -181,6 +185,33 @@ const CalendarApp = () => {
       ...prevTime,
       [name]: value.padStart(2, "0"),
     }));
+  };
+
+  const handleToggleFavorite = async (event) => {
+    try {
+      setError(null);
+
+      const payload = {
+        event_date: event.event_date,
+        event_time: String(event.event_time).slice(0, 5), // keep "HH:MM"
+        title: event.title,
+        is_favorite: !event.is_favorite,
+      };
+
+      const res = await fetch(`/api/events/${event.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`Failed to update favorite (${res.status})`);
+
+      const updated = await res.json();
+      setEvents((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to update favorite");
+    }
   };
 
   return (
@@ -301,6 +332,10 @@ const CalendarApp = () => {
                 <i
                   className="bx bxs-message-alt-x"
                   onClick={() => handleDeleteEvent(event.id)}
+                ></i>
+                <i
+                  className={event.is_favorite ? "bx bxs-star" : "bx bx-star"}
+                  onClick={() => handleToggleFavorite(event)}
                 ></i>
               </div>
             </div>
