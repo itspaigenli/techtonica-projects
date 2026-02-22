@@ -23,7 +23,7 @@ const CalendarApp = () => {
 
   // State Management Area
 
-  // Calendat Navigation
+  // Calendar Navigation
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   // Selected Day and Popup Visibility
@@ -37,6 +37,7 @@ const CalendarApp = () => {
   // Tracker for Editing Existing Event
   const [editingEvent, setEditingEvent] = useState(null);
 
+  // Data Fetching Backend to State
   useEffect(() => {
     const fetchEvents = async () => {
       try {
