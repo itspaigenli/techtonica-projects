@@ -86,10 +86,15 @@ const CalendarApp = () => {
 
     updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    setEvents([...events, newEvent]);
+    setEvents([updatedEvents]);
     setEventTime({ hours: "00", minutes: "00" });
     setEventText("");
     setShowEventPopup(false);
+    setEditingEvent(null);
+  };
+
+  const handleEditEvent = (event) => {
+    setSelectedDate(new Date(event.date));
   };
 
   return (
