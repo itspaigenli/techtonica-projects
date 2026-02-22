@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import "./CalendarApp.css";
+import { useState } from "react";
 
-// Calendar Labels
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const monthsOfYear = [
@@ -21,49 +19,18 @@ const CalendarApp = () => {
 
   const currentDate = new Date();
 
-  // State Management Area
-
-  // Calendar Navigation
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
-  // Selected Day and Popup Visibility
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
-  // Events Array with Stored Events
   const [events, setEvents] = useState([]);
-  // Form State Time and Text Input
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
-  // Tracker for Editing Existing Event
   const [editingEvent, setEditingEvent] = useState(null);
 
-  // Data Fetching Backend to State
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/events");
-        const data = await res.json();
-
-        const mapped = data.map((row) => ({
-          id: row.id,
-          date: new Date(row.event_date + "T00:00:00"),
-          time: row.event_time.slice(0, 5),
-          text: row.title,
-          isFavorite: row.is_favorite,
-        }));
-
-        setEvents(mapped);
-      } catch (err) {
-        console.error("Failed to fetch events", err);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-  // Derived Calendar Values
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-  // Month Navigation Handlers
+
   const prevMonth = () => {
     setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
     setCurrentYear((prevYear) =>
@@ -77,7 +44,7 @@ const CalendarApp = () => {
       currentMonth === 11 ? prevYear + 1 : prevYear,
     );
   };
-  // Day Selection Handler
+
   const handleDayClick = (day) => {
     const clickedDate = new Date(currentYear, currentMonth, day);
     const today = new Date();
@@ -90,7 +57,7 @@ const CalendarApp = () => {
       setEditingEvent(null);
     }
   };
-  // Date Comparison Utility
+
   const isSameDay = (date1, date2) => {
     return (
       date1.getFullYear() === date2.getFullYear() &&
@@ -98,7 +65,7 @@ const CalendarApp = () => {
       date1.getDate() === date2.getDate()
     );
   };
-  // Create/Update Event Logic
+
   const handleEventSubmit = () => {
     const newEvent = {
       id: editingEvent ? editingEvent.id : Date.now(),
@@ -125,7 +92,7 @@ const CalendarApp = () => {
     setShowEventPopup(false);
     setEditingEvent(null);
   };
-  // Edit Existing Event
+
   const handleEditEvent = (event) => {
     setSelectedDate(new Date(event.date));
     setEventTime({
@@ -136,13 +103,13 @@ const CalendarApp = () => {
     setEditingEvent(event);
     setShowEventPopup(true);
   };
-  // Delete Event
+
   const handleDeleteEvent = (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
 
     setEvents(updatedEvents);
   };
-  // Time Input Handler
+
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
 
@@ -151,7 +118,7 @@ const CalendarApp = () => {
       [name]: value.padStart(2, "0"),
     }));
   };
-  // JSX Render
+
   return (
     <div className="calendar-app">
       <div className="calendar">
