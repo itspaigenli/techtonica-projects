@@ -26,7 +26,7 @@ const CalendarApp = () => {
   const [events, setEvents] = useState([]);
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
-  const [editingEvent, setEditingEvent] = useState(null)
+  const [editingEvent, setEditingEvent] = useState(null);
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -54,7 +54,7 @@ const CalendarApp = () => {
       setShowEventPopup(true);
       setEventTime({ hours: "00", minutes: "00" });
       setEventText("");
-      setEditingEvent(null)
+      setEditingEvent(null);
     }
   };
 
@@ -74,7 +74,13 @@ const CalendarApp = () => {
       text: eventText,
     };
 
-    let updatedEvents = [...events]
+    let updatedEvents = [...events];
+
+    if (editingEvent) {
+      updatedEvents = updatedEvents.map((event) =>
+        event.id === editingEvent.id ? newEvent : event,
+      );
+    }
 
     setEvents([...events, newEvent]);
     setEventTime({ hours: "00", minutes: "00" });
@@ -134,7 +140,8 @@ const CalendarApp = () => {
                 value={eventTime.hours}
                 onChange={(e) =>
                   setEventTime({ ...eventTime, hours: e.target.value })
-                }/>
+                }
+              />
               <input
                 type="number"
                 name="minutes"
@@ -144,7 +151,8 @@ const CalendarApp = () => {
                 value={eventTime.minutes}
                 onChange={(e) =>
                   setEventTime({ ...eventTime, minutes: e.target.value })
-                }/>
+                }
+              />
             </div>
             <textarea
               placeholder="Enter Event Text (Maximum 60 characters)"
@@ -155,26 +163,29 @@ const CalendarApp = () => {
                 }
               }}
             ></textarea>
-            <button className="event-popup-btn" onClick={handleEventSubmit}>Add Event</button>
+            <button className="event-popup-btn" onClick={handleEventSubmit}>
+              Add Event
+            </button>
             <button
               className="close-event-popup"
-              onClick={() => setShowEventPopup(false)}>
+              onClick={() => setShowEventPopup(false)}
+            >
               <i className="bx bx-x"></i>
             </button>
           </div>
         )}
         {events.map((event, index) => (
-            <div className="event" key={index}>
-          <div className="event-date-wrapper">
-            <div className="event-date">{`${monthsOfYear[event.date.getMonth()]}, ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
-            <div className="event-time">{event.time}</div>
+          <div className="event" key={index}>
+            <div className="event-date-wrapper">
+              <div className="event-date">{`${monthsOfYear[event.date.getMonth()]}, ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
+              <div className="event-time">{event.time}</div>
+            </div>
+            <div className="event-text">{event.text}</div>
+            <div className="event-buttons">
+              <i className="bx bxs-edit-alt"></i>
+              <i className="bx bxs-message-alt-x"></i>
+            </div>
           </div>
-          <div className="event-text">{event.text}</div>
-          <div className="event-buttons">
-            <i className="bx bxs-edit-alt"></i>
-            <i className="bx bxs-message-alt-x"></i>
-          </div>
-        </div>
         ))}
       </div>
     </div>
