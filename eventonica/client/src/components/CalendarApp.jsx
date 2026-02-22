@@ -189,6 +189,8 @@ const CalendarApp = () => {
       </div>
 
       <div className="events">
+        {loading && <div>Loading events…</div>}
+        {error && <div style={{ color: "crimson" }}>{error}</div>}
         {showEventPopup && (
           <div className="event-popup">
             <div className="time-input">
