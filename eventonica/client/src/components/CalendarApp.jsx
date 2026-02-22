@@ -80,7 +80,11 @@ const CalendarApp = () => {
       updatedEvents = updatedEvents.map((event) =>
         event.id === editingEvent.id ? newEvent : event,
       );
+    } else {
+      updatedeEvents.push(newEvent);
     }
+
+    updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     setEvents([...events, newEvent]);
     setEventTime({ hours: "00", minutes: "00" });
