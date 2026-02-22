@@ -1,18 +1,27 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { pool } from "./db.js";
 
 dotenv.config();
 
 const app = express();
 
-// Middleware 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Generic API Route 
-app.get("/", (req, res) => {
-  res.json({ message: "你好，这是我的 ExpressJS 和 React-Vite 模板" });
+//API Route
+app.get("/api/events", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT id, event_date, event_time, title, is_favorite FROM events ORDER BY event_date ASC, event_time ASC",
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to load events." });
+  }
 });
 
 // Server
