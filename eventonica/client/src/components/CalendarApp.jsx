@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -23,12 +23,12 @@ const CalendarApp = () => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
-
-  // Events now match server naming/types
   const [events, setEvents] = useState([]);
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
   const [editingEvent, setEditingEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -87,7 +87,6 @@ const CalendarApp = () => {
       updatedEvents.push(newEvent);
     }
 
-    // FIX: sort by event_date (not date)
     updatedEvents.sort(
       (a, b) => new Date(a.event_date) - new Date(b.event_date),
     );
@@ -100,7 +99,6 @@ const CalendarApp = () => {
   };
 
   const handleEditEvent = (event) => {
-    // FIX: read server-shaped fields
     setSelectedDate(new Date(event.event_date));
 
     setEventTime({
@@ -217,7 +215,6 @@ const CalendarApp = () => {
         )}
 
         {events.map((event) => {
-          // Convert string -> Date for display only
           const displayDate = new Date(event.event_date);
 
           return (
@@ -226,7 +223,9 @@ const CalendarApp = () => {
                 <div className="event-date">{`${
                   monthsOfYear[displayDate.getMonth()]
                 } ${displayDate.getDate()}, ${displayDate.getFullYear()}`}</div>
-                <div className="event-time">{event.event_time}</div>
+                <div className="event-time">
+                  {String(event.event_time).slice(0, 5)}
+                </div>
               </div>
 
               <div className="event-text">{event.title}</div>
