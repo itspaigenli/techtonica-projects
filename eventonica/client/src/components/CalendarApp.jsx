@@ -81,12 +81,12 @@ const CalendarApp = () => {
         event.id === editingEvent.id ? newEvent : event,
       );
     } else {
-      updatedeEvents.push(newEvent);
+      updatedEvents.push(newEvent);
     }
 
     updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    setEvents([updatedEvents]);
+    setEvents(updatedEvents);
     setEventTime({ hours: "00", minutes: "00" });
     setEventText("");
     setShowEventPopup(false);
@@ -104,12 +104,27 @@ const CalendarApp = () => {
     setShowEventPopup(true);
   };
 
+  const handleDeleteEvent = (eventId) => {
+    const updatedEvents = events.filter((event) => event.id !== eventId);
+
+    setEvents(updatedEvents);
+  };
+
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+
+    setEventTime((prevTime) => ({
+      ...prevTime,
+      [name]: value.padStart(2, "0"),
+    }));
+  };
+
   return (
     <div className="calendar-app">
       <div className="calendar">
         <h1 className="heading">Calendar</h1>
         <div className="navigate-date">
-          <h2 className="month">{monthsOfYear[currentMonth]}</h2>
+          <h2 className="month">{monthsOfYear[currentMonth]},</h2>
           <h2 className="year">{currentYear}</h2>
           <div className="buttons">
             <i className="bx bx-chevron-left" onClick={prevMonth}></i>
@@ -154,9 +169,7 @@ const CalendarApp = () => {
                 max={24}
                 className="hours"
                 value={eventTime.hours}
-                onChange={(e) =>
-                  setEventTime({ ...eventTime, hours: e.target.value })
-                }
+                onChange={handleTimeChange}
               />
               <input
                 type="number"
@@ -165,13 +178,11 @@ const CalendarApp = () => {
                 max={60}
                 className="minutes"
                 value={eventTime.minutes}
-                onChange={(e) =>
-                  setEventTime({ ...eventTime, minutes: e.target.value })
-                }
+                onChange={handleTimeChange}
               />
             </div>
             <textarea
-              placeholder="Enter Event Text (Maximum 60 characters)"
+              placeholder="Enter Event Text (Maximum 60 Characters)"
               value={eventText}
               onChange={(e) => {
                 if (e.target.value.length <= 60) {
@@ -180,7 +191,7 @@ const CalendarApp = () => {
               }}
             ></textarea>
             <button className="event-popup-btn" onClick={handleEventSubmit}>
-              Add Event
+              {editingEvent ? "Update Event" : "Add Event"}
             </button>
             <button
               className="close-event-popup"
@@ -193,13 +204,21 @@ const CalendarApp = () => {
         {events.map((event, index) => (
           <div className="event" key={index}>
             <div className="event-date-wrapper">
-              <div className="event-date">{`${monthsOfYear[event.date.getMonth()]}, ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
+              <div className="event-date">{`${
+                monthsOfYear[event.date.getMonth()]
+              } ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
               <div className="event-time">{event.time}</div>
             </div>
             <div className="event-text">{event.text}</div>
             <div className="event-buttons">
-              <i className="bx bxs-edit-alt"></i>
-              <i className="bx bxs-message-alt-x"></i>
+              <i
+                className="bx bxs-edit-alt"
+                onClick={() => handleEditEvent(event)}
+              ></i>
+              <i
+                className="bx bxs-message-alt-x"
+                onClick={() => handleDeleteEvent(event.id)}
+              ></i>
             </div>
           </div>
         ))}
