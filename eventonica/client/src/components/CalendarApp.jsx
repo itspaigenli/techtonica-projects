@@ -95,6 +95,13 @@ const CalendarApp = () => {
 
   const handleEditEvent = (event) => {
     setSelectedDate(new Date(event.date));
+    setEventTime({
+      hours: event.time.split(":")[0],
+      minutes: event.time.split(":")[1],
+    });
+    setEventText(event.text);
+    setEditingEvent(event);
+    setShowEventPopup(true);
   };
 
   return (
