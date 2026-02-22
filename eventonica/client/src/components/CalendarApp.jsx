@@ -23,6 +23,8 @@ const CalendarApp = () => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
+
+  // Events now match server naming/types
   const [events, setEvents] = useState([]);
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
@@ -45,6 +47,14 @@ const CalendarApp = () => {
     );
   };
 
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
   const handleDayClick = (day) => {
     const clickedDate = new Date(currentYear, currentMonth, day);
     const today = new Date();
@@ -58,20 +68,13 @@ const CalendarApp = () => {
     }
   };
 
-  const isSameDay = (date1, date2) => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  };
-
   const handleEventSubmit = () => {
     const newEvent = {
       id: editingEvent ? editingEvent.id : Date.now(),
-      date: selectedDate,
-      time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
-      text: eventText,
+      event_date: selectedDate.toISOString().split("T")[0], // "YYYY-MM-DD"
+      event_time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
+      title: eventText,
+      is_favorite: editingEvent ? Boolean(editingEvent.is_favorite) : false,
     };
 
     let updatedEvents = [...events];
@@ -84,7 +87,10 @@ const CalendarApp = () => {
       updatedEvents.push(newEvent);
     }
 
-    updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // FIX: sort by event_date (not date)
+    updatedEvents.sort(
+      (a, b) => new Date(a.event_date) - new Date(b.event_date),
+    );
 
     setEvents(updatedEvents);
     setEventTime({ hours: "00", minutes: "00" });
@@ -94,19 +100,21 @@ const CalendarApp = () => {
   };
 
   const handleEditEvent = (event) => {
-    setSelectedDate(new Date(event.date));
+    // FIX: read server-shaped fields
+    setSelectedDate(new Date(event.event_date));
+
     setEventTime({
-      hours: event.time.split(":")[0],
-      minutes: event.time.split(":")[1],
+      hours: String(event.event_time).split(":")[0],
+      minutes: String(event.event_time).split(":")[1],
     });
-    setEventText(event.text);
+
+    setEventText(event.title);
     setEditingEvent(event);
     setShowEventPopup(true);
   };
 
   const handleDeleteEvent = (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
-
     setEvents(updatedEvents);
   };
 
@@ -131,11 +139,13 @@ const CalendarApp = () => {
             <i className="bx bx-chevron-right" onClick={nextMonth}></i>
           </div>
         </div>
+
         <div className="weekdays">
           {daysOfWeek.map((day) => (
             <span key={day}>{day}</span>
           ))}
         </div>
+
         <div className="days">
           {[...Array(firstDayOfMonth).keys()].map((_, index) => (
             <span key={`empty-${index}`} />
@@ -157,6 +167,7 @@ const CalendarApp = () => {
           ))}
         </div>
       </div>
+
       <div className="events">
         {showEventPopup && (
           <div className="event-popup">
@@ -181,6 +192,7 @@ const CalendarApp = () => {
                 onChange={handleTimeChange}
               />
             </div>
+
             <textarea
               placeholder="Enter Event Text (Maximum 60 Characters)"
               value={eventText}
@@ -190,9 +202,11 @@ const CalendarApp = () => {
                 }
               }}
             ></textarea>
+
             <button className="event-popup-btn" onClick={handleEventSubmit}>
               {editingEvent ? "Update Event" : "Add Event"}
             </button>
+
             <button
               className="close-event-popup"
               onClick={() => setShowEventPopup(false)}
@@ -201,27 +215,35 @@ const CalendarApp = () => {
             </button>
           </div>
         )}
-        {events.map((event, index) => (
-          <div className="event" key={index}>
-            <div className="event-date-wrapper">
-              <div className="event-date">{`${
-                monthsOfYear[event.date.getMonth()]
-              } ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
-              <div className="event-time">{event.time}</div>
+
+        {events.map((event) => {
+          // Convert string -> Date for display only
+          const displayDate = new Date(event.event_date);
+
+          return (
+            <div className="event" key={event.id}>
+              <div className="event-date-wrapper">
+                <div className="event-date">{`${
+                  monthsOfYear[displayDate.getMonth()]
+                } ${displayDate.getDate()}, ${displayDate.getFullYear()}`}</div>
+                <div className="event-time">{event.event_time}</div>
+              </div>
+
+              <div className="event-text">{event.title}</div>
+
+              <div className="event-buttons">
+                <i
+                  className="bx bxs-edit-alt"
+                  onClick={() => handleEditEvent(event)}
+                ></i>
+                <i
+                  className="bx bxs-message-alt-x"
+                  onClick={() => handleDeleteEvent(event.id)}
+                ></i>
+              </div>
             </div>
-            <div className="event-text">{event.text}</div>
-            <div className="event-buttons">
-              <i
-                className="bx bxs-edit-alt"
-                onClick={() => handleEditEvent(event)}
-              ></i>
-              <i
-                className="bx bxs-message-alt-x"
-                onClick={() => handleDeleteEvent(event.id)}
-              ></i>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
