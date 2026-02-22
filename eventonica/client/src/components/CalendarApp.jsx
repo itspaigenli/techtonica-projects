@@ -58,17 +58,27 @@ const CalendarApp = () => {
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
   const prevMonth = () => {
-    setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
-    setCurrentYear((prevYear) =>
-      currentMonth === 0 ? prevYear - 1 : prevYear,
-    );
+    setCurrentMonth((prev) => {
+      const newMonth = prev === 0 ? 11 : prev - 1;
+      const newYear = prev === 0 ? currentYear - 1 : currentYear;
+
+      setCurrentYear(newYear);
+      setSelectedDate(new Date(newYear, newMonth, 1));
+
+      return newMonth;
+    });
   };
 
   const nextMonth = () => {
-    setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
-    setCurrentYear((prevYear) =>
-      currentMonth === 11 ? prevYear + 1 : prevYear,
-    );
+    setCurrentMonth((prev) => {
+      const newMonth = prev === 11 ? 0 : prev + 1;
+      const newYear = prev === 11 ? currentYear + 1 : currentYear;
+
+      setCurrentYear(newYear);
+      setSelectedDate(new Date(newYear, newMonth, 1));
+
+      return newMonth;
+    });
   };
 
   const isSameDay = (date1, date2) => {
