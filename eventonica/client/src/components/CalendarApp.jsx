@@ -102,34 +102,49 @@ const CalendarApp = () => {
     }
   };
 
-  const handleEventSubmit = () => {
-    const newEvent = {
-      id: editingEvent ? editingEvent.id : Date.now(),
-      event_date: selectedDate.toISOString().split("T")[0], // "YYYY-MM-DD"
+  const handleEventSubmit = async () => {
+    const payload = {
+      event_date: selectedDate.toISOString().split("T")[0],
       event_time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
       title: eventText,
       is_favorite: editingEvent ? Boolean(editingEvent.is_favorite) : false,
     };
 
-    let updatedEvents = [...events];
+    try {
+      setError(null);
 
-    if (editingEvent) {
-      updatedEvents = updatedEvents.map((event) =>
-        event.id === editingEvent.id ? newEvent : event,
-      );
-    } else {
-      updatedEvents.push(newEvent);
+      const url = editingEvent
+        ? `/api/events/${editingEvent.id}`
+        : "/api/events";
+      const method = editingEvent ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`Failed to save event (${res.status})`);
+
+      const saved = await res.json();
+
+      setEvents((prev) => {
+        const next = editingEvent
+          ? prev.map((e) => (e.id === saved.id ? saved : e))
+          : [...prev, saved];
+
+        next.sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
+        return next;
+      });
+
+      setEventTime({ hours: "00", minutes: "00" });
+      setEventText("");
+      setShowEventPopup(false);
+      setEditingEvent(null);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to save event");
     }
-
-    updatedEvents.sort(
-      (a, b) => new Date(a.event_date) - new Date(b.event_date),
-    );
-
-    setEvents(updatedEvents);
-    setEventTime({ hours: "00", minutes: "00" });
-    setEventText("");
-    setShowEventPopup(false);
-    setEditingEvent(null);
   };
 
   const handleEditEvent = (event) => {
