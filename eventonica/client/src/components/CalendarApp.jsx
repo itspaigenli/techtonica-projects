@@ -30,6 +30,28 @@ const CalendarApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch("/api/events");
+        if (!res.ok) throw new Error(`Failed to load events (${res.status})`);
+
+        const data = await res.json();
+        setEvents(data);
+      } catch (err) {
+        console.error(err);
+        setError(err.message || "Failed to load events");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEvents();
+  }, []);
+
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
