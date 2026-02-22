@@ -30,6 +30,8 @@ const CalendarApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const headerDate = selectedDate ?? currentDate;
+
   useEffect(() => {
     const loadEvents = async () => {
       try {
@@ -152,8 +154,11 @@ const CalendarApp = () => {
       <div className="calendar">
         <h1 className="heading">Calendar</h1>
         <div className="navigate-date">
-          <h2 className="month">{monthsOfYear[currentMonth]},</h2>
-          <h2 className="year">{currentYear}</h2>
+          <h2 className="month">
+            {monthsOfYear[headerDate.getMonth()]} {headerDate.getDate()},
+          </h2>
+          <h2 className="year">{headerDate.getFullYear()}</h2>
+
           <div className="buttons">
             <i className="bx bx-chevron-left" onClick={prevMonth}></i>
             <i className="bx bx-chevron-right" onClick={nextMonth}></i>
