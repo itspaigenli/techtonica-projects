@@ -81,28 +81,66 @@ const CalendarApp = () => {
   };
 
   const handleEventSubmit = async () => {
+    const payload = {
+      event_date: selectedDate.toISOString().split("T")[0],
+      event_time: `${eventTime.hours}:${eventTime.minutes}`,
+      title: eventText,
+      is_favorite: editingEvent?.is_favorite ?? false,
+    };
+
     try {
+      // UPDATE
+      if (editingEvent) {
+        const response = await fetch(
+          `http://localhost:3000/events/${editingEvent.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!response.ok) {
+          const text = await response.text();
+          console.error("Update failed:", response.status, text);
+          return;
+        }
+
+        const updated = await response.json();
+
+        setEvents((prev) =>
+          prev.map((e) => (e.id === updated.id ? updated : e)),
+        );
+
+        setShowEventPopup(false);
+        setEditingEvent(null);
+        setEventText("");
+        setEventTime({ hours: "00", minutes: "00" });
+        return;
+      }
+
+      // CREATE
       const response = await fetch("http://localhost:3000/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event_date: selectedDate.toISOString().split("T")[0],
-          event_time: `${eventTime.hours}:${eventTime.minutes}`,
-          title: eventText,
-          is_favorite: false,
-        }),
+        body: JSON.stringify(payload),
       });
 
-      const newEvent = await response.json();
+      if (!response.ok) {
+        const text = await response.text();
+        console.error("Create failed:", response.status, text);
+        return;
+      }
 
-      setEvents((prev) => [...prev, newEvent]);
+      const created = await response.json();
 
-      setEventTime({ hours: "00", minutes: "00" });
-      setEventText("");
+      setEvents((prev) => [...prev, created]);
       setShowEventPopup(false);
       setEditingEvent(null);
+      setEventText("");
+      setEventTime({ hours: "00", minutes: "00" });
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Error saving event:", error);
     }
   };
 
@@ -124,8 +162,8 @@ const CalendarApp = () => {
       });
 
       if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        console.error("Delete failed:", err);
+        const text = await response.text();
+        console.error("Delete failed:", response.status, text);
         return;
       }
 
