@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -45,6 +45,28 @@ const CalendarApp = () => {
     );
   };
 
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/events");
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
   const handleDayClick = (day) => {
     const clickedDate = new Date(currentYear, currentMonth, day);
     const today = new Date();
@@ -58,21 +80,11 @@ const CalendarApp = () => {
     }
   };
 
-  const isSameDay = (date1, date2) => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  };
-
   const handleEventSubmit = async () => {
     try {
       const response = await fetch("http://localhost:3000/events", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           event_date: selectedDate.toISOString().split("T")[0],
           event_time: `${eventTime.hours}:${eventTime.minutes}`,
@@ -88,26 +100,39 @@ const CalendarApp = () => {
       setEventTime({ hours: "00", minutes: "00" });
       setEventText("");
       setShowEventPopup(false);
+      setEditingEvent(null);
     } catch (error) {
       console.error("Error creating event:", error);
     }
   };
 
   const handleEditEvent = (event) => {
-    setSelectedDate(new Date(event.date));
+    setSelectedDate(new Date(event.event_date));
     setEventTime({
-      hours: event.time.split(":")[0],
-      minutes: event.time.split(":")[1],
+      hours: event.event_time.split(":")[0],
+      minutes: event.event_time.split(":")[1],
     });
-    setEventText(event.text);
+    setEventText(event.title);
     setEditingEvent(event);
     setShowEventPopup(true);
   };
 
-  const handleDeleteEvent = (eventId) => {
-    const updatedEvents = events.filter((event) => event.id !== eventId);
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/events/${eventId}`, {
+        method: "DELETE",
+      });
 
-    setEvents(updatedEvents);
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        console.error("Delete failed:", err);
+        return;
+      }
+
+      setEvents((prev) => prev.filter((event) => event.id !== eventId));
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
   };
 
   const handleTimeChange = (e) => {
@@ -123,25 +148,29 @@ const CalendarApp = () => {
     <div className="calendar-app">
       <div className="calendar">
         <h1 className="heading">Calendar</h1>
+
         <div className="navigate-date">
-          <h2 className="month">{monthsOfYear[currentMonth]}</h2>
+          <h2 className="month">{monthsOfYear[selectedDate.getMonth()]}</h2>
           <h2 className="day">{selectedDate.getDate()},</h2>
-          <h2 className="year">{currentYear}</h2>
+          <h2 className="year">{selectedDate.getFullYear()}</h2>
 
           <div className="buttons">
             <i className="bx bx-chevron-left" onClick={prevMonth}></i>
             <i className="bx bx-chevron-right" onClick={nextMonth}></i>
           </div>
         </div>
+
         <div className="weekdays">
           {daysOfWeek.map((day) => (
             <span key={day}>{day}</span>
           ))}
         </div>
+
         <div className="days">
           {[...Array(firstDayOfMonth).keys()].map((_, index) => (
             <span key={`empty-${index}`} />
           ))}
+
           {[...Array(daysInMonth).keys()].map((day) => (
             <span
               key={day + 1}
@@ -159,6 +188,7 @@ const CalendarApp = () => {
           ))}
         </div>
       </div>
+
       <div className="events">
         {showEventPopup && (
           <div className="event-popup">
@@ -183,6 +213,7 @@ const CalendarApp = () => {
                 onChange={handleTimeChange}
               />
             </div>
+
             <textarea
               placeholder="Enter Event Text (Maximum 60 Characters)"
               value={eventText}
@@ -192,9 +223,11 @@ const CalendarApp = () => {
                 }
               }}
             ></textarea>
+
             <button className="event-popup-btn" onClick={handleEventSubmit}>
               {editingEvent ? "Update Event" : "Add Event"}
             </button>
+
             <button
               className="close-event-popup"
               onClick={() => setShowEventPopup(false)}
@@ -203,15 +236,21 @@ const CalendarApp = () => {
             </button>
           </div>
         )}
-        {events.map((event, index) => (
-          <div className="event" key={index}>
+
+        {events.map((event) => (
+          <div className="event" key={event.id}>
             <div className="event-date-wrapper">
               <div className="event-date">{`${
-                monthsOfYear[event.date.getMonth()]
-              } ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
-              <div className="event-time">{event.time}</div>
+                monthsOfYear[new Date(event.event_date).getMonth()]
+              } ${new Date(event.event_date).getDate()}, ${new Date(
+                event.event_date,
+              ).getFullYear()}`}</div>
+
+              <div className="event-time">{event.event_time}</div>
             </div>
-            <div className="event-text">{event.text}</div>
+
+            <div className="event-text">{event.title}</div>
+
             <div className="event-buttons">
               <i
                 className="bx bxs-edit-alt"
