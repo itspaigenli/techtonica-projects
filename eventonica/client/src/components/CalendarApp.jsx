@@ -66,31 +66,31 @@ const CalendarApp = () => {
     );
   };
 
-  const handleEventSubmit = () => {
-    const newEvent = {
-      id: editingEvent ? editingEvent.id : Date.now(),
-      date: selectedDate,
-      time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
-      text: eventText,
-    };
+  const handleEventSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          event_date: selectedDate.toISOString().split("T")[0],
+          event_time: `${eventTime.hours}:${eventTime.minutes}`,
+          title: eventText,
+          is_favorite: false,
+        }),
+      });
 
-    let updatedEvents = [...events];
+      const newEvent = await response.json();
 
-    if (editingEvent) {
-      updatedEvents = updatedEvents.map((event) =>
-        event.id === editingEvent.id ? newEvent : event,
-      );
-    } else {
-      updatedEvents.push(newEvent);
+      setEvents((prev) => [...prev, newEvent]);
+
+      setEventTime({ hours: "00", minutes: "00" });
+      setEventText("");
+      setShowEventPopup(false);
+    } catch (error) {
+      console.error("Error creating event:", error);
     }
-
-    updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    setEvents(updatedEvents);
-    setEventTime({ hours: "00", minutes: "00" });
-    setEventText("");
-    setShowEventPopup(false);
-    setEditingEvent(null);
   };
 
   const handleEditEvent = (event) => {
