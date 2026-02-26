@@ -17,19 +17,11 @@ const CalendarApp = () => {
     "December",
   ];
 
-  // Normalize dates to midnight to avoid time-based comparison/rendering issues
-  function startOfDay(d) {
-    const copy = new Date(d);
-    copy.setHours(0, 0, 0, 0);
-    return copy;
-  }
-
   const currentDate = new Date();
-  const today = startOfDay(currentDate);
 
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
-  const [selectedDate, setSelectedDate] = useState(() => today);
+  const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
   const [events, setEvents] = useState([]);
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
@@ -39,36 +31,29 @@ const CalendarApp = () => {
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
-  // Fix: use prevMonth value inside the updater so year changes correctly
+  const startOfDay = (d) => {
+    const copy = new Date(d);
+    copy.setHours(0, 0, 0, 0);
+    return copy;
+  };
+
   const prevMonth = () => {
-    setCurrentMonth((prev) => {
-      const isJan = prev === 0;
-      const newMonth = isJan ? 11 : prev - 1;
-      setCurrentYear((y) => (isJan ? y - 1 : y));
-      return newMonth;
-    });
+    setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
+    setCurrentYear((prevYear) =>
+      currentMonth === 0 ? prevYear - 1 : prevYear,
+    );
   };
 
-  // Fix: use prevMonth value inside the updater so year changes correctly
   const nextMonth = () => {
-    setCurrentMonth((prev) => {
-      const isDec = prev === 11;
-      const newMonth = isDec ? 0 : prev + 1;
-      setCurrentYear((y) => (isDec ? y + 1 : y));
-      return newMonth;
-    });
-  };
-
-  const isSameDay = (date1, date2) => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
+    setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
+    setCurrentYear((prevYear) =>
+      currentMonth === 11 ? prevYear + 1 : prevYear,
     );
   };
 
   const handleDayClick = (day) => {
-    const clickedDate = startOfDay(new Date(currentYear, currentMonth, day));
+    const clickedDate = new Date(currentYear, currentMonth, day);
+    const today = new Date();
 
     if (clickedDate >= today || isSameDay(clickedDate, today)) {
       setSelectedDate(clickedDate);
@@ -79,14 +64,19 @@ const CalendarApp = () => {
     }
   };
 
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
   const handleEventSubmit = () => {
     const newEvent = {
       id: editingEvent ? editingEvent.id : Date.now(),
       date: selectedDate,
-      time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(
-        2,
-        "0",
-      )}`,
+      time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
       text: eventText,
     };
 
@@ -110,8 +100,7 @@ const CalendarApp = () => {
   };
 
   const handleEditEvent = (event) => {
-    // Ensure date is a Date object (in case it ever becomes serialized)
-    setSelectedDate(startOfDay(new Date(event.date)));
+    setSelectedDate(new Date(event.date));
     setEventTime({
       hours: event.time.split(":")[0],
       minutes: event.time.split(":")[1],
@@ -123,11 +112,13 @@ const CalendarApp = () => {
 
   const handleDeleteEvent = (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
+
     setEvents(updatedEvents);
   };
 
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
+
     setEventTime((prevTime) => ({
       ...prevTime,
       [name]: value.padStart(2, "0"),
@@ -138,7 +129,6 @@ const CalendarApp = () => {
     <div className="calendar-app">
       <div className="calendar">
         <h1 className="heading">Calendar</h1>
-
         <div className="navigate-date">
           <h2 className="month">{monthsOfYear[currentMonth]},</h2>
           <h2 className="year">{currentYear}</h2>
@@ -147,18 +137,15 @@ const CalendarApp = () => {
             <i className="bx bx-chevron-right" onClick={nextMonth}></i>
           </div>
         </div>
-
         <div className="weekdays">
           {daysOfWeek.map((day) => (
             <span key={day}>{day}</span>
           ))}
         </div>
-
         <div className="days">
           {[...Array(firstDayOfMonth).keys()].map((_, index) => (
             <span key={`empty-${index}`} />
           ))}
-
           {[...Array(daysInMonth).keys()].map((day) => (
             <span
               key={day + 1}
@@ -176,7 +163,6 @@ const CalendarApp = () => {
           ))}
         </div>
       </div>
-
       <div className="events">
         {showEventPopup && (
           <div className="event-popup">
@@ -201,7 +187,6 @@ const CalendarApp = () => {
                 onChange={handleTimeChange}
               />
             </div>
-
             <textarea
               placeholder="Enter Event Text (Maximum 60 Characters)"
               value={eventText}
@@ -211,11 +196,9 @@ const CalendarApp = () => {
                 }
               }}
             ></textarea>
-
             <button className="event-popup-btn" onClick={handleEventSubmit}>
               {editingEvent ? "Update Event" : "Add Event"}
             </button>
-
             <button
               className="close-event-popup"
               onClick={() => setShowEventPopup(false)}
@@ -224,20 +207,15 @@ const CalendarApp = () => {
             </button>
           </div>
         )}
-
-        {events.map((event) => (
-          <div className="event" key={event.id}>
+        {events.map((event, index) => (
+          <div className="event" key={index}>
             <div className="event-date-wrapper">
               <div className="event-date">{`${
-                monthsOfYear[new Date(event.date).getMonth()]
-              } ${new Date(event.date).getDate()}, ${new Date(
-                event.date,
-              ).getFullYear()}`}</div>
+                monthsOfYear[event.date.getMonth()]
+              } ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
               <div className="event-time">{event.time}</div>
             </div>
-
             <div className="event-text">{event.text}</div>
-
             <div className="event-buttons">
               <i
                 className="bx bxs-edit-alt"
