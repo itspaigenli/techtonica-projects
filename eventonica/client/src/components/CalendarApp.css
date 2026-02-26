@@ -13,7 +13,7 @@
 }
 
 .calendar-app::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -12rem;
   left: 50%;
@@ -30,7 +30,7 @@
 }
 
 .heading {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: clamp(4rem, 3.8cqi, 7rem);
   color: #fff;
   letter-spacing: 0.3rem;
@@ -145,7 +145,7 @@
   width: clamp(4rem, 4cqi, 7rem);
   background-color: #00a3ff;
   color: #fff;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: clamp(1.5rem, 1.5cqi, 2.2rem);
   display: flex;
   justify-content: center;
@@ -166,8 +166,8 @@
   font-size: clamp(1.2rem, 1.2cqi, 1.6rem);
 }
 
-.time-input input[type='number']::-webkit-outer-spin-button,
-.time-input input[type='number']::-webkit-inner-spin-button {
+.time-input input[type="number"]::-webkit-outer-spin-button,
+.time-input input[type="number"]::-webkit-inner-spin-button {
   appearance: none;
 }
 
@@ -201,7 +201,7 @@
   height: 4rem;
   background-color: #ef9011;
   color: #fff;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: clamp(1.5rem, 1.5cqi, 2.2rem);
   letter-spacing: 0.1rem;
   border: none;
@@ -354,6 +354,38 @@
   }
 }
 
+.search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px; /* creates space below search */
+  align-items: center;
+}
+
+.search input {
+  flex: 1; /* makes input grow */
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search button:first-of-type {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.search button:last-of-type {
+  background-color: #e0e0e0;
+}
+
 @media (max-width: 500px) {
   .calendar-app {
     aspect-ratio: 10 / 9;
@@ -376,7 +408,6 @@
 /*.event-day {
     background-color: #00a3ff;
 } */
-
 
 @media (max-width: 375px) {
   .calendar-app {
