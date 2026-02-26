@@ -24,7 +24,7 @@ const CalendarApp = () => {
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
   const [events, setEvents] = useState([]);
-  const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
+  const [eventTime, setEventTime] = useState({ hours: 0, minutes: 0 });
   const [eventText, setEventText] = useState("");
   const [editingEvent, setEditingEvent] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -132,7 +132,7 @@ const CalendarApp = () => {
     }
     const payload = {
       event_date: selectedDate.toISOString().split("T")[0],
-      event_time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
+      event_time: `${String(eventTime.hours).padStart(2, "0")}:${String(eventTime.minutes).padStart(2, "0")}`,
       title: eventText.trim(),
       is_favorite: editingEvent ? Boolean(editingEvent.is_favorite) : false,
     };
@@ -204,9 +204,9 @@ const CalendarApp = () => {
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
 
-    setEventTime((prevTime) => ({
-      ...prevTime,
-      [name]: value.padStart(2, "0"),
+    setEventTime((prev) => ({
+      ...prev,
+      [name]: value === "" ? "" : Number(value),
     }));
   };
 
@@ -216,7 +216,7 @@ const CalendarApp = () => {
 
       const payload = {
         event_date: event.event_date,
-        event_time: String(event.event_time).slice(0, 5), // keep "HH:MM"
+        event_time: String(event.event_time).slice(0, 5),
         title: event.title,
         is_favorite: !event.is_favorite,
       };
@@ -309,7 +309,7 @@ const CalendarApp = () => {
                 type="number"
                 name="hours"
                 min={0}
-                max={24}
+                max={23}
                 className="hours"
                 value={eventTime.hours}
                 onChange={handleTimeChange}
@@ -318,7 +318,7 @@ const CalendarApp = () => {
                 type="number"
                 name="minutes"
                 min={0}
-                max={60}
+                max={59}
                 className="minutes"
                 value={eventTime.minutes}
                 onChange={handleTimeChange}
