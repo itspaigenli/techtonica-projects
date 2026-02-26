@@ -23,15 +23,29 @@ const CalendarApp = () => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
+
+  // events come from DB now
   const [events, setEvents] = useState([]);
-  const [eventTime, setEventTime] = useState({ hours: 0, minutes: 0 });
+
+  const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
   const [editingEvent, setEditingEvent] = useState(null);
+
+  // added
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const headerDate = selectedDate ?? currentDate;
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+
+  // helper: local YYYY-MM-DD (avoids UTC date shifting)
+  const toYYYYMMDD = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  };
 
   const loadAllEvents = async () => {
     try {
@@ -77,31 +91,18 @@ const CalendarApp = () => {
     }
   };
 
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-
   const prevMonth = () => {
-    setCurrentMonth((prev) => {
-      const newMonth = prev === 0 ? 11 : prev - 1;
-      const newYear = prev === 0 ? currentYear - 1 : currentYear;
-
-      setCurrentYear(newYear);
-      setSelectedDate(new Date(newYear, newMonth, 1));
-
-      return newMonth;
-    });
+    setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
+    setCurrentYear((prevYear) =>
+      currentMonth === 0 ? prevYear - 1 : prevYear,
+    );
   };
 
   const nextMonth = () => {
-    setCurrentMonth((prev) => {
-      const newMonth = prev === 11 ? 0 : prev + 1;
-      const newYear = prev === 11 ? currentYear + 1 : currentYear;
-
-      setCurrentYear(newYear);
-      setSelectedDate(new Date(newYear, newMonth, 1));
-
-      return newMonth;
-    });
+    setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
+    setCurrentYear((prevYear) =>
+      currentMonth === 11 ? prevYear + 1 : prevYear,
+    );
   };
 
   const isSameDay = (date1, date2) => {
@@ -125,11 +126,13 @@ const CalendarApp = () => {
     }
   };
 
+  // CREATE or UPDATE (DB)
   const handleEventSubmit = async () => {
     if (!eventText.trim()) {
-      setError("Event title is required.");
+      setError("Title is required.");
       return;
     }
+
     const payload = {
       event_date: toYYYYMMDD(selectedDate),
       event_time: `${String(eventTime.hours).padStart(2, "0")}:${String(eventTime.minutes).padStart(2, "0")}`,
@@ -155,12 +158,18 @@ const CalendarApp = () => {
 
       const saved = await res.json();
 
+      // update local list
       setEvents((prev) => {
         const next = editingEvent
           ? prev.map((e) => (e.id === saved.id ? saved : e))
           : [...prev, saved];
 
-        next.sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
+        next.sort((a, b) => {
+          const d = new Date(a.event_date) - new Date(b.event_date);
+          if (d !== 0) return d;
+          return String(a.event_time).localeCompare(String(b.event_time));
+        });
+
         return next;
       });
 
@@ -187,6 +196,7 @@ const CalendarApp = () => {
     setShowEventPopup(true);
   };
 
+  // DELETE (DB)
   const handleDeleteEvent = async (eventId) => {
     try {
       setError(null);
@@ -201,15 +211,16 @@ const CalendarApp = () => {
     }
   };
 
+  // keep your original handler style
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
-
-    setEventTime((prev) => ({
-      ...prev,
-      [name]: value === "" ? "" : Number(value),
+    setEventTime((prevTime) => ({
+      ...prevTime,
+      [name]: value.padStart(2, "0"),
     }));
   };
 
+  // FAVORITE toggle (DB) using PUT
   const handleToggleFavorite = async (event) => {
     try {
       setError(null);
@@ -237,36 +248,34 @@ const CalendarApp = () => {
     }
   };
 
-  const toYYYYMMDD = (date) => {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  };
-
+  // SHOW: selected day events + favorites from any day; favorites pinned to top
   const selectedDateString = toYYYYMMDD(selectedDate);
 
-  const visibleEvents = events
-    .filter((event) => {
-      const isSameDay = event.event_date === selectedDateString;
-      const isFavorite = event.is_favorite === true;
-      return isSameDay || isFavorite;
-    })
-    .sort((a, b) => {
-      if (a.is_favorite === b.is_favorite) return 0;
-      return a.is_favorite ? -1 : 1;
-    });
+  const favorites = events.filter((e) => e.is_favorite === true);
+  const selectedDayEvents = events.filter(
+    (e) => e.event_date === selectedDateString,
+  );
+
+  const favoriteIds = new Set(favorites.map((e) => e.id));
+  const merged = [
+    ...favorites,
+    ...selectedDayEvents.filter((e) => !favoriteIds.has(e.id)),
+  ];
+
+  const visibleEvents = merged.sort((a, b) => {
+    if (a.is_favorite !== b.is_favorite) return a.is_favorite ? -1 : 1;
+    const d = new Date(a.event_date) - new Date(b.event_date);
+    if (d !== 0) return d;
+    return String(a.event_time).localeCompare(String(b.event_time));
+  });
 
   return (
     <div className="calendar-app">
       <div className="calendar">
         <h1 className="heading">Calendar</h1>
         <div className="navigate-date">
-          <h2 className="month">
-            {monthsOfYear[headerDate.getMonth()]} {headerDate.getDate()},
-          </h2>
-          <h2 className="year">{headerDate.getFullYear()}</h2>
-
+          <h2 className="month">{monthsOfYear[currentMonth]},</h2>
+          <h2 className="year">{currentYear}</h2>
           <div className="buttons">
             <i className="bx bx-chevron-left" onClick={prevMonth}></i>
             <i className="bx bx-chevron-right" onClick={nextMonth}></i>
@@ -300,7 +309,9 @@ const CalendarApp = () => {
           ))}
         </div>
       </div>
+
       <div className="events">
+        {/* Search bar (frontend requirement) */}
         <div className="search">
           <input
             value={searchTerm}
@@ -344,7 +355,6 @@ const CalendarApp = () => {
                 onChange={handleTimeChange}
               />
             </div>
-
             <textarea
               placeholder="Enter Event Text (Maximum 60 Characters)"
               value={eventText}
@@ -354,11 +364,9 @@ const CalendarApp = () => {
                 }
               }}
             ></textarea>
-
             <button className="event-popup-btn" onClick={handleEventSubmit}>
               {editingEvent ? "Update Event" : "Add Event"}
             </button>
-
             <button
               className="close-event-popup"
               onClick={() => setShowEventPopup(false)}
