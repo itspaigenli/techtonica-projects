@@ -29,29 +29,30 @@ const CalendarApp = () => {
   const [editingEvent, setEditingEvent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const headerDate = selectedDate ?? currentDate;
 
+  const loadAllEvents = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await fetch("/api/events");
+      if (!res.ok) throw new Error(`Failed to load events (${res.status})`);
+
+      const data = await res.json();
+      setEvents(data);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to load events");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const res = await fetch("/api/events");
-        if (!res.ok) throw new Error(`Failed to load events (${res.status})`);
-
-        const data = await res.json();
-        setEvents(data);
-      } catch (err) {
-        console.error(err);
-        setError(err.message || "Failed to load events");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadEvents();
+    loadAllEvents();
   }, []);
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -110,7 +111,7 @@ const CalendarApp = () => {
     const payload = {
       event_date: selectedDate.toISOString().split("T")[0],
       event_time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
-      title: eventText,
+      title: eventText.trim(),
       is_favorite: editingEvent ? Boolean(editingEvent.is_favorite) : false,
     };
 
