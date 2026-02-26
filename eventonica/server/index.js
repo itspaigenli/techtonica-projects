@@ -1,124 +1,23 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { pool } from "./db.js";
 
 dotenv.config();
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// GET all events
-app.get("/api/events", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT id, event_date, event_time, title, is_favorite FROM events ORDER BY event_date ASC, event_time ASC",
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to load events." });
-  }
-});
-
-// SEARCH by title
-app.get("/api/events/search/:term", async (req, res) => {
-  const { term } = req.params;
-
-  try {
-    const result = await pool.query(
-      "SELECT id, event_date, event_time, title, is_favorite FROM events WHERE title ILIKE $1 ORDER BY event_date ASC, event_time ASC",
-      [`%${term}%`],
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to search events." });
-  }
-});
-
-// CREATE
-app.post("/api/events", async (req, res) => {
-  const { event_date, event_time, title, is_favorite = false } = req.body;
-
-  if (!event_date || !event_time || !title) {
-    return res
-      .status(400)
-      .json({ error: "event_date, event_time, and title are required." });
-  }
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO events (event_date, event_time, title, is_favorite)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, event_date, event_time, title, is_favorite`,
-      [event_date, event_time, title, is_favorite],
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create event." });
-  }
-});
-
-// UPDATE (also used for favorite/unfavorite)
-app.put("/api/events/:id", async (req, res) => {
-  const { id } = req.params;
-  const { event_date, event_time, title, is_favorite = false } = req.body;
-
-  if (!event_date || !event_time || !title) {
-    return res
-      .status(400)
-      .json({ error: "event_date, event_time, and title are required." });
-  }
-
-  try {
-    const result = await pool.query(
-      `UPDATE events
-       SET event_date = $1,
-           event_time = $2,
-           title = $3,
-           is_favorite = $4
-       WHERE id = $5
-       RETURNING id, event_date, event_time, title, is_favorite`,
-      [event_date, event_time, title, is_favorite, id],
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Event not found." });
-    }
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update event." });
-  }
-});
-
-// DELETE
-app.delete("/api/events/:id", async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const result = await pool.query(
-      "DELETE FROM events WHERE id = $1 RETURNING id",
-      [id],
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Event not found." });
-    }
-
-    res.status(204).send();
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to delete event." });
-  }
+// Generic API Route
+app.get("/", (req, res) => {
+  res.json({ message: "你好，这是我的 ExpressJS 和 React-Vite 模板" });
 });
 
 // Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

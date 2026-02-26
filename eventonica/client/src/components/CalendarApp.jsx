@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -23,73 +23,13 @@ const CalendarApp = () => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [showEventPopup, setShowEventPopup] = useState(false);
-
-  // events come from DB now
   const [events, setEvents] = useState([]);
-
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
   const [editingEvent, setEditingEvent] = useState(null);
 
-  // added
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-
-  // helper: local YYYY-MM-DD (avoids UTC date shifting)
-  const toYYYYMMDD = (date) => {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  };
-
-  const loadAllEvents = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await fetch("/api/events");
-      if (!res.ok) throw new Error(`Failed to load events (${res.status})`);
-
-      const data = await res.json();
-      setEvents(data);
-    } catch (err) {
-      console.error(err);
-      setError(err.message || "Failed to load events");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadAllEvents();
-  }, []);
-
-  const searchEvents = async () => {
-    if (!searchTerm.trim()) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await fetch(
-        `/api/events/search/${encodeURIComponent(searchTerm)}`,
-      );
-      if (!res.ok) throw new Error(`Failed to search events (${res.status})`);
-
-      const data = await res.json();
-      setEvents(data);
-    } catch (err) {
-      console.error(err);
-      setError(err.message || "Failed to search events");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const prevMonth = () => {
     setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
@@ -102,14 +42,6 @@ const CalendarApp = () => {
     setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
     setCurrentYear((prevYear) =>
       currentMonth === 11 ? prevYear + 1 : prevYear,
-    );
-  };
-
-  const isSameDay = (date1, date2) => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
     );
   };
 
@@ -126,148 +58,66 @@ const CalendarApp = () => {
     }
   };
 
-  // CREATE or UPDATE (DB)
-  const handleEventSubmit = async () => {
-    if (!eventText.trim()) {
-      setError("Title is required.");
-      return;
-    }
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
 
-    const payload = {
-      event_date: toYYYYMMDD(selectedDate),
-      event_time: `${String(eventTime.hours).padStart(2, "0")}:${String(eventTime.minutes).padStart(2, "0")}`,
-      title: eventText.trim(),
-      is_favorite: editingEvent ? Boolean(editingEvent.is_favorite) : false,
+  const handleEventSubmit = () => {
+    const newEvent = {
+      id: editingEvent ? editingEvent.id : Date.now(),
+      date: selectedDate,
+      time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
+      text: eventText,
     };
 
-    try {
-      setError(null);
+    let updatedEvents = [...events];
 
-      const url = editingEvent
-        ? `/api/events/${editingEvent.id}`
-        : "/api/events";
-      const method = editingEvent ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error(`Failed to save event (${res.status})`);
-
-      const saved = await res.json();
-
-      // update local list
-      setEvents((prev) => {
-        const next = editingEvent
-          ? prev.map((e) => (e.id === saved.id ? saved : e))
-          : [...prev, saved];
-
-        next.sort((a, b) => {
-          const d = new Date(a.event_date) - new Date(b.event_date);
-          if (d !== 0) return d;
-          return String(a.event_time).localeCompare(String(b.event_time));
-        });
-
-        return next;
-      });
-
-      setEventTime({ hours: "00", minutes: "00" });
-      setEventText("");
-      setShowEventPopup(false);
-      setEditingEvent(null);
-    } catch (err) {
-      console.error(err);
-      setError(err.message || "Failed to save event");
+    if (editingEvent) {
+      updatedEvents = updatedEvents.map((event) =>
+        event.id === editingEvent.id ? newEvent : event,
+      );
+    } else {
+      updatedEvents.push(newEvent);
     }
+
+    updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    setEvents(updatedEvents);
+    setEventTime({ hours: "00", minutes: "00" });
+    setEventText("");
+    setShowEventPopup(false);
+    setEditingEvent(null);
   };
 
   const handleEditEvent = (event) => {
-    setSelectedDate(new Date(event.event_date));
-
+    setSelectedDate(new Date(event.date));
     setEventTime({
-      hours: String(event.event_time).split(":")[0],
-      minutes: String(event.event_time).split(":")[1],
+      hours: event.time.split(":")[0],
+      minutes: event.time.split(":")[1],
     });
-
-    setEventText(event.title);
+    setEventText(event.text);
     setEditingEvent(event);
     setShowEventPopup(true);
   };
 
-  // DELETE (DB)
-  const handleDeleteEvent = async (eventId) => {
-    try {
-      setError(null);
+  const handleDeleteEvent = (eventId) => {
+    const updatedEvents = events.filter((event) => event.id !== eventId);
 
-      const res = await fetch(`/api/events/${eventId}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(`Failed to delete event (${res.status})`);
-
-      setEvents((prev) => prev.filter((e) => e.id !== eventId));
-    } catch (err) {
-      console.error(err);
-      setError(err.message || "Failed to delete event");
-    }
+    setEvents(updatedEvents);
   };
 
-  // keep your original handler style
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
+
     setEventTime((prevTime) => ({
       ...prevTime,
       [name]: value.padStart(2, "0"),
     }));
   };
-
-  // FAVORITE toggle (DB) using PUT
-  const handleToggleFavorite = async (event) => {
-    try {
-      setError(null);
-
-      const payload = {
-        event_date: event.event_date,
-        event_time: String(event.event_time).slice(0, 5),
-        title: event.title,
-        is_favorite: !event.is_favorite,
-      };
-
-      const res = await fetch(`/api/events/${event.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error(`Failed to update favorite (${res.status})`);
-
-      const updated = await res.json();
-      setEvents((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
-    } catch (err) {
-      console.error(err);
-      setError(err.message || "Failed to update favorite");
-    }
-  };
-
-  // SHOW: selected day events + favorites from any day; favorites pinned to top
-  const selectedDateString = toYYYYMMDD(selectedDate);
-
-  const favorites = events.filter((e) => e.is_favorite === true);
-  const selectedDayEvents = events.filter(
-    (e) => e.event_date === selectedDateString,
-  );
-
-  const favoriteIds = new Set(favorites.map((e) => e.id));
-  const merged = [
-    ...favorites,
-    ...selectedDayEvents.filter((e) => !favoriteIds.has(e.id)),
-  ];
-
-  const visibleEvents = merged.sort((a, b) => {
-    if (a.is_favorite !== b.is_favorite) return a.is_favorite ? -1 : 1;
-    const d = new Date(a.event_date) - new Date(b.event_date);
-    if (d !== 0) return d;
-    return String(a.event_time).localeCompare(String(b.event_time));
-  });
 
   return (
     <div className="calendar-app">
@@ -281,13 +131,11 @@ const CalendarApp = () => {
             <i className="bx bx-chevron-right" onClick={nextMonth}></i>
           </div>
         </div>
-
         <div className="weekdays">
           {daysOfWeek.map((day) => (
             <span key={day}>{day}</span>
           ))}
         </div>
-
         <div className="days">
           {[...Array(firstDayOfMonth).keys()].map((_, index) => (
             <span key={`empty-${index}`} />
@@ -309,29 +157,7 @@ const CalendarApp = () => {
           ))}
         </div>
       </div>
-
       <div className="events">
-        {/* Search bar (frontend requirement) */}
-        <div className="search">
-          <input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search events by title..."
-          />
-          <button onClick={searchEvents}>Search</button>
-          <button
-            onClick={() => {
-              setSearchTerm("");
-              loadAllEvents();
-            }}
-          >
-            Clear
-          </button>
-        </div>
-
-        {loading && <div>Loading events…</div>}
-        {error && <div style={{ color: "crimson" }}>{error}</div>}
-
         {showEventPopup && (
           <div className="event-popup">
             <div className="time-input">
@@ -340,7 +166,7 @@ const CalendarApp = () => {
                 type="number"
                 name="hours"
                 min={0}
-                max={23}
+                max={24}
                 className="hours"
                 value={eventTime.hours}
                 onChange={handleTimeChange}
@@ -349,7 +175,7 @@ const CalendarApp = () => {
                 type="number"
                 name="minutes"
                 min={0}
-                max={59}
+                max={60}
                 className="minutes"
                 value={eventTime.minutes}
                 onChange={handleTimeChange}
@@ -375,41 +201,27 @@ const CalendarApp = () => {
             </button>
           </div>
         )}
-
-        {visibleEvents.map((event) => {
-          const displayDate = new Date(event.event_date);
-
-          return (
-            <div className="event" key={event.id}>
-              <div className="event-date-wrapper">
-                <div className="event-date">{`${
-                  monthsOfYear[displayDate.getMonth()]
-                } ${displayDate.getDate()}, ${displayDate.getFullYear()}`}</div>
-
-                <div className="event-time">
-                  {String(event.event_time).slice(0, 5)}
-                </div>
-              </div>
-
-              <div className="event-text">{event.title}</div>
-
-              <div className="event-buttons">
-                <i
-                  className="bx bxs-edit-alt"
-                  onClick={() => handleEditEvent(event)}
-                ></i>
-                <i
-                  className="bx bxs-message-alt-x"
-                  onClick={() => handleDeleteEvent(event.id)}
-                ></i>
-                <i
-                  className={event.is_favorite ? "bx bxs-star" : "bx bx-star"}
-                  onClick={() => handleToggleFavorite(event)}
-                ></i>
-              </div>
+        {events.map((event, index) => (
+          <div className="event" key={index}>
+            <div className="event-date-wrapper">
+              <div className="event-date">{`${
+                monthsOfYear[event.date.getMonth()]
+              } ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
+              <div className="event-time">{event.time}</div>
             </div>
-          );
-        })}
+            <div className="event-text">{event.text}</div>
+            <div className="event-buttons">
+              <i
+                className="bx bxs-edit-alt"
+                onClick={() => handleEditEvent(event)}
+              ></i>
+              <i
+                className="bx bxs-message-alt-x"
+                onClick={() => handleDeleteEvent(event.id)}
+              ></i>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
