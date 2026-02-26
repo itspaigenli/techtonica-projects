@@ -24,6 +24,25 @@ app.get("/api/events", async (req, res) => {
   }
 });
 
+// SEARCH events by title
+app.get("/api/events/search/:term", async (req, res) => {
+  const term = req.params.term;
+
+  try {
+    const result = await pool.query(
+      `SELECT id, event_date, event_time, title, is_favorite
+       FROM events
+       WHERE title ILIKE '%' || $1 || '%'
+       ORDER BY event_date ASC, event_time ASC`,
+      [term],
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to search events." });
+  }
+});
+
 // CREATE
 app.post("/api/events", async (req, res) => {
   const { event_date, event_time, title, is_favorite = false } = req.body;
