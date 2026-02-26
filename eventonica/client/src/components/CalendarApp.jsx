@@ -55,6 +55,28 @@ const CalendarApp = () => {
     loadAllEvents();
   }, []);
 
+  const searchEvents = async () => {
+    if (!searchTerm.trim()) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await fetch(
+        `/api/events/search/${encodeURIComponent(searchTerm)}`,
+      );
+      if (!res.ok) throw new Error(`Failed to search events (${res.status})`);
+
+      const data = await res.json();
+      setEvents(data);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to search events");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
@@ -258,10 +280,27 @@ const CalendarApp = () => {
           ))}
         </div>
       </div>
-
       <div className="events">
+        <div className="search">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search events by title..."
+          />
+          <button onClick={searchEvents}>Search</button>
+          <button
+            onClick={() => {
+              setSearchTerm("");
+              loadAllEvents();
+            }}
+          >
+            Clear
+          </button>
+        </div>
+
         {loading && <div>Loading events…</div>}
         {error && <div style={{ color: "crimson" }}>{error}</div>}
+
         {showEventPopup && (
           <div className="event-popup">
             <div className="time-input">
@@ -318,6 +357,7 @@ const CalendarApp = () => {
                 <div className="event-date">{`${
                   monthsOfYear[displayDate.getMonth()]
                 } ${displayDate.getDate()}, ${displayDate.getFullYear()}`}</div>
+
                 <div className="event-time">
                   {String(event.event_time).slice(0, 5)}
                 </div>
