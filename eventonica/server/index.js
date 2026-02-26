@@ -7,11 +7,10 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-//API Route
+// GET all events
 app.get("/api/events", async (req, res) => {
   try {
     const result = await pool.query(
@@ -24,17 +23,14 @@ app.get("/api/events", async (req, res) => {
   }
 });
 
-// SEARCH events by title
+// SEARCH by title
 app.get("/api/events/search/:term", async (req, res) => {
-  const term = req.params.term;
+  const { term } = req.params;
 
   try {
     const result = await pool.query(
-      `SELECT id, event_date, event_time, title, is_favorite
-       FROM events
-       WHERE title ILIKE '%' || $1 || '%'
-       ORDER BY event_date ASC, event_time ASC`,
-      [term],
+      "SELECT id, event_date, event_time, title, is_favorite FROM events WHERE title ILIKE $1 ORDER BY event_date ASC, event_time ASC",
+      [`%${term}%`],
     );
     res.json(result.rows);
   } catch (err) {
@@ -60,6 +56,7 @@ app.post("/api/events", async (req, res) => {
        RETURNING id, event_date, event_time, title, is_favorite`,
       [event_date, event_time, title, is_favorite],
     );
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -67,7 +64,7 @@ app.post("/api/events", async (req, res) => {
   }
 });
 
-// UPDATE
+// UPDATE (also used for favorite/unfavorite)
 app.put("/api/events/:id", async (req, res) => {
   const { id } = req.params;
   const { event_date, event_time, title, is_favorite = false } = req.body;
@@ -124,7 +121,4 @@ app.delete("/api/events/:id", async (req, res) => {
 
 // Server
 const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

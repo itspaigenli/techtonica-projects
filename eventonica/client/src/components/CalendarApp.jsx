@@ -131,7 +131,7 @@ const CalendarApp = () => {
       return;
     }
     const payload = {
-      event_date: selectedDate.toISOString().split("T")[0],
+      event_date: toYYYYMMDD(selectedDate),
       event_time: `${String(eventTime.hours).padStart(2, "0")}:${String(eventTime.minutes).padStart(2, "0")}`,
       title: eventText.trim(),
       is_favorite: editingEvent ? Boolean(editingEvent.is_favorite) : false,
@@ -236,6 +236,26 @@ const CalendarApp = () => {
       setError(err.message || "Failed to update favorite");
     }
   };
+
+  const toYYYYMMDD = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  };
+
+  const selectedDateString = toYYYYMMDD(selectedDate);
+
+  const visibleEvents = events
+    .filter((event) => {
+      const isSameDay = event.event_date === selectedDateString;
+      const isFavorite = event.is_favorite === true;
+      return isSameDay || isFavorite;
+    })
+    .sort((a, b) => {
+      if (a.is_favorite === b.is_favorite) return 0;
+      return a.is_favorite ? -1 : 1;
+    });
 
   return (
     <div className="calendar-app">
@@ -348,7 +368,7 @@ const CalendarApp = () => {
           </div>
         )}
 
-        {events.map((event) => {
+        {visibleEvents.map((event) => {
           const displayDate = new Date(event.event_date);
 
           return (
