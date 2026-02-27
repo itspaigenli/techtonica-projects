@@ -1,4 +1,46 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
+
+const initialFormState = {
+  isOpen: false,
+  time: { hours: "00", minutes: "00" },
+  text: "",
+  editingEvent: null,
+};
+
+function formReducer(state, action) {
+  switch (action.type) {
+    case "OPEN_NEW":
+      return {
+        isOpen: true,
+        time: { hours: "00", minutes: "00" },
+        text: "",
+        editingEvent: null,
+      };
+
+    case "OPEN_EDIT":
+      return {
+        isOpen: true,
+        time: action.payload.time,
+        text: action.payload.text,
+        editingEvent: action.payload.editingEvent,
+      };
+
+    case "CLOSE":
+      return { ...state, isOpen: false };
+
+    case "SET_TIME":
+      return { ...state, time: { ...state.time, ...action.payload } };
+
+    case "SET_TEXT":
+      return { ...state, text: action.payload };
+
+    case "RESET":
+      return initialFormState;
+
+    default:
+      return state;
+  }
+}
 
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -23,11 +65,8 @@ const CalendarApp = () => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showEventPopup, setShowEventPopup] = useState(false);
   const [events, setEvents] = useState([]);
-  const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
-  const [eventText, setEventText] = useState("");
-  const [editingEvent, setEditingEvent] = useState(null);
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -37,10 +76,16 @@ const CalendarApp = () => {
       // favorites first
       if (a.is_favorite !== b.is_favorite) return b.is_favorite - a.is_favorite;
 
-      // then by date+time
-      const aDT = new Date(`${a.event_date}T${a.event_time}`);
-      const bDT = new Date(`${b.event_date}T${b.event_time}`);
-      return aDT - bDT;
+      // normalize to strings
+      const aDate = String(a.event_date).slice(0, 10); // keeps YYYY-MM-DD
+      const bDate = String(b.event_date).slice(0, 10);
+
+      if (aDate !== bDate) return aDate.localeCompare(bDate);
+
+      const aTime = String(a.event_time);
+      const bTime = String(b.event_time);
+
+      return aTime.localeCompare(bTime);
     });
   };
 
@@ -86,26 +131,31 @@ const CalendarApp = () => {
 
     if (clickedDate >= today || isSameDay(clickedDate, today)) {
       setSelectedDate(clickedDate);
-      setShowEventPopup(true);
-      setEventTime({ hours: "00", minutes: "00" });
-      setEventText("");
-      setEditingEvent(null);
+      dispatchForm({ type: "OPEN_NEW" });
     }
+  };
+
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+    dispatchForm({
+      type: "SET_TIME",
+      payload: { [name]: value.padStart(2, "0") },
+    });
   };
 
   const handleEventSubmit = async () => {
     const payload = {
       event_date: selectedDate.toISOString().split("T")[0],
-      event_time: `${eventTime.hours}:${eventTime.minutes}`,
-      title: eventText,
-      is_favorite: editingEvent?.is_favorite ?? false,
+      event_time: `${formState.time.hours}:${formState.time.minutes}`,
+      title: formState.text,
+      is_favorite: formState.editingEvent?.is_favorite ?? false,
     };
 
     try {
       // UPDATE
-      if (editingEvent) {
+      if (formState.editingEvent) {
         const response = await fetch(
-          `http://localhost:3000/events/${editingEvent.id}`,
+          `http://localhost:3000/events/${formState.editingEvent.id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -125,10 +175,7 @@ const CalendarApp = () => {
           sortEvents(prev.map((e) => (e.id === updated.id ? updated : e))),
         );
 
-        setShowEventPopup(false);
-        setEditingEvent(null);
-        setEventText("");
-        setEventTime({ hours: "00", minutes: "00" });
+        dispatchForm({ type: "RESET" });
         return;
       }
 
@@ -148,10 +195,7 @@ const CalendarApp = () => {
       const created = await response.json();
 
       setEvents((prev) => sortEvents([...prev, created]));
-      setShowEventPopup(false);
-      setEditingEvent(null);
-      setEventText("");
-      setEventTime({ hours: "00", minutes: "00" });
+      dispatchForm({ type: "RESET" });
     } catch (error) {
       console.error("Error saving event:", error);
     }
@@ -159,13 +203,17 @@ const CalendarApp = () => {
 
   const handleEditEvent = (event) => {
     setSelectedDate(new Date(event.event_date));
-    setEventTime({
-      hours: event.event_time.split(":")[0],
-      minutes: event.event_time.split(":")[1],
+    dispatchForm({
+      type: "OPEN_EDIT",
+      payload: {
+        time: {
+          hours: event.event_time.split(":")[0],
+          minutes: event.event_time.split(":")[1],
+        },
+        text: event.title,
+        editingEvent: event,
+      },
     });
-    setEventText(event.title);
-    setEditingEvent(event);
-    setShowEventPopup(true);
   };
 
   const handleDeleteEvent = async (eventId) => {
@@ -186,15 +234,6 @@ const CalendarApp = () => {
     } catch (error) {
       console.error("Error deleting event:", error);
     }
-  };
-
-  const handleTimeChange = (e) => {
-    const { name, value } = e.target;
-
-    setEventTime((prevTime) => ({
-      ...prevTime,
-      [name]: value.padStart(2, "0"),
-    }));
   };
 
   const handleToggleFavorite = async (event) => {
@@ -291,7 +330,8 @@ const CalendarApp = () => {
           />
           <button onClick={() => setSearchTerm("")}>Clear</button>
         </div>
-        {showEventPopup && (
+
+        {formState.isOpen && (
           <div className="event-popup">
             <div className="time-input">
               <div className="event-popup-time">Time</div>
@@ -301,7 +341,7 @@ const CalendarApp = () => {
                 min={0}
                 max={24}
                 className="hours"
-                value={eventTime.hours}
+                value={formState.time.hours}
                 onChange={handleTimeChange}
               />
               <input
@@ -310,28 +350,28 @@ const CalendarApp = () => {
                 min={0}
                 max={60}
                 className="minutes"
-                value={eventTime.minutes}
+                value={formState.time.minutes}
                 onChange={handleTimeChange}
               />
             </div>
 
             <textarea
               placeholder="Enter Event Text (Maximum 60 Characters)"
-              value={eventText}
+              value={formState.text}
               onChange={(e) => {
                 if (e.target.value.length <= 60) {
-                  setEventText(e.target.value);
+                  dispatchForm({ type: "SET_TEXT", payload: e.target.value });
                 }
               }}
             ></textarea>
 
             <button className="event-popup-btn" onClick={handleEventSubmit}>
-              {editingEvent ? "Update Event" : "Add Event"}
+              {formState.editingEvent ? "Update Event" : "Add Event"}
             </button>
 
             <button
               className="close-event-popup"
-              onClick={() => setShowEventPopup(false)}
+              onClick={() => dispatchForm({ type: "CLOSE" })}
             >
               <i className="bx bx-x"></i>
             </button>
