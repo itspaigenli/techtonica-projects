@@ -284,6 +284,11 @@
   cursor: pointer;
 }
 
+.event-buttons .bxs-star,
+.event-buttons .bx-star {
+  cursor: pointer;
+}
+
 @media (max-width: 850px) {
   .calendar-app {
     flex-direction: column;

@@ -22,6 +22,7 @@ const CalendarApp = () => {
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState(currentDate);
+  const [searchTerm, setSearchTerm] = useState("");
   const [showEventPopup, setShowEventPopup] = useState(false);
   const [events, setEvents] = useState([]);
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
@@ -227,6 +228,14 @@ const CalendarApp = () => {
     }
   };
 
+  const filteredEvents = events.filter((event) => {
+    const q = searchTerm.trim().toLowerCase();
+    if (!q) return true;
+
+    const title = (event.title || "").toLowerCase();
+    return title.includes(q);
+  });
+
   return (
     <div className="calendar-app">
       <div className="calendar">
@@ -273,6 +282,15 @@ const CalendarApp = () => {
       </div>
 
       <div className="events">
+        <div className="search">
+          <input
+            type="text"
+            placeholder="Search events..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button onClick={() => setSearchTerm("")}>Clear</button>
+        </div>
         {showEventPopup && (
           <div className="event-popup">
             <div className="time-input">
@@ -320,7 +338,7 @@ const CalendarApp = () => {
           </div>
         )}
 
-        {events.map((event) => (
+        {filteredEvents.map((event) => (
           <div className="event" key={event.id}>
             <div className="event-date-wrapper">
               <div className="event-date">{`${
