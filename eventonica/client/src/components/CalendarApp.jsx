@@ -31,6 +31,18 @@ const CalendarApp = () => {
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
+  const sortEvents = (list) => {
+    return [...list].sort((a, b) => {
+      // favorites first
+      if (a.is_favorite !== b.is_favorite) return b.is_favorite - a.is_favorite;
+
+      // then by date+time
+      const aDT = new Date(`${a.event_date}T${a.event_time}`);
+      const bDT = new Date(`${b.event_date}T${b.event_time}`);
+      return aDT - bDT;
+    });
+  };
+
   const prevMonth = () => {
     setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
     setCurrentYear((prevYear) =>
@@ -50,7 +62,7 @@ const CalendarApp = () => {
       try {
         const response = await fetch("http://localhost:3000/events");
         const data = await response.json();
-        setEvents(data);
+        setEvents(sortEvents(data));
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -109,7 +121,7 @@ const CalendarApp = () => {
         const updated = await response.json();
 
         setEvents((prev) =>
-          prev.map((e) => (e.id === updated.id ? updated : e)),
+          sortEvents(prev.map((e) => (e.id === updated.id ? updated : e))),
         );
 
         setShowEventPopup(false);
@@ -134,7 +146,7 @@ const CalendarApp = () => {
 
       const created = await response.json();
 
-      setEvents((prev) => [...prev, created]);
+      setEvents((prev) => sortEvents([...prev, created]));
       setShowEventPopup(false);
       setEditingEvent(null);
       setEventText("");
@@ -167,7 +179,9 @@ const CalendarApp = () => {
         return;
       }
 
-      setEvents((prev) => prev.filter((event) => event.id !== eventId));
+      setEvents((prev) =>
+        sortEvents(prev.filter((event) => event.id !== eventId)),
+      );
     } catch (error) {
       console.error("Error deleting event:", error);
     }
