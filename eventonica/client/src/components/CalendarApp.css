@@ -2,10 +2,10 @@
   width: 60%;
   min-width: 90vmin;
   aspect-ratio: 3 / 2;
-  background-color: #1e242d;
+  background-color: #2f2a26;
   padding: 3rem;
   border-radius: 3rem;
-  border: 1rem solid #0f1319;
+  border: 1rem solid #1f1b18;
   display: flex;
   column-gap: 5rem;
   position: relative;
@@ -143,7 +143,7 @@
 
 .event-popup-time {
   width: clamp(4rem, 4cqi, 7rem);
-  background-color: #00a3ff;
+  background-color: #d97706;
   color: #fff;
   font-family: "Bebas Neue", sans-serif;
   font-size: clamp(1.5rem, 1.5cqi, 2.2rem);
@@ -418,4 +418,87 @@
   .calendar-app {
     aspect-ratio: 3 / 2;
   }
+}
+
+@media (min-width: 900px) {
+  .calendar-app {
+    width: 70%;
+    min-width: 100vmin;
+  }
+}
+
+.buttons i {
+  background-color: #3a332f;
+}
+
+.weekdays span {
+  color: #a89f94;
+}
+
+.current-day {
+  background-color: #d97706;
+  box-shadow: 0 0 1.5rem 1rem rgba(217, 119, 6, 0.3);
+}
+
+.event-popup {
+  background-color: #2a2420;
+}
+
+.event-popup-time {
+  background-color: #d97706;
+  box-shadow: 0 0 1.5rem 1rem rgba(217, 119, 6, 0.22);
+}
+
+.time-input input {
+  border-top: 0.2rem solid #d97706;
+  border-bottom: 0.2rem solid #d97706;
+}
+
+.event-popup textarea {
+  background-color: #1f1b18;
+  color: #a89f94;
+}
+
+.event-popup textarea:focus {
+  border: 0.1rem solid #d97706;
+}
+
+.event-popup textarea::placeholder {
+  color: #a89f94;
+}
+
+.event-popup-btn {
+  background-color: #d97706;
+  box-shadow: 0 0 1.5rem 1rem rgba(217, 119, 6, 0.2);
+}
+
+.event {
+  background-color: #e67e22;
+}
+
+.event-day {
+  background-color: #e67e22;
+}
+
+.search button:first-of-type {
+  background-color: #d97706;
+}
+
+.search button:last-of-type {
+  background-color: #e7ddd3;
+  color: #2f2a26;
+}
+
+.event {
+  overflow: hidden;
+}
+
+.event-date-wrapper {
+  justify-content: flex-start;
+  padding-top: 1rem;
+}
+
+.event-date {
+  text-align: center;
+  line-height: 1.2;
 }
