@@ -196,6 +196,37 @@ const CalendarApp = () => {
     }));
   };
 
+  const handleToggleFavorite = async (event) => {
+    try {
+      const payload = {
+        event_date: event.event_date,
+        event_time: event.event_time,
+        title: event.title,
+        is_favorite: !event.is_favorite,
+      };
+
+      const response = await fetch(`http://localhost:3000/events/${event.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        console.error("Favorite toggle failed:", response.status, text);
+        return;
+      }
+
+      const updated = await response.json();
+
+      setEvents((prev) =>
+        sortEvents(prev.map((e) => (e.id === updated.id ? updated : e))),
+      );
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+
   return (
     <div className="calendar-app">
       <div className="calendar">
@@ -305,9 +336,16 @@ const CalendarApp = () => {
 
             <div className="event-buttons">
               <i
+                className={event.is_favorite ? "bx bxs-star" : "bx bx-star"}
+                onClick={() => handleToggleFavorite(event)}
+                title={event.is_favorite ? "Unfavorite" : "Favorite"}
+              ></i>
+
+              <i
                 className="bx bxs-edit-alt"
                 onClick={() => handleEditEvent(event)}
               ></i>
+
               <i
                 className="bx bxs-message-alt-x"
                 onClick={() => handleDeleteEvent(event.id)}
