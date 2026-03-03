@@ -1,5 +1,7 @@
-const App = () => {
-  return <div>App</div>;
-};
+import SightingsPage from "./features/sightings/SightingsPage";
+
+function App() {
+  return <SightingsPage />;
+}
 
 export default App;
