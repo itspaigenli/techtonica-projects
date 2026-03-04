@@ -1,22 +1,23 @@
-// Start of index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
+import sightingsRouter from "./routes/sightings.js";
+import individualsRouter from "./routes/individuals.js";
+import speciesRouter from "./routes/species.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 
-app.get("/api/hello", (req, res) => {
-  res.json({ message: "hello from us" });
-});
+app.get("/health", (req, res) => res.json({ ok: true }));
+
+app.use("/sightings", sightingsRouter);
+app.use("/individuals", individualsRouter);
+app.use("/species", speciesRouter);
 
 const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
