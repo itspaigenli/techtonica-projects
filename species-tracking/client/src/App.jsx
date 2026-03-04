@@ -1,4 +1,4 @@
-import SightingsPage from "./features/sightings/SightingsPage";
+import SightingsPage from "./components/SightingsPage";
 
 function App() {
   return;
