@@ -1,7 +1,8 @@
 import SightingsPage from "./features/sightings/SightingsPage";
 
 function App() {
-  return <SightingsPage />;
+  return;
+  <></>;
 }
 
 export default App;
