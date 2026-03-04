@@ -13,8 +13,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/health", (req, res) => res.json({ ok: true }));
-
 app.use("/sightings", sightingsRouter);
 app.use("/individuals", individualsRouter);
 app.use("/species", speciesRouter);
