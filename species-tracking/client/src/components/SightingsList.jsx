@@ -8,9 +8,9 @@ function SightingsList({ refreshKey }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  async function loadSightings() {
+  async function loadSightings(start = startDate, end = endDate) {
     try {
-      const data = await getSightings(startDate, endDate);
+      const data = await getSightings(start, end);
       setSightings(data);
       setError(null);
     } catch (err) {
@@ -23,28 +23,50 @@ function SightingsList({ refreshKey }) {
     loadSightings();
   }, [refreshKey]);
 
+  function handleClearFilter() {
+    setStartDate("");
+    setEndDate("");
+    loadSightings("", "");
+  }
+
   return (
     <section>
       <h2>Sightings</h2>
 
-      <div className="filter-card">
-        <label>Start Date</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
+      <div className="filter-bar">
+        <div className="filter-group">
+          <label htmlFor="start-date">Start Date</label>
+          <input
+            id="start-date"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </div>
 
-        <label>End Date</label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+        <div className="filter-group">
+          <label htmlFor="end-date">End Date</label>
+          <input
+            id="end-date"
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
 
-        <button type="button" onClick={loadSightings}>
-          Apply Filter
-        </button>
+        <div className="filter-actions">
+          <button type="button" onClick={() => loadSightings()}>
+            Apply
+          </button>
+
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={handleClearFilter}
+          >
+            Clear
+          </button>
+        </div>
       </div>
 
       {error && <p>{error}</p>}
