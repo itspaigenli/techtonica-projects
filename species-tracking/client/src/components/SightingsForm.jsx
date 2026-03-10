@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createSighting } from "../api/sightingsApi.js";
 import { getIndividuals } from "../api/individualsApi.js";
 
-function SightingsForm({ onSightingAdded }) {
+function SightingsForm({ onSightingAdded, refreshKey }) {
   const [sightingDatetime, setSightingDatetime] = useState("");
   const [individualId, setIndividualId] = useState("");
   const [location, setLocation] = useState("");
@@ -21,7 +21,7 @@ function SightingsForm({ onSightingAdded }) {
     }
 
     loadIndividuals();
-  }, []);
+  }, [refreshKey]);
 
   async function handleSubmit(event) {
     event.preventDefault();
