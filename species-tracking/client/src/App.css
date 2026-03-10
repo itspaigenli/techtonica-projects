@@ -316,6 +316,40 @@ a:hover {
   color: #c5f0c9;
 }
 
+.species-compact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.species-compact-card {
+  background: #1f3a33;
+  border: 1px solid #2b4a41;
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+}
+
+.species-name {
+  margin: 0;
+  font-weight: 700;
+  color: #e6efe9;
+}
+
+.species-scientific {
+  margin: 0.15rem 0 0.45rem;
+  font-size: 0.9rem;
+  color: #c8d7cd;
+  font-style: italic;
+}
+
+.species-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #9fd3a3;
+}
+
 /* responsive */
 
 @media (max-width: 900px) {
