@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getIndividuals } from "../api/individualsApi.js";
+import { deleteIndividual, getIndividuals } from "../api/individualsApi.js";
 import IndividualModal from "./IndividualModal.jsx";
 
 function IndividualsList({ refreshKey }) {
@@ -24,6 +24,28 @@ function IndividualsList({ refreshKey }) {
 
   function toggleExpanded(id) {
     setExpandedId((prev) => (prev === id ? null : id));
+  }
+
+  async function handleDeleteIndividual(id) {
+    try {
+      await deleteIndividual(id);
+      setIndividuals((prev) =>
+        prev.filter((individual) => individual.id !== id),
+      );
+
+      if (expandedId === id) {
+        setExpandedId(null);
+      }
+
+      if (selectedIndividualId === id) {
+        setSelectedIndividualId(null);
+      }
+
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Could not delete individual");
+    }
   }
 
   if (error) {
@@ -75,13 +97,23 @@ function IndividualsList({ refreshKey }) {
                     : "No sightings yet"}
                 </p>
 
-                <button
-                  type="button"
-                  className="details-button"
-                  onClick={() => setSelectedIndividualId(individual.id)}
-                >
-                  View Details
-                </button>
+                <div className="individual-action-row">
+                  <button
+                    type="button"
+                    className="details-button"
+                    onClick={() => setSelectedIndividualId(individual.id)}
+                  >
+                    View Details
+                  </button>
+
+                  <button
+                    type="button"
+                    className="delete-button"
+                    onClick={() => handleDeleteIndividual(individual.id)}
+                  >
+                    Delete Individual
+                  </button>
+                </div>
               </div>
             )}
           </div>
