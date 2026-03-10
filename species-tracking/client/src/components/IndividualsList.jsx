@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { deleteIndividual, getIndividuals } from "../api/individualsApi.js";
 import IndividualModal from "./IndividualModal.jsx";
 
-function IndividualsList({ refreshKey }) {
+function IndividualsList({ refreshKey, onIndividualDeleted }) {
   const [individuals, setIndividuals] = useState([]);
   const [error, setError] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
@@ -29,6 +29,7 @@ function IndividualsList({ refreshKey }) {
   async function handleDeleteIndividual(id) {
     try {
       await deleteIndividual(id);
+
       setIndividuals((prev) =>
         prev.filter((individual) => individual.id !== id),
       );
@@ -39,6 +40,10 @@ function IndividualsList({ refreshKey }) {
 
       if (selectedIndividualId === id) {
         setSelectedIndividualId(null);
+      }
+
+      if (onIndividualDeleted) {
+        onIndividualDeleted();
       }
 
       setError(null);
