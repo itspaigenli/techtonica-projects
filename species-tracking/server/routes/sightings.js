@@ -74,4 +74,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+// DELETE sighting
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql = `
+      DELETE FROM sightings
+      WHERE id = $1
+      RETURNING *;
+    `;
+
+    const result = await pool.query(sql, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Sighting not found." });
+    }
+
+    res.json({ message: "Sighting deleted successfully." });
+  } catch (err) {
+    console.error("DELETE /sightings/:id error:", err);
+    res.status(500).json({ error: "Server error deleting sighting." });
+  }
+});
+
 export default router;
