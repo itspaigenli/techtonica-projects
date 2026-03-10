@@ -3,51 +3,53 @@ import { getSightings } from "../api/sightingsApi.js";
 
 function SightingsList({ refreshKey }) {
   const [sightings, setSightings] = useState([]);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function loadSightings() {
-      try {
-        const data = await getSightings(startDate, endDate);
-        setSightings(data);
-      } catch (err) {
-        console.error(err);
-        setError("Could not load sightings");
-      }
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  async function loadSightings() {
+    try {
+      const data = await getSightings(startDate, endDate);
+      setSightings(data);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Could not load sightings");
     }
-
-    loadSightings();
-  }, [refreshKey, startDate, endDate]);
-
-  if (error) {
-    return <p>{error}</p>;
   }
+
+  useEffect(() => {
+    loadSightings();
+  }, [refreshKey]);
 
   return (
     <section>
       <h2>Sightings</h2>
 
       <div className="filter-card">
-        <label htmlFor="start-date">Start Date</label>
+        <label>Start Date</label>
         <input
-          id="start-date"
-          type="datetime-local"
+          type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
 
-        <label htmlFor="end-date">End Date</label>
+        <label>End Date</label>
         <input
-          id="end-date"
-          type="datetime-local"
+          type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
+
+        <button type="button" onClick={loadSightings}>
+          Apply Filter
+        </button>
       </div>
 
-      {sightings.length === 0 && <p>No sightings found.</p>}
+      {error && <p>{error}</p>}
+
+      {!error && sightings.length === 0 && <p>No sightings found.</p>}
 
       {sightings.map((sighting) => (
         <div key={sighting.sighting_id} className="sighting-card">
