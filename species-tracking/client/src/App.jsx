@@ -22,7 +22,10 @@ function App() {
 
       <section className="top-row top-row-three">
         <div className="panel">
-          <SightingsForm onSightingAdded={handleDataChange} />
+          <SightingsForm
+            onSightingAdded={handleDataChange}
+            refreshKey={refreshKey}
+          />
         </div>
 
         <div className="panel">
