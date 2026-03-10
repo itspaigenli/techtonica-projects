@@ -12,6 +12,8 @@ router.get("/", async (req, res) => {
         i.nickname,
         i.scientist_tracking,
         i.species_id,
+        i.wikipedia_url,
+        i.photo_url,
         sp.common_name,
         sp.scientific_name,
         COUNT(s.id) AS sighting_count,
@@ -25,6 +27,8 @@ router.get("/", async (req, res) => {
         i.nickname,
         i.scientist_tracking,
         i.species_id,
+        i.wikipedia_url,
+        i.photo_url,
         sp.common_name,
         sp.scientific_name
       ORDER BY i.id;
@@ -35,6 +39,52 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.error("GET /individuals error:", err);
     res.status(500).json({ error: "Server error fetching individuals." });
+  }
+});
+
+// GET one individual by id
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql = `
+      SELECT
+        i.id,
+        i.nickname,
+        i.scientist_tracking,
+        i.species_id,
+        i.wikipedia_url,
+        i.photo_url,
+        sp.common_name,
+        sp.scientific_name,
+        COUNT(s.id) AS sighting_count,
+        MIN(s.sighting_datetime) AS first_sighting,
+        MAX(s.sighting_datetime) AS most_recent_sighting
+      FROM individuals i
+      JOIN species sp ON i.species_id = sp.id
+      LEFT JOIN sightings s ON i.id = s.individual_id
+      WHERE i.id = $1
+      GROUP BY
+        i.id,
+        i.nickname,
+        i.scientist_tracking,
+        i.species_id,
+        i.wikipedia_url,
+        i.photo_url,
+        sp.common_name,
+        sp.scientific_name;
+    `;
+
+    const result = await pool.query(sql, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Individual not found." });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("GET /individuals/:id error:", err);
+    res.status(500).json({ error: "Server error fetching individual." });
   }
 });
 
@@ -56,7 +106,6 @@ router.post("/", async (req, res) => {
     `;
 
     const values = [nickname.trim(), scientist_tracking.trim(), species_id];
-
     const result = await pool.query(sql, values);
 
     res.status(201).json(result.rows[0]);
