@@ -91,7 +91,6 @@ p {
 /* cards */
 
 .sighting-card,
-.individual-card,
 .species-card {
   background: #1f3a33;
   border: 1px solid #2b4a41;
@@ -101,49 +100,86 @@ p {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
 }
 
-.individual-card {
-  transition:
-    transform 0.15s ease,
-    background-color 0.15s ease;
+/* individuals accordion */
+
+.individual-accordion-card {
+  background: #1f3a33;
+  border: 1px solid #2b4a41;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
 }
 
-.individual-card:hover {
-  background-color: #254940;
-  cursor: pointer;
-  transform: translateY(-2px);
-}
-
-/* clickable individual cards */
-
-.individual-card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.individual-card-button {
-  display: block;
+.individual-summary-button {
   width: 100%;
   background: none;
   border: none;
-  padding: 0;
-  margin: 0 0 0.75rem 0;
-  text-align: left;
-  cursor: pointer;
   color: inherit;
   font: inherit;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  text-align: left;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.individual-card-button .individual-card {
-  margin-bottom: 0;
+.individual-summary-button:hover {
+  background-color: #254940;
 }
 
-.individual-card-button p {
+.individual-summary-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.individual-name {
+  margin: 0;
+  font-weight: 700;
   color: #e6efe9;
 }
 
-.individual-card-button:hover .individual-card {
-  background-color: #254940;
+.individual-species {
+  margin: 0;
+  color: #c8d7cd;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.individual-summary-meta {
+  color: #9fd3a3;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.individual-expanded-content {
+  background: #1a332c;
+  border-top: 1px solid #2b4a41;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.individual-expanded-content p {
+  margin: 0 0 0.5rem;
+}
+
+.details-button {
+  margin-top: 0.5rem;
+  background: #2f6b5a;
+  color: white;
+  border: none;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.details-button:hover {
+  background: #3f8b74;
 }
 
 /* forms */
