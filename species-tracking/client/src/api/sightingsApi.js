@@ -34,3 +34,15 @@ export async function createSighting(newSighting) {
 
   return response.json();
 }
+
+export async function deleteSighting(id) {
+  const response = await fetch(`/sightings/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete sighting");
+  }
+
+  return response.json();
+}
