@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSightings } from "../api/sightingsApi.js";
 
-function SightingsList() {
+function SightingsList({ refreshKey }) {
   const [sightings, setSightings] = useState([]);
   const [error, setError] = useState(null);
 
@@ -17,7 +17,7 @@ function SightingsList() {
     }
 
     loadSightings();
-  }, []);
+  }, [refreshKey]);
 
   if (error) {
     return <p>{error}</p>;
