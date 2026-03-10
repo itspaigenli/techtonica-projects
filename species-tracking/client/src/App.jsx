@@ -43,7 +43,10 @@ function App() {
         </div>
 
         <div className="panel">
-          <IndividualsList refreshKey={refreshKey} />
+          <IndividualsList
+            refreshKey={refreshKey}
+            onIndividualDeleted={handleDataChange}
+          />
         </div>
       </section>
     </main>
