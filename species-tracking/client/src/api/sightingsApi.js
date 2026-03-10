@@ -1,16 +1,14 @@
-export async function getSightings(startDate = "", endDate = "") {
+export async function getSightings(startDate, endDate) {
+  let url = "/sightings";
+
   const params = new URLSearchParams();
 
-  if (startDate) {
-    params.append("startDate", startDate);
-  }
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
 
-  if (endDate) {
-    params.append("endDate", endDate);
+  if (params.toString()) {
+    url += `?${params.toString()}`;
   }
-
-  const queryString = params.toString();
-  const url = queryString ? `/sightings?${queryString}` : "/sightings";
 
   const response = await fetch(url);
 
