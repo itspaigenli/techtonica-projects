@@ -91,7 +91,13 @@ router.get("/:id", async (req, res) => {
 // POST new individual
 router.post("/", async (req, res) => {
   try {
-    const { nickname, scientist_tracking, species_id } = req.body;
+    const {
+      nickname,
+      scientist_tracking,
+      species_id,
+      wikipedia_url,
+      photo_url,
+    } = req.body;
 
     if (!nickname || !scientist_tracking || !species_id) {
       return res.status(400).json({
@@ -100,12 +106,25 @@ router.post("/", async (req, res) => {
     }
 
     const sql = `
-      INSERT INTO individuals (nickname, scientist_tracking, species_id)
-      VALUES ($1, $2, $3)
+      INSERT INTO individuals (
+        nickname,
+        scientist_tracking,
+        species_id,
+        wikipedia_url,
+        photo_url
+      )
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
 
-    const values = [nickname.trim(), scientist_tracking.trim(), species_id];
+    const values = [
+      nickname.trim(),
+      scientist_tracking.trim(),
+      species_id,
+      wikipedia_url || null,
+      photo_url || null,
+    ];
+
     const result = await pool.query(sql, values);
 
     res.status(201).json(result.rows[0]);
