@@ -22,7 +22,7 @@ function App() {
       <IndividualsForm onIndividualAdded={handleDataChange} />
 
       <SightingsList refreshKey={refreshKey} />
-      <IndividualsList />
+      <IndividualsList refreshKey={refreshKey} />
       <SpeciesList />
     </main>
   );
