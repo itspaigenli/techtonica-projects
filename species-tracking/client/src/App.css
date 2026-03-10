@@ -266,3 +266,24 @@ a:hover {
 .modal-close:hover {
   background: #3f8b74;
 }
+
+.individual-card-button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.individual-card-button p {
+  color: #e6efe9;
+}
+
+.individual-card-button:hover .individual-card {
+  background-color: #254940;
+}
