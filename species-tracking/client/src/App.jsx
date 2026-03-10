@@ -1,6 +1,7 @@
 import "./App.css";
 import SightingsList from "./components/SightingsList";
 import SpeciesList from "./components/SpeciesList";
+import IndividualsList from "./components/IndividualsList";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
 
       <SightingsList />
       <SpeciesList />
+      <IndividualsList />
     </main>
   );
 }
