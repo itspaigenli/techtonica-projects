@@ -20,7 +20,7 @@ function App() {
         <p>Animal Sighting Tracker</p>
       </header>
 
-      <section className="top-row">
+      <section className="top-row top-row-three">
         <div className="panel">
           <SightingsForm onSightingAdded={handleDataChange} />
         </div>
@@ -28,19 +28,19 @@ function App() {
         <div className="panel">
           <IndividualsForm onIndividualAdded={handleDataChange} />
         </div>
+
+        <div className="panel">
+          <SpeciesList />
+        </div>
       </section>
 
-      <section className="content-grid">
+      <section className="content-grid content-grid-two">
         <div className="panel">
           <SightingsList refreshKey={refreshKey} />
         </div>
 
         <div className="panel">
           <IndividualsList refreshKey={refreshKey} />
-        </div>
-
-        <div className="panel panel-full">
-          <SpeciesList />
         </div>
       </section>
     </main>
