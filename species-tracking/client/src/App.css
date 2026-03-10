@@ -42,3 +42,12 @@ main {
 .form-card button {
   padding: 0.5rem;
 }
+
+.filter-card {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
