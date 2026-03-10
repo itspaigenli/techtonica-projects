@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSightings } from "../api/sightingsApi.js";
+import { deleteSighting, getSightings } from "../api/sightingsApi.js";
 
 function SightingsList({ refreshKey }) {
   const [sightings, setSightings] = useState([]);
@@ -22,6 +22,16 @@ function SightingsList({ refreshKey }) {
   useEffect(() => {
     loadSightings();
   }, [refreshKey]);
+
+  async function handleDeleteSighting(id) {
+    try {
+      await deleteSighting(id);
+      loadSightings();
+    } catch (err) {
+      console.error(err);
+      setError("Could not delete sighting");
+    }
+  }
 
   function handleClearFilter() {
     setStartDate("");
@@ -88,6 +98,14 @@ function SightingsList({ refreshKey }) {
             <strong>Date:</strong>{" "}
             {new Date(sighting.sighting_datetime).toLocaleString()}
           </p>
+
+          <button
+            type="button"
+            className="delete-button"
+            onClick={() => handleDeleteSighting(sighting.sighting_id)}
+          >
+            Delete Sighting
+          </button>
         </div>
       ))}
     </section>
