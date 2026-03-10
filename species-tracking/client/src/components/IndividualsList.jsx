@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getIndividuals } from "../api/individualsApi.js";
 
 function IndividualsList({ refreshKey }) {
@@ -30,7 +31,10 @@ function IndividualsList({ refreshKey }) {
       {individuals.map((individual) => (
         <div key={individual.id} className="individual-card">
           <p>
-            <strong>Nickname:</strong> {individual.nickname}
+            <strong>Nickname:</strong>{" "}
+            <Link to={`/individuals/${individual.id}`}>
+              {individual.nickname}
+            </Link>
           </p>
           <p>
             <strong>Species:</strong> {individual.common_name}
