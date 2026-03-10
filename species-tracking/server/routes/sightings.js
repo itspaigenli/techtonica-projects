@@ -34,3 +34,5 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Server error fetching sightings." });
   }
 });
+
+export default router;
