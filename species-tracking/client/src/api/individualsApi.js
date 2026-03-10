@@ -8,6 +8,16 @@ export async function getIndividuals() {
   return response.json();
 }
 
+export async function getIndividualById(id) {
+  const response = await fetch(`/individuals/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch individual");
+  }
+
+  return response.json();
+}
+
 export async function createIndividual(newIndividual) {
   const response = await fetch("/individuals", {
     method: "POST",
