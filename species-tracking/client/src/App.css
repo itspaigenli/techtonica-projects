@@ -27,3 +27,18 @@ main {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.form-card {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-card input,
+.form-card select,
+.form-card button {
+  padding: 0.5rem;
+}
