@@ -6,6 +6,7 @@ const router = express.Router();
 // GET sightings (joined with nickname and common name)
 router.get("/", async (req, res) => {
   try {
+    const { startDate, endDate } = req.query;
     const sql = `
       SELECT
         s.id AS sighting_id,
@@ -27,7 +28,26 @@ router.get("/", async (req, res) => {
       ORDER BY s.sighting_datetime DESC;
     `;
 
-    const result = await pool.query(sql);
+    const values = [];
+    const conditions = [];
+
+    if (startDate) {
+      values.push(startDate);
+      conditions.push(`s.sighting_datetime >= $${values.length}`);
+    }
+
+    if (endDate) {
+      values.push(endDate);
+      conditions.push(`s.sighting_datetime <= $${values.length}`);
+    }
+
+    if (conditions.length > 0) {
+      sql += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    sql += ` ORDER BY s.sighting_datetime DESC;`;
+
+    const result = await pool.query(sql, values);
     res.json(result.rows);
   } catch (err) {
     console.error("GET /sightings error:", err);
