@@ -57,3 +57,20 @@ main {
   display: block;
   margin: 1rem 0;
 }
+
+.individual-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.individual-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.individual-card:hover {
+  background-color: #f5f5f5;
+}
