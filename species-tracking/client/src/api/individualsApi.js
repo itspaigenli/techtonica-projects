@@ -33,3 +33,15 @@ export async function createIndividual(newIndividual) {
 
   return response.json();
 }
+
+export async function deleteIndividual(id) {
+  const response = await fetch(`/individuals/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete individual");
+  }
+
+  return response.json();
+}
