@@ -134,4 +134,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+// DELETE individual
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql = `
+      DELETE FROM individuals
+      WHERE id = $1
+      RETURNING *;
+    `;
+
+    const result = await pool.query(sql, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Individual not found." });
+    }
+
+    res.json({ message: "Individual deleted successfully." });
+  } catch (err) {
+    console.error("DELETE /individuals/:id error:", err);
+    res.status(500).json({ error: "Server error deleting individual." });
+  }
+});
+
 export default router;
