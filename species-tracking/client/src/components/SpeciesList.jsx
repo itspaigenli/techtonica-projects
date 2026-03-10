@@ -11,8 +11,8 @@ function SpeciesList() {
         const data = await getSpecies();
         setSpecies(data);
       } catch (err) {
-        setError("Could not load species");
         console.error(err);
+        setError("Could not load species");
       }
     }
 
@@ -27,22 +27,18 @@ function SpeciesList() {
     <section>
       <h2>Species</h2>
 
-      {species.map((animal) => (
-        <div key={animal.id} className="species-card">
-          <p>
-            <strong>Common Name:</strong> {animal.common_name}
-          </p>
-          <p>
-            <strong>Scientific Name:</strong> {animal.scientific_name}
-          </p>
-          <p>
-            <strong>Population:</strong> {animal.estimated_population}
-          </p>
-          <p>
-            <strong>Status:</strong> {animal.conservation_status}
-          </p>
-        </div>
-      ))}
+      <div className="species-compact-list">
+        {species.map((animal) => (
+          <div key={animal.id} className="species-compact-card">
+            <p className="species-name">{animal.common_name}</p>
+            <p className="species-scientific">{animal.scientific_name}</p>
+            <div className="species-meta">
+              <span>{animal.conservation_status}</span>
+              <span>{animal.estimated_population}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
