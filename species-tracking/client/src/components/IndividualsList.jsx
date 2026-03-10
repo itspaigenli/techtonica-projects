@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getIndividuals } from "../api/individualsApi.js";
 
-function IndividualsList() {
+function IndividualsList({ refreshKey }) {
   const [individuals, setIndividuals] = useState([]);
   const [error, setError] = useState(null);
 
@@ -17,7 +17,7 @@ function IndividualsList() {
     }
 
     loadIndividuals();
-  }, []);
+  }, [refreshKey]);
 
   if (error) {
     return <p>{error}</p>;
