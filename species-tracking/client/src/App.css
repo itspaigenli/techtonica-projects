@@ -386,6 +386,27 @@ a:hover {
   color: #9fd3a3;
 }
 
+.delete-button {
+  margin-top: 0.5rem;
+  background: #7a2e2e;
+  color: white;
+  border: none;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-button:hover {
+  background: #943838;
+}
+
+.individual-action-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
 /* responsive */
 
 @media (max-width: 900px) {
