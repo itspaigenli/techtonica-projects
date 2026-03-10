@@ -6,6 +6,8 @@ function IndividualsForm({ onIndividualAdded }) {
   const [nickname, setNickname] = useState("");
   const [scientist, setScientist] = useState("");
   const [speciesId, setSpeciesId] = useState("");
+  const [wikipediaUrl, setWikipediaUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
   const [species, setSpecies] = useState([]);
   const [error, setError] = useState("");
 
@@ -32,11 +34,15 @@ function IndividualsForm({ onIndividualAdded }) {
         nickname,
         scientist_tracking: scientist,
         species_id: Number(speciesId),
+        wikipedia_url: wikipediaUrl,
+        photo_url: photoUrl,
       });
 
       setNickname("");
       setScientist("");
       setSpeciesId("");
+      setWikipediaUrl("");
+      setPhotoUrl("");
 
       if (onIndividualAdded) {
         onIndividualAdded();
@@ -81,6 +87,20 @@ function IndividualsForm({ onIndividualAdded }) {
             </option>
           ))}
         </select>
+
+        <label>Wikipedia URL</label>
+        <input
+          type="url"
+          value={wikipediaUrl}
+          onChange={(e) => setWikipediaUrl(e.target.value)}
+        />
+
+        <label>Photo URL</label>
+        <input
+          type="url"
+          value={photoUrl}
+          onChange={(e) => setPhotoUrl(e.target.value)}
+        />
 
         <button type="submit">Add Individual</button>
 
