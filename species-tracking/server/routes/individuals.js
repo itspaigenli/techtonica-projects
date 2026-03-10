@@ -38,4 +38,32 @@ router.get("/", async (req, res) => {
   }
 });
 
+// POST new individual
+router.post("/", async (req, res) => {
+  try {
+    const { nickname, scientist_tracking, species_id } = req.body;
+
+    if (!nickname || !scientist_tracking || !species_id) {
+      return res.status(400).json({
+        error: "nickname, scientist_tracking, and species_id are required.",
+      });
+    }
+
+    const sql = `
+      INSERT INTO individuals (nickname, scientist_tracking, species_id)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+
+    const values = [nickname.trim(), scientist_tracking.trim(), species_id];
+
+    const result = await pool.query(sql, values);
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("POST /individuals error:", err);
+    res.status(500).json({ error: "Server error creating individual." });
+  }
+});
+
 export default router;
