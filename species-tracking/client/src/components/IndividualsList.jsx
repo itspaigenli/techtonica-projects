@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getIndividuals } from "../api/individualsApi.js";
+import IndividualModal from "./IndividualModal.jsx";
 
 function IndividualsList({ refreshKey }) {
   const [individuals, setIndividuals] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedIndividualId, setSelectedIndividualId] = useState(null);
 
   useEffect(() => {
     async function loadIndividuals() {
@@ -29,10 +30,11 @@ function IndividualsList({ refreshKey }) {
       <h2>Individuals</h2>
 
       {individuals.map((individual) => (
-        <Link
+        <button
           key={individual.id}
-          to={`/individuals/${individual.id}`}
-          className="individual-card-link"
+          type="button"
+          className="individual-card-button"
+          onClick={() => setSelectedIndividualId(individual.id)}
         >
           <div className="individual-card">
             <p>
@@ -60,8 +62,15 @@ function IndividualsList({ refreshKey }) {
                 : "No sightings yet"}
             </p>
           </div>
-        </Link>
+        </button>
       ))}
+
+      {selectedIndividualId && (
+        <IndividualModal
+          individualId={selectedIndividualId}
+          onClose={() => setSelectedIndividualId(null)}
+        />
+      )}
     </section>
   );
 }
