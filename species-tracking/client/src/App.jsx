@@ -4,11 +4,12 @@ import SightingsList from "./components/SightingsList";
 import SpeciesList from "./components/SpeciesList";
 import IndividualsList from "./components/IndividualsList";
 import SightingsForm from "./components/SightingsForm";
+import IndividualsForm from "./components/IndividualsForm";
 
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);
 
-  function handleSightingAdded() {
+  function handleDataChange() {
     setRefreshKey((prev) => prev + 1);
   }
 
@@ -17,10 +18,12 @@ function App() {
       <h1>FaunaDex</h1>
       <p>Animal Sighting Tracker</p>
 
-      <SightingsForm onSightingAdded={handleSightingAdded} />
+      <SightingsForm onSightingAdded={handleDataChange} />
+      <IndividualsForm onIndividualAdded={handleDataChange} />
+
       <SightingsList refreshKey={refreshKey} />
-      <SpeciesList />
       <IndividualsList />
+      <SpeciesList />
     </main>
   );
 }
