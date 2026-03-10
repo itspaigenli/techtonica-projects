@@ -63,6 +63,9 @@ function IndividualDetail() {
           src={individual.photo_url}
           alt={individual.nickname}
           className="detail-photo"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
         />
       )}
 

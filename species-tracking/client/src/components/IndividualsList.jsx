@@ -29,35 +29,38 @@ function IndividualsList({ refreshKey }) {
       <h2>Individuals</h2>
 
       {individuals.map((individual) => (
-        <div key={individual.id} className="individual-card">
-          <p>
-            <strong>Nickname:</strong>{" "}
-            <Link to={`/individuals/${individual.id}`}>
-              {individual.nickname}
-            </Link>
-          </p>
-          <p>
-            <strong>Species:</strong> {individual.common_name}
-          </p>
-          <p>
-            <strong>Scientist:</strong> {individual.scientist_tracking}
-          </p>
-          <p>
-            <strong>Total Sightings:</strong> {individual.sighting_count}
-          </p>
-          <p>
-            <strong>First Sighting:</strong>{" "}
-            {individual.first_sighting
-              ? new Date(individual.first_sighting).toLocaleString()
-              : "No sightings yet"}
-          </p>
-          <p>
-            <strong>Most Recent Sighting:</strong>{" "}
-            {individual.most_recent_sighting
-              ? new Date(individual.most_recent_sighting).toLocaleString()
-              : "No sightings yet"}
-          </p>
-        </div>
+        <Link
+          key={individual.id}
+          to={`/individuals/${individual.id}`}
+          className="individual-card-link"
+        >
+          <div className="individual-card">
+            <p>
+              <strong>Nickname:</strong> {individual.nickname}
+            </p>
+            <p>
+              <strong>Species:</strong> {individual.common_name}
+            </p>
+            <p>
+              <strong>Scientist:</strong> {individual.scientist_tracking}
+            </p>
+            <p>
+              <strong>Total Sightings:</strong> {individual.sighting_count}
+            </p>
+            <p>
+              <strong>First Sighting:</strong>{" "}
+              {individual.first_sighting
+                ? new Date(individual.first_sighting).toLocaleString()
+                : "No sightings yet"}
+            </p>
+            <p>
+              <strong>Most Recent Sighting:</strong>{" "}
+              {individual.most_recent_sighting
+                ? new Date(individual.most_recent_sighting).toLocaleString()
+                : "No sightings yet"}
+            </p>
+          </div>
+        </Link>
       ))}
     </section>
   );
