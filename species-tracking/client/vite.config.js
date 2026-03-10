@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/sightings": "http://localhost:3000",
-      "/species": "http://localhost:3000",
       "/individuals": "http://localhost:3000",
+      "/species": "http://localhost:3000",
     },
   },
 });
