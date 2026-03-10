@@ -20,16 +20,35 @@ function App() {
       <Route
         path="/"
         element={
-          <main>
-            <h1>FaunaDex</h1>
-            <p>Animal Sighting Tracker</p>
+          <main className="app-shell">
+            <header className="app-header">
+              <h1>FaunaDex</h1>
+              <p>Animal Sighting Tracker</p>
+            </header>
 
-            <SightingsForm onSightingAdded={handleDataChange} />
-            <IndividualsForm onIndividualAdded={handleDataChange} />
+            <section className="top-row">
+              <div className="panel">
+                <SightingsForm onSightingAdded={handleDataChange} />
+              </div>
 
-            <SightingsList refreshKey={refreshKey} />
-            <IndividualsList refreshKey={refreshKey} />
-            <SpeciesList />
+              <div className="panel">
+                <IndividualsForm onIndividualAdded={handleDataChange} />
+              </div>
+            </section>
+
+            <section className="content-grid">
+              <div className="panel">
+                <SightingsList refreshKey={refreshKey} />
+              </div>
+
+              <div className="panel">
+                <IndividualsList refreshKey={refreshKey} />
+              </div>
+
+              <div className="panel panel-full">
+                <SpeciesList />
+              </div>
+            </section>
           </main>
         }
       />
