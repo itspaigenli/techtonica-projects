@@ -1,5 +1,18 @@
-export async function getSightings() {
-  const response = await fetch("/sightings");
+export async function getSightings(startDate = "", endDate = "") {
+  const params = new URLSearchParams();
+
+  if (startDate) {
+    params.append("startDate", startDate);
+  }
+
+  if (endDate) {
+    params.append("endDate", endDate);
+  }
+
+  const queryString = params.toString();
+  const url = queryString ? `/sightings?${queryString}` : "/sightings";
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("Failed to fetch sightings");
