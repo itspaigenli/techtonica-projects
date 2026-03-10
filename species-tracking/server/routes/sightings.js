@@ -3,29 +3,43 @@ import pool from "../db.js";
 
 const router = express.Router();
 
-// GET all sightings
+// GET sightings (with optional date filter)
 router.get("/", async (req, res) => {
   try {
-    const sql = `
+    const { startDate, endDate } = req.query;
+
+    let sql = `
       SELECT
         s.id AS sighting_id,
         s.sighting_datetime,
         s.location,
-        i.id AS individual_id,
         i.nickname,
-        i.scientist_tracking,
-        sp.id AS species_id,
-        sp.common_name,
-        sp.scientific_name,
-        sp.estimated_population,
-        sp.conservation_status
+        sp.common_name
       FROM sightings s
       JOIN individuals i ON s.individual_id = i.id
       JOIN species sp ON i.species_id = sp.id
-      ORDER BY s.sighting_datetime DESC;
     `;
 
-    const result = await pool.query(sql);
+    const values = [];
+    const conditions = [];
+
+    if (startDate) {
+      values.push(startDate);
+      conditions.push(`s.sighting_datetime >= $${values.length}`);
+    }
+
+    if (endDate) {
+      values.push(endDate);
+      conditions.push(`s.sighting_datetime <= $${values.length}`);
+    }
+
+    if (conditions.length > 0) {
+      sql += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    sql += ` ORDER BY s.sighting_datetime DESC`;
+
+    const result = await pool.query(sql, values);
     res.json(result.rows);
   } catch (err) {
     console.error("GET /sightings error:", err);
