@@ -70,14 +70,14 @@ VALUES
 -- Individuals
 -- -------------------------
 
-INSERT INTO individuals (nickname, scientist_tracking, species_id)
+INSERT INTO individuals (nickname, scientist_tracking, species_id, wikipedia_url, photo_url)
 VALUES
-('Stripe', 'Dr. Nguyen', 1),
-('Ember', 'Dr. Patel', 1),
-('Snowball', 'Dr. Kim', 2),
-('Frost', 'Dr. Alvarez', 2),
-('Midnight', 'Dr. Okoye', 3),
-('Onyx', 'Dr. Chen', 3);
+('Stripe', 'Dr. Nguyen', 1, 'https://en.wikipedia.org/wiki/Tiger', 'https://upload.wikimedia.org/wikipedia/commons/5/56/Tiger.50.jpg'),
+('Ember', 'Dr. Patel', 1, 'https://en.wikipedia.org/wiki/Tiger', 'https://upload.wikimedia.org/wikipedia/commons/5/56/Tiger.50.jpg'),
+('Snowball', 'Dr. Kim', 2, 'https://en.wikipedia.org/wiki/Polar_bear', 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Polar_Bear_-_Alaska.jpg'),
+('Frost', 'Dr. Alvarez', 2, 'https://en.wikipedia.org/wiki/Polar_bear', 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Polar_Bear_-_Alaska.jpg'),
+('Midnight', 'Dr. Okoye', 3, 'https://en.wikipedia.org/wiki/Black_rhinoceros', 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Diceros_bicornis_-_Etosha_2014.jpg'),
+('Onyx', 'Dr. Chen', 3, 'https://en.wikipedia.org/wiki/Black_rhinoceros', 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Diceros_bicornis_-_Etosha_2014.jpg');
 
 
 -- -------------------------
