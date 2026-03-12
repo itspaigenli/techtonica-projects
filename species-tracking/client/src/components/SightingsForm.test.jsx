@@ -5,12 +5,12 @@ import SightingsForm from "./SightingsForm";
 describe("SightingsForm Component", () => {
   it("renders the Add Sighting form", () => {
     // Arrange
-    render(<SightingsForm />);
+    render(<SightingsForm onSightingAdded={() => {}} refreshKey={0} />);
 
     // Act
-    const heading = screen.getByText("Add Sighting");
+    const elements = screen.getAllByText("Add Sighting");
 
     // Assert
-    expect(heading).toBeDefined();
+    expect(elements[0]).toBeDefined();
   });
 });
