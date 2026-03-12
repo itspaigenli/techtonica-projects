@@ -28,6 +28,8 @@ CREATE TABLE individuals (
     nickname VARCHAR(100) NOT NULL,
     scientist_tracking VARCHAR(150) NOT NULL,
     species_id INTEGER NOT NULL,
+    wikipedia_url TEXT,
+    photo_url TEXT,
     CONSTRAINT fk_species
         FOREIGN KEY (species_id)
         REFERENCES species(id)
