@@ -17,12 +17,11 @@ app.use("/sightings", sightingsRouter);
 app.use("/individuals", individualsRouter);
 app.use("/species", speciesRouter);
 
-/* only start server if not running tests */
+/* export app so tests can import it */
 export default app;
 
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 3000;
 
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
