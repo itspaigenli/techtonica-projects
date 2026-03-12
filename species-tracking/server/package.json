@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "db:connect": "psql -d speciestrackingdb",
+    "db:check": "psql -d postgres -c 'SELECT version();'"
   },
   "keywords": [],
   "author": "",
