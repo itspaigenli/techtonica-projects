@@ -13,8 +13,11 @@ This project was built as part of the **Techtonica Full-Stack Software Engineeri
 The application stores endangered animal species including:
 
 - common name
+
 - scientific name
+
 - estimated population
+
 - conservation status
 
 Species are displayed in a compact list for quick reference.
@@ -28,9 +31,13 @@ Scientists track specific animals within a species.
 Each individual record includes:
 
 - nickname
+
 - species
+
 - assigned scientist
+
 - optional Wikipedia link
+
 - optional photo
 
 Individuals appear in a compact expandable accordion view.
@@ -38,8 +45,11 @@ Individuals appear in a compact expandable accordion view.
 When expanded, additional data appears:
 
 - sighting count
+
 - first sighting
+
 - most recent sighting
+
 - link to detailed profile
 
 ---
@@ -51,14 +61,19 @@ Scientists can record sightings of tracked animals.
 Each sighting includes:
 
 - individual animal
+
 - location
+
 - date and time
 
 Sightings are displayed in a list showing:
 
 - individual nickname
+
 - species
+
 - location
+
 - timestamp
 
 Users can also delete sightings.
@@ -82,9 +97,13 @@ The filter uses a React interface and backend query parameters.
 Each individual animal has a detail view containing:
 
 - photo
+
 - species information
+
 - scientist tracking the animal
+
 - first and most recent sightings
+
 - Wikipedia reference link
 
 ---
@@ -94,18 +113,23 @@ Each individual animal has a detail view containing:
 ### Create
 
 - add individual
+
 - add sighting
 
 ### Read
 
 - list species
+
 - list individuals
+
 - list sightings
+
 - view individual details
 
 ### Delete
 
 - delete individuals
+
 - delete sightings
 
 ---
@@ -115,12 +139,15 @@ Each individual animal has a detail view containing:
 ## Frontend
 
 - React
+
 - Vite
+
 - CSS
 
 ## Backend
 
 - Node.js
+
 - Express
 
 ## Database
@@ -130,6 +157,7 @@ Each individual animal has a detail view containing:
 ## Other Tools
 
 - pg
+
 - dotenv
 
 ---
@@ -179,57 +207,105 @@ The database contains three core tables.
 
 # Running the Project Locally
 
-## 1. Clone the repository
+## 1\. Clone the repository
 
-````bash
-git clone <your-repo-url>
+git clone <your-repo-url>\
 cd species-tracking
 
-## 2. Install dependencies
+---
 
-```bash
-cd server
+## 2\. Install dependencies
+
+### Server
+
+cd server\
 npm install
 
-## 3. Setup PostgreSQL
+### Client
 
-```bash
+cd ../client\
+npm install
+
+---
+
+## 3\. Setup PostgreSQL
+
+Create the database:
+
 createdb speciestrackingdb
-psql speciestrackingdb < db.sql
 
-## 4. Configure environmental variables
+Load the schema:
 
-```bash
-DATABASE_URL=postgres://localhost:5432/speciestrackingdb
+psql speciestrackingdb < server/db.sql
+
+---
+
+## 4\. Configure environment variables
+
+Create a `.env` file inside the **server** directory:
+
+DATABASE_URL=postgres://localhost:5432/speciestrackingdb\
 PORT=3000
 
-## 5. Start the backend server
+---
 
-```bash
-cd server
+## 5\. Start the backend server
+
+cd server\
 npm run dev
-(http://localhost:3000)
 
-## 6. Start the frontend
+Server runs at:
 
-```bash
-cd client
+http://localhost:3000
+
+---
+
+## 6\. Start the frontend
+
+Open a new terminal window and run:
+
+cd client\
 npm run dev
-(http://localhost:5173)
+
+Frontend runs at:
+
+http://localhost:5173
+
+---
+
+# API Endpoints
+
+## Species
+
+GET /species
+
+---
+
+## Individuals
+
+GET /individuals\
+GET /individuals/:id\
+POST /individuals\
+DELETE /individuals/:id
+
+---
+
+## Sightings
+
+GET /sightings\
+GET /sightings?startDate=&endDate=\
+POST /sightings\
+DELETE /sightings/:id
 
 ---
 
 # Testing
 
-Testing includes unit tests for React components and
-API testing for the sightings endpoints
+Testing includes:
 
----
+- unit tests for React components
 
-# Author
-
-Paige Li
-Techtonica Software Engineering Bootcamp
+- API testing for the sightings endpoints
 
 ---
 
@@ -272,4 +348,10 @@ Each individual animal has a detailed view with photo, species information, and 
 Sightings can be filtered by date range to review observations within a specific time period.
 
 ![Date Filter](screenshots/date-filter.png)
-````
+
+---
+
+# Author
+
+Paige Li\
+Techtonica Software Engineering Bootcamp
