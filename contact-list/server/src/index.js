@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 // Route imports
-import exampleRouter from "./routes/example.js";
+import contactsRouter from "./routes/contact.js";
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 });
 
 // API routes
-app.use("/example", exampleRouter);
+app.use("/contacts", contactsRouter);
 
 // Export app for testing
 export default app;
