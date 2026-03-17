@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "vitest",
-    "db:connect": "psql -d your_db_name",
+    "db:connect": "psql -d chronoregistry",
     "db:check": "psql -d postgres -c \"SELECT version();\""
   },
   "keywords": [],
@@ -21,6 +21,8 @@
     "pg": "^8.20.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.0"
   }
 }
