@@ -16,7 +16,7 @@ function App() {
   return (
     <main className="app-shell">
       <header className="app-header">
-        <h1>Project Title</h1>
+        <h1>ChronoRegistry</h1>
       </header>
 
       <section className="top-row">
