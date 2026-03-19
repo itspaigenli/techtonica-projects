@@ -21,7 +21,7 @@ This project focuses on building interactive UI, managing game state, and struct
 
 ### Game Start Screen
 
-![Game Start](/screenshots/start-screen.png)
+![Game Start](./screenshots/start-screen.png)
 
 ### Gameplay
 
