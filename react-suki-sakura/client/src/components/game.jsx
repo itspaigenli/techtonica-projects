@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
-import Blossom from "./Blossom";
+import Arena from "./Arena";
 
 export default function Game({
   playerName,
@@ -261,50 +261,16 @@ export default function Game({
         <div className="sakuraPanel sakuraArt" aria-hidden="true" />
       </div>
 
-      <div className="arena">
-        {game.blossoms.map((blossom) => (
-          <Blossom key={blossom.id} x={blossom.x} y={blossom.y} />
-        ))}
-
-        <div
-          className="catcher"
-          style={{ left: `${catcherX}%` }}
-          aria-label="Suki catcher"
-        >
-          <img
-            src="/suki-sprite.png"
-            alt=""
-            className="catcherImage"
-            draggable="false"
-          />
-        </div>
-
-        {!isRunning && (
-          <div className="overlay">
-            {isGameOver ? (
-              <div>Game over! Final score: {game.score}</div>
-            ) : hasStarted ? (
-              <div>Paused</div>
-            ) : (
-              <div>Press Start to play 🌸</div>
-            )}
-
-            {isGameOver ? (
-              <button className="overlayBtn" onClick={startGame}>
-                Restart
-              </button>
-            ) : hasStarted ? (
-              <button className="overlayBtn" onClick={resumeGame}>
-                Resume
-              </button>
-            ) : (
-              <button className="overlayBtn" onClick={startGame}>
-                Start
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+      <Arena
+        blossoms={game.blossoms}
+        catcherX={catcherX}
+        isRunning={isRunning}
+        isGameOver={isGameOver}
+        hasStarted={hasStarted}
+        score={game.score}
+        onStart={startGame}
+        onResume={resumeGame}
+      />
     </div>
   );
 }
