@@ -17,19 +17,52 @@ router.get("/", async (req, res) => {
 // POST NEW -
 router.post("/", async (req, res) => {
   try {
-    const { field1, field2 } = req.body;
+    const {
+      temporal_id,
+      temporal_contact,
+      current_timeline,
+      origin_timeline,
+      mission_notes,
+      status,
+    } = req.body;
+
+    if (
+      !temporal_id ||
+      !temporal_contact ||
+      current_timeline === undefined ||
+      origin_timeline === undefined
+    ) {
+      return res.status(400).json({
+        error: "Required fields are missing.",
+      });
+    }
 
     const result = await pool.query(
-      `INSERT INTO table_name (field1, field2)
-      VALUES ($1, $2)
-      RETURNING *`,
-      [field1, field2],
+      `INSERT INTO contacts
+       (
+         temporal_id,
+         temporal_contact,
+         current_timeline,
+         origin_timeline,
+         mission_notes,
+         status
+       )
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [
+        temporal_id,
+        temporal_contact,
+        Number(current_timeline),
+        Number(origin_timeline),
+        mission_notes || null,
+        status || null,
+      ],
     );
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error("POST /table_name error:", error);
-    res.status(500).json({ error: "Server error creating record." });
+    console.error("POST /contacts error:", error);
+    res.status(500).json({ error: "Failed to create contact." });
   }
 });
 
