@@ -49,6 +49,7 @@ export default function Game({
 
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [scoreSaved, setScoreSaved] = useState(false);
   const [catcherX, setCatcherX] = useState(50);
   const [leaderboard, setLeaderboard] = useState([]);
   const [game, setGame] = useState({
@@ -72,6 +73,7 @@ export default function Game({
     setCatcherX(50);
     dirRef.current = 0;
     setHasStarted(true);
+    setScoreSaved(false);
     setIsRunning(true);
   }
 
@@ -89,6 +91,7 @@ export default function Game({
     dirRef.current = 0;
     setIsRunning(false);
     setHasStarted(false);
+    setScoreSaved(false);
   }
 
   function clearLeaderboard() {
@@ -248,12 +251,11 @@ export default function Game({
     return () => clearInterval(intervalId);
   }, [isRunning, holdStep]);
 
-  const isGameOver = game.misses >= maxMisses;
-
   useEffect(() => {
     if (!hasStarted) return;
     if (isRunning) return;
     if (game.misses < maxMisses) return;
+    if (scoreSaved) return;
 
     const newEntry = {
       name: playerName.trim() || "Player",
@@ -273,6 +275,8 @@ export default function Game({
 
       return updatedLeaderboard;
     });
+
+    setScoreSaved(true);
   }, [
     isRunning,
     game.misses,
@@ -281,7 +285,10 @@ export default function Game({
     playerName,
     difficulty,
     hasStarted,
+    scoreSaved,
   ]);
+
+  const isGameOver = game.misses >= maxMisses;
 
   return (
     <div className="gameWrap">
@@ -306,9 +313,10 @@ export default function Game({
           isRunning={isRunning}
         />
 
+        <Leaderboard leaderboard={leaderboard} onClear={clearLeaderboard} />
+
         <div className="sakuraPanel sakuraArt" aria-hidden="true" />
       </div>
-      <Leaderboard leaderboard={leaderboard} onClear={clearLeaderboard} />
 
       <Arena
         blossoms={game.blossoms}
