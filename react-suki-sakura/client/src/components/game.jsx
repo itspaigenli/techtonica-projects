@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
 import Blossom from "./Blossom";
@@ -9,182 +9,202 @@ export default function Game({
   difficulty,
   onChangeDifficulty,
 }) {
-  // --- arena + gameplay constants ---
+  // Arena constants
   const catcherMinX = 5;
   const catcherMaxX = 95;
-
   const catchLineY = 70;
   const catchZoneHeight = 18;
 
-  // Difficulty-tuned constants
-  const { fallSpeed, spawnMs, maxMisses, moveStep, catchWindowX, maxOnScreen } =
-    useMemo(() => {
-      if (difficulty === "easy") {
-        return {
-          fallSpeed: 1.1,
-          spawnMs: 1150,
-          maxMisses: 10,
-          moveStep: 6,
-          catchWindowX: 10,
-          maxOnScreen: 7,
-        };
-      }
-      if (difficulty === "hard") {
-        return {
-          fallSpeed: 2.0,
-          spawnMs: 500,
-          maxMisses: 5,
-          moveStep: 10,
-          catchWindowX: 10,
-          maxOnScreen: 10,
-        };
-      }
-      return {
-        fallSpeed: 1.4,
-        spawnMs: 800,
-        maxMisses: 7,
-        moveStep: 8,
-        catchWindowX: 10,
-        maxOnScreen: 8,
-      };
-    }, [difficulty]);
+  // Difficulty settings
+  let fallSpeed;
+  let spawnMs;
+  let maxMisses;
+  let moveStep;
+  let catchWindowX;
+  let maxOnScreen;
+
+  if (difficulty === "easy") {
+    fallSpeed = 1.1;
+    spawnMs = 1150;
+    maxMisses = 10;
+    moveStep = 6;
+    catchWindowX = 10;
+    maxOnScreen = 7;
+  } else if (difficulty === "hard") {
+    fallSpeed = 2.0;
+    spawnMs = 500;
+    maxMisses = 5;
+    moveStep = 10;
+    catchWindowX = 10;
+    maxOnScreen = 10;
+  } else {
+    fallSpeed = 1.4;
+    spawnMs = 800;
+    maxMisses = 7;
+    moveStep = 8;
+    catchWindowX = 10;
+    maxOnScreen = 8;
+  }
 
   const holdStep = Math.max(1, Math.round(moveStep / 3));
 
-  // --- state ---
+  // State
   const [isRunning, setIsRunning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [catcherX, setCatcherX] = useState(50);
+  const [blossoms, setBlossoms] = useState([]);
+  const [score, setScore] = useState(0);
+  const [misses, setMisses] = useState(0);
 
-  const dirRef = useRef(0); // -1 left, 0 none, +1 right
-  const catcherXRef = useRef(50); // stable reference for collision checks
+  // Refs for held keyboard movement
+  const dirRef = useRef(0);
 
-  useEffect(() => {
-    catcherXRef.current = catcherX;
-  }, [catcherX]);
+  function resetGameState() {
+    setBlossoms([]);
+    setScore(0);
+    setMisses(0);
+  }
 
-  const [game, setGame] = useState({
-    blossoms: [],
-    misses: 0,
-    score: 0,
-  });
-
-  // --- game control helpers ---
-  const resetGameState = useCallback(() => {
-    setGame({ blossoms: [], misses: 0, score: 0 });
-  }, []);
-
-  const startGame = useCallback(() => {
+  function startGame() {
     resetGameState();
+    setCatcherX(50);
+    dirRef.current = 0;
+    setHasStarted(true);
     setIsRunning(true);
-  }, [resetGameState]);
+  }
 
-  const stopGame = useCallback(() => {
+  function pauseGame() {
     setIsRunning(false);
-  }, []);
+  }
 
-  const resumeGame = useCallback(() => {
+  function resumeGame() {
     setIsRunning(true);
-  }, []);
+  }
 
-  const resetGame = useCallback(() => {
+  function resetGame() {
     resetGameState();
     setCatcherX(50);
     dirRef.current = 0;
     setIsRunning(false);
-  }, [resetGameState]);
+    setHasStarted(false);
+  }
 
-  // --- blossom spawning ---
-  const spawnBlossom = useCallback(() => {
-    setGame((prev) => {
-      if (prev.blossoms.length >= maxOnScreen) return prev;
+  function spawnBlossom() {
+    setBlossoms((prevBlossoms) => {
+      if (prevBlossoms.length >= maxOnScreen) {
+        return prevBlossoms;
+      }
 
       const newBlossom = {
-        id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
+        id: `${Date.now()}-${Math.random()}`,
         x:
           Math.floor(Math.random() * (catcherMaxX - catcherMinX)) + catcherMinX,
         y: 0,
       };
 
-      return { ...prev, blossoms: [...prev.blossoms, newBlossom] };
+      return [...prevBlossoms, newBlossom];
     });
-  }, [catcherMinX, catcherMaxX, maxOnScreen]);
+  }
 
+  // Spawn blossoms
   useEffect(() => {
     if (!isRunning) return;
-    const id = setInterval(spawnBlossom, spawnMs);
-    return () => clearInterval(id);
-  }, [isRunning, spawnMs, spawnBlossom]);
 
-  // --- blossom tick loop (movement + collision) ---
+    const intervalId = setInterval(() => {
+      spawnBlossom();
+    }, spawnMs);
+
+    return () => clearInterval(intervalId);
+  }, [isRunning, spawnMs, maxOnScreen, difficulty]);
+
+  // Move blossoms and check catches/misses
   useEffect(() => {
     if (!isRunning) return;
 
     const tickMs = 16;
-    const speedScale = tickMs / 50; // preserves old fall speed feel
+    const speedScale = tickMs / 50;
 
-    const id = setInterval(() => {
-      setGame((prev) => {
-        const moved = prev.blossoms.map((b) => ({
-          ...b,
-          y: b.y + fallSpeed * speedScale,
-        }));
+    const intervalId = setInterval(() => {
+      let caughtThisTick = 0;
+      let missedThisTick = 0;
 
-        let caughtCount = 0;
-        const remaining = [];
+      setBlossoms((prevBlossoms) => {
+        const updatedBlossoms = [];
 
-        for (const b of moved) {
+        for (let i = 0; i < prevBlossoms.length; i++) {
+          const blossom = prevBlossoms[i];
+          const newY = blossom.y + fallSpeed * speedScale;
+
           const inCatchZone =
-            b.y >= catchLineY && b.y <= catchLineY + catchZoneHeight;
+            newY >= catchLineY && newY <= catchLineY + catchZoneHeight;
 
-          const closeToCatcher =
-            Math.abs(b.x - catcherXRef.current) <= catchWindowX;
+          const closeToCatcher = Math.abs(blossom.x - catcherX) <= catchWindowX;
 
           if (inCatchZone && closeToCatcher) {
-            caughtCount += 1;
-            continue; // caught → remove immediately
+            caughtThisTick += 1;
+          } else if (newY > 110) {
+            missedThisTick += 1;
+          } else {
+            updatedBlossoms.push({
+              ...blossom,
+              y: newY,
+            });
           }
-
-          remaining.push(b);
         }
 
-        const stillOnScreen = remaining.filter((b) => b.y <= 110);
-        const fellOff = remaining.length - stillOnScreen.length;
-
-        return {
-          ...prev,
-          blossoms: stillOnScreen,
-          misses: prev.misses + fellOff,
-          score: prev.score + caughtCount,
-        };
+        return updatedBlossoms;
       });
+
+      if (caughtThisTick > 0) {
+        setScore((prevScore) => prevScore + caughtThisTick);
+      }
+
+      if (missedThisTick > 0) {
+        setMisses((prevMisses) => prevMisses + missedThisTick);
+      }
     }, tickMs);
 
-    return () => clearInterval(id);
-  }, [isRunning, fallSpeed, catchLineY, catchWindowX, catchZoneHeight]);
+    return () => clearInterval(intervalId);
+  }, [
+    isRunning,
+    fallSpeed,
+    catchLineY,
+    catchZoneHeight,
+    catchWindowX,
+    catcherX,
+  ]);
 
-  // --- game over ---
+  // Game over
   useEffect(() => {
-    if (!isRunning) return;
-    if (game.misses >= maxMisses) setIsRunning(false);
-  }, [game.misses, maxMisses, isRunning]);
+    if (misses >= maxMisses) {
+      setIsRunning(false);
+    }
+  }, [misses, maxMisses]);
 
-  // --- keyboard input ---
+  // Keyboard input
   useEffect(() => {
-    function handleKeyDown(e) {
+    function handleKeyDown(event) {
       if (!isRunning) return;
 
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
         dirRef.current = -1;
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
         dirRef.current = 1;
       }
     }
 
-    function handleKeyUp(e) {
-      if (e.key === "ArrowLeft" && dirRef.current === -1) dirRef.current = 0;
-      if (e.key === "ArrowRight" && dirRef.current === 1) dirRef.current = 0;
+    function handleKeyUp(event) {
+      if (event.key === "ArrowLeft" && dirRef.current === -1) {
+        dirRef.current = 0;
+      }
+
+      if (event.key === "ArrowRight" && dirRef.current === 1) {
+        dirRef.current = 0;
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
@@ -196,26 +216,28 @@ export default function Game({
     };
   }, [isRunning]);
 
-  // --- smooth cat movement loop ---
+  // Move catcher while key is held
   useEffect(() => {
     if (!isRunning) return;
 
-    const id = setInterval(() => {
-      const dir = dirRef.current;
-      if (dir === 0) return;
+    const intervalId = setInterval(() => {
+      if (dirRef.current === 0) return;
 
-      setCatcherX((x) =>
-        Math.min(catcherMaxX, Math.max(catcherMinX, x + dir * holdStep))
-      );
+      setCatcherX((prevX) => {
+        const nextX = prevX + dirRef.current * holdStep;
+
+        if (nextX < catcherMinX) return catcherMinX;
+        if (nextX > catcherMaxX) return catcherMaxX;
+
+        return nextX;
+      });
     }, 33);
 
-    return () => clearInterval(id);
-  }, [isRunning, catcherMinX, catcherMaxX, holdStep]);
+    return () => clearInterval(intervalId);
+  }, [isRunning, holdStep]);
 
-  const isGameOver = game.misses >= maxMisses;
-  const hasStarted = game.score > 0 || game.misses > 0;
+  const isGameOver = misses >= maxMisses;
 
-  // --- render ---
   return (
     <div className="gameWrap">
       <div className="uiColumn">
@@ -226,26 +248,25 @@ export default function Game({
           onChangeDifficulty={onChangeDifficulty}
           isRunning={isRunning}
           onStart={startGame}
-          onStop={stopGame}
+          onStop={pauseGame}
           onReset={resetGame}
         />
 
         <ScoreBoard
-          score={game.score}
-          misses={game.misses}
+          score={score}
+          misses={misses}
           maxMisses={maxMisses}
           playerName={playerName}
           difficulty={difficulty}
           isRunning={isRunning}
         />
 
-        {/* Decorative banner panel (wide + short) */}
         <div className="sakuraPanel sakuraArt" aria-hidden="true" />
       </div>
 
       <div className="arena">
-        {game.blossoms.map((b) => (
-          <Blossom key={b.id} x={b.x} y={b.y} />
+        {blossoms.map((blossom) => (
+          <Blossom key={blossom.id} x={blossom.x} y={blossom.y} />
         ))}
 
         <div
@@ -264,7 +285,7 @@ export default function Game({
         {!isRunning && (
           <div className="overlay">
             {isGameOver ? (
-              <div>Game over! Final score: {game.score}</div>
+              <div>Game over! Final score: {score}</div>
             ) : hasStarted ? (
               <div>Paused</div>
             ) : (
