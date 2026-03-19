@@ -25,21 +25,15 @@ This project focuses on building interactive UI, managing game state, and struct
 
 ### Gameplay
 
-```md
 ![Gameplay](./screenshots/gameplay.png)
-```
 
 ### Game Over
 
-```md
 ![Game Over](./screenshots/game-over.png)
-```
 
 ### Leaderboard
 
-```md
 ![Leaderboard](./screenshots/leaderboard.png)
-```
 
 ---
 
