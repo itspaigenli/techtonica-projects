@@ -91,6 +91,11 @@ export default function Game({
     setHasStarted(false);
   }
 
+  function clearLeaderboard() {
+    localStorage.removeItem("sakuraLeaderboard");
+    setLeaderboard([]);
+  }
+
   function spawnBlossom() {
     setGame((prevGame) => {
       if (prevGame.blossoms.length >= maxOnScreen) {
@@ -245,6 +250,39 @@ export default function Game({
 
   const isGameOver = game.misses >= maxMisses;
 
+  useEffect(() => {
+    if (!hasStarted) return;
+    if (isRunning) return;
+    if (game.misses < maxMisses) return;
+
+    const newEntry = {
+      name: playerName.trim() || "Player",
+      score: game.score,
+      difficulty: difficulty,
+    };
+
+    setLeaderboard((prevLeaderboard) => {
+      const updatedLeaderboard = [...prevLeaderboard, newEntry]
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+
+      localStorage.setItem(
+        "sakuraLeaderboard",
+        JSON.stringify(updatedLeaderboard),
+      );
+
+      return updatedLeaderboard;
+    });
+  }, [
+    isRunning,
+    game.misses,
+    game.score,
+    maxMisses,
+    playerName,
+    difficulty,
+    hasStarted,
+  ]);
+
   return (
     <div className="gameWrap">
       <div className="uiColumn">
@@ -270,6 +308,7 @@ export default function Game({
 
         <div className="sakuraPanel sakuraArt" aria-hidden="true" />
       </div>
+      <Leaderboard leaderboard={leaderboard} onClear={clearLeaderboard} />
 
       <Arena
         blossoms={game.blossoms}
