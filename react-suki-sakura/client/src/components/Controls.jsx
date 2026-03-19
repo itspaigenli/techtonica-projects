@@ -10,7 +10,6 @@ export default function Controls({
 }) {
   return (
     <div className="controls">
-      {/* Left stack: inputs + buttons */}
       <div className="controls-left">
         <label>
           Player Name
@@ -19,6 +18,7 @@ export default function Controls({
             value={playerName}
             onChange={(e) => onChangePlayerName(e.target.value)}
             placeholder="Type your name…"
+            disabled={isRunning}
           />
         </label>
 
@@ -27,6 +27,7 @@ export default function Controls({
           <select
             value={difficulty}
             onChange={(e) => onChangeDifficulty(e.target.value)}
+            disabled={isRunning}
           >
             <option value="easy">Easy</option>
             <option value="normal">Normal</option>
@@ -43,8 +44,6 @@ export default function Controls({
           <button onClick={onReset}>Reset</button>
         </div>
       </div>
-
-      {/* Right side stays empty so the blossom background shows */}
       <div className="controls-art" aria-hidden="true" />
     </div>
   );
