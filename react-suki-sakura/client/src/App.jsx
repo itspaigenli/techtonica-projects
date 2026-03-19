@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Game from "./assets/components/Game";
+import Game from "./components/Game";
 
 export default function App() {
   const [playerName, setPlayerName] = useState("Player");
