@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Controls from "./Controls";
 import ScoreBoard from "./ScoreBoard";
 import Arena from "./Arena";
+import Leaderboard from "./Leaderboard";
 
 export default function Game({
   playerName,
@@ -49,6 +50,7 @@ export default function Game({
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [catcherX, setCatcherX] = useState(50);
+  const [leaderboard, setLeaderboard] = useState([]);
   const [game, setGame] = useState({
     blossoms: [],
     score: 0,
