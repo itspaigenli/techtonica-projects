@@ -9,13 +9,11 @@ export default function Game({
   difficulty,
   onChangeDifficulty,
 }) {
-  // Arena constants
   const catcherMinX = 5;
   const catcherMaxX = 95;
   const catchLineY = 70;
   const catchZoneHeight = 18;
 
-  // Difficulty settings
   let fallSpeed;
   let spawnMs;
   let maxMisses;
@@ -48,21 +46,23 @@ export default function Game({
 
   const holdStep = Math.max(1, Math.round(moveStep / 3));
 
-  // State
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [catcherX, setCatcherX] = useState(50);
-  const [blossoms, setBlossoms] = useState([]);
-  const [score, setScore] = useState(0);
-  const [misses, setMisses] = useState(0);
+  const [game, setGame] = useState({
+    blossoms: [],
+    score: 0,
+    misses: 0,
+  });
 
-  // Refs for held keyboard movement
   const dirRef = useRef(0);
 
   function resetGameState() {
-    setBlossoms([]);
-    setScore(0);
-    setMisses(0);
+    setGame({
+      blossoms: [],
+      score: 0,
+      misses: 0,
+    });
   }
 
   function startGame() {
@@ -90,9 +90,9 @@ export default function Game({
   }
 
   function spawnBlossom() {
-    setBlossoms((prevBlossoms) => {
-      if (prevBlossoms.length >= maxOnScreen) {
-        return prevBlossoms;
+    setGame((prevGame) => {
+      if (prevGame.blossoms.length >= maxOnScreen) {
+        return prevGame;
       }
 
       const newBlossom = {
@@ -102,11 +102,13 @@ export default function Game({
         y: 0,
       };
 
-      return [...prevBlossoms, newBlossom];
+      return {
+        ...prevGame,
+        blossoms: [...prevGame.blossoms, newBlossom],
+      };
     });
   }
 
-  // Spawn blossoms
   useEffect(() => {
     if (!isRunning) return;
 
@@ -115,9 +117,8 @@ export default function Game({
     }, spawnMs);
 
     return () => clearInterval(intervalId);
-  }, [isRunning, spawnMs, maxOnScreen, difficulty]);
+  }, [isRunning, spawnMs]);
 
-  // Move blossoms and check catches/misses
   useEffect(() => {
     if (!isRunning) return;
 
@@ -125,43 +126,42 @@ export default function Game({
     const speedScale = tickMs / 50;
 
     const intervalId = setInterval(() => {
-      let caughtThisTick = 0;
-      let missedThisTick = 0;
+      setGame((prevGame) => {
+        const movedBlossoms = prevGame.blossoms.map((blossom) => {
+          return {
+            ...blossom,
+            y: blossom.y + fallSpeed * speedScale,
+          };
+        });
 
-      setBlossoms((prevBlossoms) => {
-        const updatedBlossoms = [];
+        let caughtCount = 0;
+        let missedCount = 0;
+        const remainingBlossoms = [];
 
-        for (let i = 0; i < prevBlossoms.length; i++) {
-          const blossom = prevBlossoms[i];
-          const newY = blossom.y + fallSpeed * speedScale;
+        for (let i = 0; i < movedBlossoms.length; i++) {
+          const blossom = movedBlossoms[i];
 
           const inCatchZone =
-            newY >= catchLineY && newY <= catchLineY + catchZoneHeight;
+            blossom.y >= catchLineY &&
+            blossom.y <= catchLineY + catchZoneHeight;
 
           const closeToCatcher = Math.abs(blossom.x - catcherX) <= catchWindowX;
 
           if (inCatchZone && closeToCatcher) {
-            caughtThisTick += 1;
-          } else if (newY > 110) {
-            missedThisTick += 1;
+            caughtCount += 1;
+          } else if (blossom.y > 110) {
+            missedCount += 1;
           } else {
-            updatedBlossoms.push({
-              ...blossom,
-              y: newY,
-            });
+            remainingBlossoms.push(blossom);
           }
         }
 
-        return updatedBlossoms;
+        return {
+          blossoms: remainingBlossoms,
+          score: prevGame.score + caughtCount,
+          misses: prevGame.misses + missedCount,
+        };
       });
-
-      if (caughtThisTick > 0) {
-        setScore((prevScore) => prevScore + caughtThisTick);
-      }
-
-      if (missedThisTick > 0) {
-        setMisses((prevMisses) => prevMisses + missedThisTick);
-      }
     }, tickMs);
 
     return () => clearInterval(intervalId);
@@ -174,14 +174,12 @@ export default function Game({
     catcherX,
   ]);
 
-  // Game over
   useEffect(() => {
-    if (misses >= maxMisses) {
+    if (game.misses >= maxMisses) {
       setIsRunning(false);
     }
-  }, [misses, maxMisses]);
+  }, [game.misses, maxMisses]);
 
-  // Keyboard input
   useEffect(() => {
     function handleKeyDown(event) {
       if (!isRunning) return;
@@ -216,7 +214,6 @@ export default function Game({
     };
   }, [isRunning]);
 
-  // Move catcher while key is held
   useEffect(() => {
     if (!isRunning) return;
 
@@ -236,7 +233,7 @@ export default function Game({
     return () => clearInterval(intervalId);
   }, [isRunning, holdStep]);
 
-  const isGameOver = misses >= maxMisses;
+  const isGameOver = game.misses >= maxMisses;
 
   return (
     <div className="gameWrap">
@@ -253,8 +250,8 @@ export default function Game({
         />
 
         <ScoreBoard
-          score={score}
-          misses={misses}
+          score={game.score}
+          misses={game.misses}
           maxMisses={maxMisses}
           playerName={playerName}
           difficulty={difficulty}
@@ -265,7 +262,7 @@ export default function Game({
       </div>
 
       <div className="arena">
-        {blossoms.map((blossom) => (
+        {game.blossoms.map((blossom) => (
           <Blossom key={blossom.id} x={blossom.x} y={blossom.y} />
         ))}
 
@@ -285,7 +282,7 @@ export default function Game({
         {!isRunning && (
           <div className="overlay">
             {isGameOver ? (
-              <div>Game over! Final score: {score}</div>
+              <div>Game over! Final score: {game.score}</div>
             ) : hasStarted ? (
               <div>Paused</div>
             ) : (
