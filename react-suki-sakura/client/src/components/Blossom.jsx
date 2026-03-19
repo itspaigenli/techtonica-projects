@@ -1,6 +1,4 @@
-import React from "react";
-
-function Blossom({ x, y }) {
+export default function Blossom({ x, y }) {
   return (
     <div
       className="blossom"
@@ -11,5 +9,3 @@ function Blossom({ x, y }) {
     </div>
   );
 }
-
-export default React.memo(Blossom);
