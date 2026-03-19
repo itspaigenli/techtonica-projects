@@ -112,6 +112,14 @@ export default function Game({
   }
 
   useEffect(() => {
+    const savedScores = localStorage.getItem("sakuraLeaderboard");
+
+    if (savedScores) {
+      setLeaderboard(JSON.parse(savedScores));
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isRunning) return;
 
     const intervalId = setInterval(() => {
