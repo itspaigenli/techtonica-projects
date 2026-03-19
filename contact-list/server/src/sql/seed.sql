@@ -6,3 +6,5 @@ VALUES
 ('Agent C3', 'gamma@chronoregistry.io', 3021, 2500, NULL, 'Under Observation'),
 ('Agent D4', 'delta@chronoregistry.io', 1600, 1400, 'Medieval insertion mission', 'Archived'),
 ('Agent E5', 'epsilon@chronoregistry.io', 2100, 2025, NULL, NULL);
+
+/* status is a drop-down: Active, Missing, Under Observation, Archived, Unknown */

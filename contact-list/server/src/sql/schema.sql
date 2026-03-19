@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS contacts;
+
 CREATE TABLE contacts (
   id SERIAL PRIMARY KEY,
   temporal_id TEXT NOT NULL,
