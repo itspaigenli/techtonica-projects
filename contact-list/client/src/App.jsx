@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import { getContacts } from "./api";
 
 import Contacts from "./components/Contacts";
