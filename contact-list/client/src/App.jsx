@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { getContacts } from "./api";
+
+import Contacts from "./components/Contacts";
+import CreateContact from "./components/CreateContact";
+import ViewContact from "./components/ViewContact";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [selectedContact, setSelectedContact] = useState(null);
   const [currentView, setCurrentView] = useState("list");
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadItems() {
+    async function loadContacts() {
       try {
-        // fetch items here
+        const data = await getContacts();
+        setContacts(data);
       } catch (err) {
         console.error(err);
-        setError("Failed to load data.");
+        setError("Failed to load contacts.");
       }
     }
 
-    loadItems();
+    loadContacts();
   }, []);
 
-  function handleSelectItem(item) {
-    setSelectedItem(item);
+  function handleSelectContact(contact) {
+    setSelectedContact(contact);
     setCurrentView("view");
   }
 
@@ -30,33 +36,40 @@ function App() {
   }
 
   function handleBackToList() {
-    setSelectedItem(null);
+    setSelectedContact(null);
     setCurrentView("list");
   }
 
-  function handleCreateSuccess(newItem) {
-    setItems((prevItems) => [...prevItems, newItem]);
+  function handleCreateSuccess(newContact) {
+    setContacts((prevContacts) => [...prevContacts, newContact]);
     setCurrentView("list");
   }
 
   return (
     <main className="app-shell">
       <header className="app-header">
-        <h1>App Title</h1>
+        <h1>ChronoRegistry</h1>
       </header>
 
       {error && <p>{error}</p>}
 
       {currentView === "list" && (
         <>
-          <button onClick={handleShowCreate}>Add New</button>
-          {/* List component here */}
+          <button onClick={handleShowCreate}>Add Contact</button>
+          <Contacts items={contacts} onSelect={handleSelectContact} />
         </>
       )}
 
-      {currentView === "create" && <>{/* Form component here */}</>}
+      {currentView === "create" && (
+        <CreateContact
+          onSuccess={handleCreateSuccess}
+          onCancel={handleBackToList}
+        />
+      )}
 
-      {currentView === "view" && <>{/* View component here */}</>}
+      {currentView === "view" && (
+        <ViewContact contact={selectedContact} onBack={handleBackToList} />
+      )}
     </main>
   );
 }
