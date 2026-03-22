@@ -1,4 +1,4 @@
-function Contacts({ items, onSelect }) {
+function Contacts({ items }) {
   if (!items || items.length === 0) {
     return <p>No contacts found.</p>;
   }
@@ -7,9 +7,7 @@ function Contacts({ items, onSelect }) {
     <ul>
       {items.map((contact) => (
         <li key={contact.id}>
-          <button type="button" onClick={() => onSelect(contact)}>
-            {contact.temporal_id} - {contact.temporal_contact}
-          </button>
+          {contact.temporal_id} - {contact.temporal_contact}
         </li>
       ))}
     </ul>
