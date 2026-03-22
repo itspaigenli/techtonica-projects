@@ -1,15 +1,19 @@
-function List({ items }) {
+function Contacts({ items, onSelect }) {
   if (!items || items.length === 0) {
-    return <p>No items found.</p>;
+    return <p>No contacts found.</p>;
   }
 
   return (
     <ul>
-      {items.map((item) => (
-        <li key={item.id}>{item.name}</li>
+      {items.map((contact) => (
+        <li key={contact.id}>
+          <button type="button" onClick={() => onSelect(contact)}>
+            {contact.temporal_id} - {contact.temporal_contact}
+          </button>
+        </li>
       ))}
     </ul>
   );
 }
 
-export default List;
+export default Contacts;
