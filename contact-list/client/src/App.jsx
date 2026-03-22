@@ -1,31 +1,62 @@
-// Use when components fetch their own data
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
-import Form from "./components/Form";
-import List from "./components/List";
-
 function App() {
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [currentView, setCurrentView] = useState("list");
+  const [error, setError] = useState("");
 
-  function handleDataChange() {
-    setRefreshKey((prev) => prev + 1);
+  useEffect(() => {
+    async function loadItems() {
+      try {
+        // fetch items here
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load data.");
+      }
+    }
+
+    loadItems();
+  }, []);
+
+  function handleSelectItem(item) {
+    setSelectedItem(item);
+    setCurrentView("view");
+  }
+
+  function handleShowCreate() {
+    setCurrentView("create");
+  }
+
+  function handleBackToList() {
+    setSelectedItem(null);
+    setCurrentView("list");
+  }
+
+  function handleCreateSuccess(newItem) {
+    setItems((prevItems) => [...prevItems, newItem]);
+    setCurrentView("list");
   }
 
   return (
     <main className="app-shell">
       <header className="app-header">
-        <h1>ChronoRegistry</h1>
+        <h1>App Title</h1>
       </header>
 
-      <section className="top-row">
-        <Form onSuccess={handleDataChange} />
-      </section>
+      {error && <p>{error}</p>}
 
-      <section className="content">
-        <List refreshKey={refreshKey} />
-      </section>
+      {currentView === "list" && (
+        <>
+          <button onClick={handleShowCreate}>Add New</button>
+          {/* List component here */}
+        </>
+      )}
+
+      {currentView === "create" && <>{/* Form component here */}</>}
+
+      {currentView === "view" && <>{/* View component here */}</>}
     </main>
   );
 }
