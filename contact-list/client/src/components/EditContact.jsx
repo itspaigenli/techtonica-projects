@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { createContact } from "../api";
+import { updateContact } from "../api";
 
-function CreateContact({ onSuccess, onCancel }) {
+function EditContact({ contact, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
-    temporal_id: "",
-    temporal_contact: "",
-    current_timeline: "",
-    origin_timeline: "",
-    mission_notes: "",
-    status: "",
+    temporal_id: contact.temporal_id,
+    temporal_contact: contact.temporal_contact,
+    current_timeline: contact.current_timeline,
+    origin_timeline: contact.origin_timeline,
+    mission_notes: contact.mission_notes || "",
+    status: contact.status || "",
   });
 
   const [error, setError] = useState("");
@@ -37,7 +37,7 @@ function CreateContact({ onSuccess, onCancel }) {
     }
 
     try {
-      const newContact = await createContact({
+      const updatedContact = await updateContact(contact.id, {
         ...formData,
         current_timeline: Number(formData.current_timeline),
         origin_timeline: Number(formData.origin_timeline),
@@ -45,27 +45,18 @@ function CreateContact({ onSuccess, onCancel }) {
         status: formData.status || null,
       });
 
-      setFormData({
-        temporal_id: "",
-        temporal_contact: "",
-        current_timeline: "",
-        origin_timeline: "",
-        mission_notes: "",
-        status: "",
-      });
-
       if (onSuccess) {
-        onSuccess(newContact);
+        onSuccess(updatedContact);
       }
     } catch (err) {
       console.error(err);
-      setError("Could not create contact.");
+      setError("Could not update contact.");
     }
   }
 
   return (
     <section>
-      <h2>Create Contact</h2>
+      <h2>Edit Contact</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
@@ -143,12 +134,10 @@ function CreateContact({ onSuccess, onCancel }) {
           </select>
         </div>
 
-        <button type="submit">Create Contact</button>
-        {onCancel && (
-          <button type="button" onClick={onCancel}>
-            Cancel
-          </button>
-        )}
+        <button type="submit">Save Changes</button>
+        <button type="button" onClick={onCancel}>
+          Cancel
+        </button>
 
         {error && <p>{error}</p>}
       </form>
@@ -156,4 +145,4 @@ function CreateContact({ onSuccess, onCancel }) {
   );
 }
 
-export default CreateContact;
+export default EditContact;
