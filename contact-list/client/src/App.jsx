@@ -101,7 +101,11 @@ function App() {
       )}
 
       {currentView === "view" && (
-        <ViewContact contact={selectedContact} onBack={handleBackToList} />
+        <ViewContact
+          contact={selectedContact}
+          onBack={handleBackToList}
+          onDelete={handleDeleteContact}
+        />
       )}
 
       {currentView === "edit" && (
