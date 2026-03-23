@@ -73,4 +73,14 @@ describe("CreateContact", () => {
     // Assert
     expect(select).toBeInTheDocument();
   });
+  it("renders the create contact button", () => {
+    // Arrange
+    render(<CreateContact />);
+
+    // Act
+    const button = screen.getByRole("button", { name: /create contact/i });
+
+    // Assert
+    expect(button).toBeInTheDocument();
+  });
 });
