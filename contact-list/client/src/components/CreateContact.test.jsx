@@ -23,4 +23,14 @@ describe("CreateContact", () => {
     // Assert
     expect(input).toBeInTheDocument();
   });
+  it("renders the temporal contact input", () => {
+    // Arrange
+    render(<CreateContact />);
+
+    // Act
+    const input = screen.getByLabelText(/temporal contact/i);
+
+    // Assert
+    expect(input).toBeInTheDocument();
+  });
 });
