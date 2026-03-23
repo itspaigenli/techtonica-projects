@@ -53,4 +53,14 @@ describe("CreateContact", () => {
     // Assert
     expect(input).toBeInTheDocument();
   });
+  it("renders the mission notes textarea", () => {
+    // Arrange
+    render(<CreateContact />);
+
+    // Act
+    const textarea = screen.getByLabelText(/mission notes/i);
+
+    // Assert
+    expect(textarea).toBeInTheDocument();
+  });
 });
