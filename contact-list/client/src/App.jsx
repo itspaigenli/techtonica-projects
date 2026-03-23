@@ -65,6 +65,12 @@ function App() {
     setSelectedContact(null);
   }
 
+  function handleDeleteContact(id) {
+    setContacts((prevContacts) => prevContacts.filter((c) => c.id !== id));
+    setSelectedContact(null);
+    setCurrentView("list");
+  }
+
   return (
     <main className="app-shell">
       <header className="app-header">
