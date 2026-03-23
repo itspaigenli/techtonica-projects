@@ -4,6 +4,7 @@ import { getContacts } from "./api";
 import Contacts from "./components/Contacts";
 import CreateContact from "./components/CreateContact";
 import ViewContact from "./components/ViewContact";
+import EditContact from "./components/EditContact";
 
 function App() {
   const [contacts, setContacts] = useState([]);
@@ -34,6 +35,11 @@ function App() {
     setCurrentView("create");
   }
 
+  function handleEditContact(contact) {
+    setSelectedContact(contact);
+    setCurrentView("edit");
+  }
+
   function handleBackToList() {
     setSelectedContact(null);
     setCurrentView("list");
@@ -42,6 +48,21 @@ function App() {
   function handleCreateSuccess(newContact) {
     setContacts((prevContacts) => [...prevContacts, newContact]);
     setCurrentView("list");
+  }
+
+  function handleEditSuccess(updatedContact) {
+    setContacts((prevContacts) =>
+      prevContacts.map((c) => {
+        if (c.id === updatedContact.id) {
+          return updatedContact;
+        } else {
+          return c;
+        }
+      }),
+    );
+
+    setCurrentView("list");
+    setSelectedContact(null);
   }
 
   return (
@@ -58,7 +79,11 @@ function App() {
             Add Contact
           </button>
 
-          <Contacts items={contacts} onSelect={handleSelectContact} />
+          <Contacts
+            items={contacts}
+            onSelect={handleSelectContact}
+            onEdit={handleEditContact}
+          />
         </>
       )}
 
@@ -71,6 +96,14 @@ function App() {
 
       {currentView === "view" && (
         <ViewContact contact={selectedContact} onBack={handleBackToList} />
+      )}
+
+      {currentView === "edit" && (
+        <EditContact
+          contact={selectedContact}
+          onSuccess={handleEditSuccess}
+          onCancel={handleBackToList}
+        />
       )}
     </main>
   );
