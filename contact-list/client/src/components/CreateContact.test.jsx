@@ -13,4 +13,14 @@ describe("CreateContact", () => {
     // Assert
     expect(heading).toBeInTheDocument();
   });
+  it("renders the temporal id input", () => {
+    // Arrange
+    render(<CreateContact />);
+
+    // Act
+    const input = screen.getByLabelText(/temporal id/i);
+
+    // Assert
+    expect(input).toBeInTheDocument();
+  });
 });
