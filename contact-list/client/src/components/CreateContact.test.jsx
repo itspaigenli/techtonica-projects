@@ -8,7 +8,7 @@ describe("CreateContact", () => {
     render(<CreateContact />);
 
     // Act
-    const heading = screen.getByText(/create contact/i);
+    const heading = screen.getByRole("heading", { name: /create contact/i });
 
     // Assert
     expect(heading).toBeInTheDocument();
