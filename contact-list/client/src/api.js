@@ -26,6 +26,22 @@ export async function createContact(contact) {
   return response.json();
 }
 
+export async function updateContact(id, contact) {
+  const response = await fetch(`${API_URL}/contacts/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(contact),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update contact");
+  }
+
+  return response.json();
+}
+
 /* for later
 export async function deleteContact(id) {
   const response = await fetch(`${API_URL}/contacts/${id}`, {
@@ -35,5 +51,5 @@ export async function deleteContact(id) {
   if (!response.ok) {
     throw new Error("Failed to delete contact");
   }
-} 
-  */
+}
+*/
