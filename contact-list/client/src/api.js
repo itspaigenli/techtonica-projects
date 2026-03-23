@@ -42,7 +42,6 @@ export async function updateContact(id, contact) {
   return response.json();
 }
 
-/* for later
 export async function deleteContact(id) {
   const response = await fetch(`${API_URL}/contacts/${id}`, {
     method: "DELETE",
@@ -51,5 +50,6 @@ export async function deleteContact(id) {
   if (!response.ok) {
     throw new Error("Failed to delete contact");
   }
+
+  return response.json();
 }
-*/
