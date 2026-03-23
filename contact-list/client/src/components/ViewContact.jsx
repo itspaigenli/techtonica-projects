@@ -1,6 +1,27 @@
-function ViewContact({ contact, onBack }) {
+import { deleteContact } from "../api";
+
+function ViewContact({ contact, onBack, onDelete }) {
   if (!contact) {
     return <p>No contact selected.</p>;
+  }
+
+  async function handleDelete() {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this contact?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteContact(contact.id);
+
+      if (onDelete) {
+        onDelete(contact.id);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete contact.");
+    }
   }
 
   return (
@@ -17,6 +38,10 @@ function ViewContact({ contact, onBack }) {
 
       <button type="button" onClick={onBack}>
         Back
+      </button>
+
+      <button type="button" onClick={handleDelete}>
+        Delete
       </button>
     </section>
   );
