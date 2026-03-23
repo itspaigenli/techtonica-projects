@@ -45,8 +45,8 @@ function App() {
   }
 
   return (
-    <main>
-      <header>
+    <main className="app-shell">
+      <header className="app-header">
         <h1>ChronoRegistry</h1>
       </header>
 
