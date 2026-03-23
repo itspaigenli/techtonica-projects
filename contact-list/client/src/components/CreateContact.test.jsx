@@ -43,4 +43,14 @@ describe("CreateContact", () => {
     // Assert
     expect(input).toBeInTheDocument();
   });
+  it("renders the origin timeline input", () => {
+    // Arrange
+    render(<CreateContact />);
+
+    // Act
+    const input = screen.getByLabelText(/origin timeline/i);
+
+    // Assert
+    expect(input).toBeInTheDocument();
+  });
 });
