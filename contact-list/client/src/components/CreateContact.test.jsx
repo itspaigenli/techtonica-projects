@@ -63,4 +63,14 @@ describe("CreateContact", () => {
     // Assert
     expect(textarea).toBeInTheDocument();
   });
+  it("renders the status dropdown", () => {
+    // Arrange
+    render(<CreateContact />);
+
+    // Act
+    const select = screen.getByLabelText(/status/i);
+
+    // Assert
+    expect(select).toBeInTheDocument();
+  });
 });
