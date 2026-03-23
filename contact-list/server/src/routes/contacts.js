@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST NEW -
+// POST NEW
 router.post("/", async (req, res) => {
   try {
     const {
@@ -63,6 +63,64 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("POST /contacts error:", error);
     res.status(500).json({ error: "Failed to create contact." });
+  }
+});
+
+// UPDATE EXISTING
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const {
+      temporal_id,
+      temporal_contact,
+      current_timeline,
+      origin_timeline,
+      mission_notes,
+      status,
+    } = req.body;
+
+    if (
+      !temporal_id ||
+      !temporal_contact ||
+      current_timeline === undefined ||
+      origin_timeline === undefined
+    ) {
+      return res.status(400).json({
+        error: "Required fields are missing.",
+      });
+    }
+
+    const result = await pool.query(
+      `UPDATE contacts
+       SET
+         temporal_id = $1,
+         temporal_contact = $2,
+         current_timeline = $3,
+         origin_timeline = $4,
+         mission_notes = $5,
+         status = $6
+       WHERE id = $7
+       RETURNING *`,
+      [
+        temporal_id,
+        temporal_contact,
+        Number(current_timeline),
+        Number(origin_timeline),
+        mission_notes || null,
+        status || null,
+        id,
+      ],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Contact not found." });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("PUT /contacts/:id error:", error);
+    res.status(500).json({ error: "Failed to update contact." });
   }
 });
 
