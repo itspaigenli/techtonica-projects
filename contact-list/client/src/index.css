@@ -42,9 +42,16 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
   background:
-    radial-gradient(circle at top, rgba(111, 211, 193, 0.08), transparent 28%),
-    linear-gradient(180deg, var(--bg-main) 0%, var(--bg-secondary) 100%);
+    radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.5)),
+    linear-gradient(rgba(11, 16, 32, 0.85), rgba(17, 24, 43, 0.9)),
+    url("/images/temporal-bg.png");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
   color: var(--text-main);
 }
 
@@ -62,7 +69,7 @@ select {
   position: relative;
   overflow: hidden;
 
-  background: rgba(24, 34, 53, 0.92);
+  background: rgba(24, 34, 53, 0.94);
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: var(--shadow);
@@ -89,18 +96,21 @@ select {
     );
 }
 
-.app-header,
-section,
-ul,
-form {
+.app-header {
   position: relative;
   z-index: 1;
-}
-
-.app-header {
   margin-bottom: 24px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--border);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header-text {
+  flex: 1;
 }
 
 .app-header h1 {
@@ -116,6 +126,20 @@ form {
   font-size: 0.95rem;
   letter-spacing: 0.04em;
   color: var(--text-muted);
+}
+
+.header-logo {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.04),
+    transparent 70%
+  );
+  filter: drop-shadow(0 0 14px rgba(111, 211, 193, 0.18));
 }
 
 section {

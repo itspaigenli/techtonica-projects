@@ -74,8 +74,16 @@ function App() {
   return (
     <main className="app-shell">
       <header className="app-header">
-        <h1>ChronoRegistry</h1>
-        <p>Temporal Records Bureau</p>
+        <div className="header-text">
+          <h1>ChronoRegistry</h1>
+          <p>Temporal Records Bureau</p>
+        </div>
+
+        <img
+          src="/public/images/temporal-seal.png"
+          alt="Temporal Records Bureau seal"
+          className="header-logo"
+        />
       </header>
 
       {error && <p>{error}</p>}
