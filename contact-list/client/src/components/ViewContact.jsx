@@ -26,15 +26,25 @@ function ViewContact({ contact, onBack, onDelete }) {
 
   return (
     <section>
-      <h2>{contact.temporal_id}</h2>
+      <div className="contact-profile">
+        <img
+          src={contact.temporal_id_picture || "/agents/agent-a1.png"}
+          alt={contact.temporal_id}
+          className="agent-photo"
+        />
 
-      <p>Temporal Contact: {contact.temporal_contact}</p>
+        <div>
+          <h2>{contact.temporal_id}</h2>
+          <p>Temporal Contact: {contact.temporal_contact}</p>
+          <p>Status: {contact.status || "No status available."}</p>
+        </div>
+      </div>
+
       <p>Current Timeline: {contact.current_timeline}</p>
       <p>Origin Timeline: {contact.origin_timeline}</p>
       <p>
         Mission Notes: {contact.mission_notes || "No mission notes available."}
       </p>
-      <p>Status: {contact.status || "No status available."}</p>
 
       <button type="button" onClick={onBack}>
         Back
