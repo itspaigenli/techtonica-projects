@@ -9,6 +9,7 @@ function CreateContact({ onSuccess, onCancel }) {
     origin_timeline: "",
     mission_notes: "",
     status: "",
+    temporal_id_picture: "",
   });
 
   const [error, setError] = useState("");
@@ -43,6 +44,7 @@ function CreateContact({ onSuccess, onCancel }) {
         origin_timeline: Number(formData.origin_timeline),
         mission_notes: formData.mission_notes.trim() || null,
         status: formData.status || null,
+        temporal_id_picture: formData.temporal_id_picture.trim() || null,
       });
 
       setFormData({
@@ -52,6 +54,7 @@ function CreateContact({ onSuccess, onCancel }) {
         origin_timeline: "",
         mission_notes: "",
         status: "",
+        temporal_id_picture: "",
       });
 
       if (onSuccess) {
@@ -143,7 +146,19 @@ function CreateContact({ onSuccess, onCancel }) {
           </select>
         </div>
 
+        <div>
+          <label htmlFor="temporal_id_picture">Temporal ID Picture URL</label>
+          <input
+            id="temporal_id_picture"
+            name="temporal_id_picture"
+            type="text"
+            value={formData.temporal_id_picture}
+            onChange={handleChange}
+          />
+        </div>
+
         <button type="submit">Create Contact</button>
+
         {onCancel && (
           <button type="button" onClick={onCancel}>
             Cancel

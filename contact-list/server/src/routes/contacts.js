@@ -24,6 +24,7 @@ router.post("/", async (req, res) => {
       origin_timeline,
       mission_notes,
       status,
+      temporal_id_picture,
     } = req.body;
 
     if (
@@ -39,16 +40,17 @@ router.post("/", async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO contacts
-       (
-         temporal_id,
-         temporal_contact,
-         current_timeline,
-         origin_timeline,
-         mission_notes,
-         status
-       )
-       VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING *`,
+   (
+     temporal_id,
+     temporal_contact,
+     current_timeline,
+     origin_timeline,
+     mission_notes,
+     status,
+     temporal_id_picture
+   )
+   VALUES ($1, $2, $3, $4, $5, $6, $7)
+   RETURNING *`,
       [
         temporal_id,
         temporal_contact,
@@ -56,6 +58,7 @@ router.post("/", async (req, res) => {
         Number(origin_timeline),
         mission_notes || null,
         status || null,
+        temporal_id_picture || null,
       ],
     );
 
@@ -78,6 +81,7 @@ router.put("/:id", async (req, res) => {
       origin_timeline,
       mission_notes,
       status,
+      temporal_id_picture,
     } = req.body;
 
     if (
@@ -93,15 +97,16 @@ router.put("/:id", async (req, res) => {
 
     const result = await pool.query(
       `UPDATE contacts
-       SET
-         temporal_id = $1,
-         temporal_contact = $2,
-         current_timeline = $3,
-         origin_timeline = $4,
-         mission_notes = $5,
-         status = $6
-       WHERE id = $7
-       RETURNING *`,
+   SET
+     temporal_id = $1,
+     temporal_contact = $2,
+     current_timeline = $3,
+     origin_timeline = $4,
+     mission_notes = $5,
+     status = $6,
+     temporal_id_picture = $7
+   WHERE id = $8
+   RETURNING *`,
       [
         temporal_id,
         temporal_contact,
@@ -109,6 +114,7 @@ router.put("/:id", async (req, res) => {
         Number(origin_timeline),
         mission_notes || null,
         status || null,
+        temporal_id_picture || null,
         id,
       ],
     );

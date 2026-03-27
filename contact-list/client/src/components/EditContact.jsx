@@ -9,6 +9,7 @@ function EditContact({ contact, onSuccess, onCancel }) {
     origin_timeline: contact.origin_timeline,
     mission_notes: contact.mission_notes || "",
     status: contact.status || "",
+    temporal_id_picture: contact.temporal_id_picture || "",
   });
 
   const [error, setError] = useState("");
@@ -43,6 +44,7 @@ function EditContact({ contact, onSuccess, onCancel }) {
         origin_timeline: Number(formData.origin_timeline),
         mission_notes: formData.mission_notes.trim() || null,
         status: formData.status || null,
+        temporal_id_picture: formData.temporal_id_picture.trim() || null,
       });
 
       if (onSuccess) {
@@ -132,6 +134,17 @@ function EditContact({ contact, onSuccess, onCancel }) {
             <option value="Archived">Archived</option>
             <option value="Unknown">Unknown</option>
           </select>
+        </div>
+
+        <div>
+          <label htmlFor="temporal_id_picture">Temporal ID Picture URL</label>
+          <input
+            id="temporal_id_picture"
+            name="temporal_id_picture"
+            type="text"
+            value={formData.temporal_id_picture}
+            onChange={handleChange}
+          />
         </div>
 
         <button type="submit">Save Changes</button>
