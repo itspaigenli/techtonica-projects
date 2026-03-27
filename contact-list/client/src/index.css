@@ -21,7 +21,9 @@
   --max-width: 1000px;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -29,7 +31,10 @@ html,
 body,
 #root {
   margin: 0;
-  min-height: 100%;
+  min-height: 100vh;
+}
+
+body {
   font-family:
     Inter,
     system-ui,
@@ -39,33 +44,36 @@ body,
     sans-serif;
   background:
     radial-gradient(circle at top, rgba(111, 211, 193, 0.08), transparent 28%),
-    linear-gradient(180deg, #0b1020 0%, #11182b 100%);
+    linear-gradient(180deg, var(--bg-main) 0%, var(--bg-secondary) 100%);
   color: var(--text-main);
 }
 
-body {
-  min-height: 100vh;
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
-/* Main app shell */
 .app-shell {
   width: min(92%, var(--max-width));
   margin: 40px auto;
   padding: 28px;
+  position: relative;
+  overflow: hidden;
+
   background: rgba(24, 34, 53, 0.92);
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(4px);
-  position: relative;
-  overflow: hidden;
 }
 
-/* subtle decorative overlay */
 .app-shell::before {
   content: "";
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     linear-gradient(
       90deg,
@@ -79,12 +87,17 @@ body {
       transparent 79px,
       rgba(111, 211, 193, 0.04) 80px
     );
-  pointer-events: none;
+}
+
+.app-header,
+section,
+ul,
+form {
+  position: relative;
+  z-index: 1;
 }
 
 .app-header {
-  position: relative;
-  z-index: 1;
   margin-bottom: 24px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--border);
@@ -100,27 +113,17 @@ body {
 
 .app-header p {
   margin: 8px 0 0;
-  color: var(--text-muted);
   font-size: 0.95rem;
   letter-spacing: 0.04em;
-}
-
-/* Shared section panels */
-section,
-form,
-ul,
-main > div,
-main > article {
-  position: relative;
-  z-index: 1;
+  color: var(--text-muted);
 }
 
 section {
+  margin-top: 18px;
+  padding: 22px;
   background: rgba(34, 48, 74, 0.55);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 22px;
-  margin-top: 18px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
@@ -128,17 +131,19 @@ section h2 {
   margin-top: 0;
   margin-bottom: 18px;
   font-size: 1.35rem;
-  color: var(--accent-teal);
   letter-spacing: 0.04em;
+  color: var(--accent-teal);
 }
 
-/* Buttons */
+p {
+  line-height: 1.6;
+}
+
 button {
   appearance: none;
+  padding: 10px 16px;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
-  padding: 10px 16px;
-  font: inherit;
   font-weight: 600;
   cursor: pointer;
   transition:
@@ -164,18 +169,15 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* Default primary button */
 button[type="submit"],
-.app-shell > button,
-button:not([type="button"]) {
-  background: linear-gradient(135deg, var(--accent-teal), #58bcae);
+.app-shell > button {
   color: #081018;
+  background: linear-gradient(135deg, var(--accent-teal), #58bcae);
   box-shadow: 0 6px 16px rgba(111, 211, 193, 0.18);
 }
 
 button[type="submit"]:hover,
-.app-shell > button:hover,
-button:not([type="button"]):hover {
+.app-shell > button:hover {
   background: linear-gradient(
     135deg,
     var(--accent-teal-hover),
@@ -183,31 +185,32 @@ button:not([type="button"]):hover {
   );
 }
 
-/* Secondary buttons */
 button[type="button"] {
-  background: var(--panel-2);
   color: var(--text-main);
+  background: var(--panel-2);
   border-color: var(--border);
 }
 
 button[type="button"]:hover {
-  border-color: var(--accent-teal);
   background: #263754;
+  border-color: var(--accent-teal);
 }
 
-/* Delete button in detail view */
-section button:last-of-type {
+.delete-button {
+  color: #ffd7d7;
   background: rgba(184, 92, 92, 0.16);
   border-color: rgba(184, 92, 92, 0.4);
-  color: #ffd7d7;
 }
 
-section button:last-of-type:hover {
+.delete-button:hover {
   background: rgba(184, 92, 92, 0.28);
   border-color: var(--danger-hover);
 }
 
-/* Contact list */
+.app-shell > button {
+  margin-bottom: 18px;
+}
+
 ul {
   list-style: none;
   margin: 18px 0 0;
@@ -226,28 +229,33 @@ li {
   border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
-}
-
-li span {
-  font-weight: 600;
-  color: var(--text-main);
-  line-height: 1.4;
-}
-
-li:hover {
-  border-color: var(--accent-gold);
-  transform: translateY(-1px);
   transition:
     border-color 0.2s ease,
     transform 0.15s ease;
 }
 
-li button {
-  margin-left: 8px;
+li:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
+}
+
+li span {
+  flex: 1;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.contact-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.contact-actions button {
   min-width: 72px;
 }
 
-/* Forms */
 form {
   display: grid;
   gap: 16px;
@@ -270,12 +278,11 @@ input,
 textarea,
 select {
   width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
   padding: 12px 14px;
-  font: inherit;
   color: var(--text-main);
   background: rgba(11, 16, 32, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -296,9 +303,9 @@ select:hover {
 input:focus,
 textarea:focus,
 select:focus {
+  background: rgba(11, 16, 32, 0.95);
   border-color: var(--accent-teal);
   box-shadow: 0 0 0 4px rgba(111, 211, 193, 0.12);
-  background: rgba(11, 16, 32, 0.95);
 }
 
 textarea {
@@ -306,15 +313,8 @@ textarea {
   resize: vertical;
 }
 
-/* Form button row feel */
 form button {
   width: fit-content;
-}
-
-/* Paragraphs / record text */
-p {
-  color: var(--text-main);
-  line-height: 1.6;
 }
 
 section p {
@@ -325,33 +325,16 @@ section p {
   border-radius: 10px;
 }
 
-section p strong {
-  color: var(--accent-gold);
-}
-
-/* Error messages */
 .app-shell > p,
 form p {
   margin-top: 10px;
+  padding: 10px 12px;
   color: #ffd1d1;
   background: rgba(184, 92, 92, 0.15);
   border: 1px solid rgba(184, 92, 92, 0.35);
   border-radius: 12px;
-  padding: 10px 12px;
 }
 
-/* Empty state */
-ul + p,
-section > p {
-  color: var(--text-muted);
-}
-
-/* Better spacing for top add button */
-.app-shell > button {
-  margin-bottom: 18px;
-}
-
-/* Responsive */
 @media (max-width: 700px) {
   .app-shell {
     width: 94%;
@@ -364,13 +347,13 @@ section > p {
     align-items: flex-start;
   }
 
-  li button {
-    margin-left: 0;
+  .contact-actions {
+    width: 100%;
   }
 
+  .contact-actions button,
   form button,
-  .app-shell > button,
-  button {
+  .app-shell > button {
     width: 100%;
   }
 }

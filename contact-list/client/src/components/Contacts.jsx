@@ -10,14 +10,15 @@ function Contacts({ items, onSelect, onEdit }) {
           <span>
             {contact.temporal_id} - {contact.temporal_contact}
           </span>
+          <div className="contact-actions">
+            <button type="button" onClick={() => onSelect(contact)}>
+              View
+            </button>
 
-          <button type="button" onClick={() => onSelect(contact)}>
-            View
-          </button>
-
-          <button type="button" onClick={() => onEdit(contact)}>
-            Edit
-          </button>
+            <button type="button" onClick={() => onEdit(contact)}>
+              Edit
+            </button>
+          </div>
         </li>
       ))}
     </ul>

@@ -40,7 +40,7 @@ function ViewContact({ contact, onBack, onDelete }) {
         Back
       </button>
 
-      <button type="button" onClick={handleDelete}>
+      <button type="button" className="delete-button" onClick={handleDelete}>
         Delete
       </button>
     </section>
