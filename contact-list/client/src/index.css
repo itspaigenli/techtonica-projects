@@ -1,0 +1,376 @@
+:root {
+  --bg-main: #0b1020;
+  --bg-secondary: #11182b;
+  --panel: #182235;
+  --panel-2: #22304a;
+  --border: #31415f;
+
+  --text-main: #e8edf5;
+  --text-muted: #9aa7bd;
+
+  --accent-teal: #6fd3c1;
+  --accent-teal-hover: #8ce7d8;
+  --accent-gold: #d2a85a;
+
+  --danger: #b85c5c;
+  --danger-hover: #cf7272;
+
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --max-width: 1000px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(111, 211, 193, 0.08), transparent 28%),
+    linear-gradient(180deg, #0b1020 0%, #11182b 100%);
+  color: var(--text-main);
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Main app shell */
+.app-shell {
+  width: min(92%, var(--max-width));
+  margin: 40px auto;
+  padding: 28px;
+  background: rgba(24, 34, 53, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle decorative overlay */
+.app-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(210, 168, 90, 0.04) 50%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 79px,
+      rgba(111, 211, 193, 0.04) 80px
+    );
+  pointer-events: none;
+}
+
+.app-header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.app-header p {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+/* Shared section panels */
+section,
+form,
+ul,
+main > div,
+main > article {
+  position: relative;
+  z-index: 1;
+}
+
+section {
+  background: rgba(34, 48, 74, 0.55);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-top: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+section h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 1.35rem;
+  color: var(--accent-teal);
+  letter-spacing: 0.04em;
+}
+
+/* Buttons */
+button {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+}
+
+/* Default primary button */
+button[type="submit"],
+.app-shell > button,
+button:not([type="button"]) {
+  background: linear-gradient(135deg, var(--accent-teal), #58bcae);
+  color: #081018;
+  box-shadow: 0 6px 16px rgba(111, 211, 193, 0.18);
+}
+
+button[type="submit"]:hover,
+.app-shell > button:hover,
+button:not([type="button"]):hover {
+  background: linear-gradient(
+    135deg,
+    var(--accent-teal-hover),
+    var(--accent-teal)
+  );
+}
+
+/* Secondary buttons */
+button[type="button"] {
+  background: var(--panel-2);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+button[type="button"]:hover {
+  border-color: var(--accent-teal);
+  background: #263754;
+}
+
+/* Delete button in detail view */
+section button:last-of-type {
+  background: rgba(184, 92, 92, 0.16);
+  border-color: rgba(184, 92, 92, 0.4);
+  color: #ffd7d7;
+}
+
+section button:last-of-type:hover {
+  background: rgba(184, 92, 92, 0.28);
+  border-color: var(--danger-hover);
+}
+
+/* Contact list */
+ul {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(34, 48, 74, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+}
+
+li span {
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+li:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
+  transition:
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+li button {
+  margin-left: 8px;
+  min-width: 72px;
+}
+
+/* Forms */
+form {
+  display: grid;
+  gap: 16px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--accent-gold);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--text-main);
+  background: rgba(11, 16, 32, 0.75);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7e8ba6;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: #496287;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 0 4px rgba(111, 211, 193, 0.12);
+  background: rgba(11, 16, 32, 0.95);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Form button row feel */
+form button {
+  width: fit-content;
+}
+
+/* Paragraphs / record text */
+p {
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+section p {
+  margin: 10px 0;
+  padding: 10px 12px;
+  background: rgba(11, 16, 32, 0.45);
+  border-left: 3px solid var(--accent-teal);
+  border-radius: 10px;
+}
+
+section p strong {
+  color: var(--accent-gold);
+}
+
+/* Error messages */
+.app-shell > p,
+form p {
+  margin-top: 10px;
+  color: #ffd1d1;
+  background: rgba(184, 92, 92, 0.15);
+  border: 1px solid rgba(184, 92, 92, 0.35);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+/* Empty state */
+ul + p,
+section > p {
+  color: var(--text-muted);
+}
+
+/* Better spacing for top add button */
+.app-shell > button {
+  margin-bottom: 18px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .app-shell {
+    width: 94%;
+    margin: 20px auto;
+    padding: 18px;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  li button {
+    margin-left: 0;
+  }
+
+  form button,
+  .app-shell > button,
+  button {
+    width: 100%;
+  }
+}

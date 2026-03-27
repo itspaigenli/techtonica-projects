@@ -75,6 +75,7 @@ function App() {
     <main className="app-shell">
       <header className="app-header">
         <h1>ChronoRegistry</h1>
+        <p>Temporal Records Bureau</p>
       </header>
 
       {error && <p>{error}</p>}
