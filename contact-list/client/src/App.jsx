@@ -1,31 +1,35 @@
-// Use when components fetch their own data
+import { useEffect, useState } from "react";
+import { getContacts } from "./api";
 
-import { useState } from "react";
-import "./App.css";
-
-import Form from "./components/Form";
-import List from "./components/List";
+import Contacts from "./components/Contacts";
 
 function App() {
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [contacts, setContacts] = useState([]);
+  const [error, setError] = useState("");
 
-  function handleDataChange() {
-    setRefreshKey((prev) => prev + 1);
-  }
+  useEffect(() => {
+    async function loadContacts() {
+      try {
+        const data = await getContacts();
+        setContacts(data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load contacts.");
+      }
+    }
+
+    loadContacts();
+  }, []);
 
   return (
-    <main className="app-shell">
-      <header className="app-header">
+    <main>
+      <header>
         <h1>ChronoRegistry</h1>
       </header>
 
-      <section className="top-row">
-        <Form onSuccess={handleDataChange} />
-      </section>
+      {error && <p>{error}</p>}
 
-      <section className="content">
-        <List refreshKey={refreshKey} />
-      </section>
+      <Contacts items={contacts} />
     </main>
   );
 }

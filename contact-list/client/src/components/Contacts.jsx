@@ -1,15 +1,17 @@
-function List({ items }) {
+function Contacts({ items }) {
   if (!items || items.length === 0) {
-    return <p>No items found.</p>;
+    return <p>No contacts found.</p>;
   }
 
   return (
     <ul>
-      {items.map((item) => (
-        <li key={item.id}>{item.name}</li>
+      {items.map((contact) => (
+        <li key={contact.id}>
+          {contact.temporal_id} - {contact.temporal_contact}
+        </li>
       ))}
     </ul>
   );
 }
 
-export default List;
+export default Contacts;
