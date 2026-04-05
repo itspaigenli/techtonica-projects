@@ -9,8 +9,8 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
   const [featureImageUrl, setFeatureImageUrl] = useState("");
+  const [error, setError] = useState("");
 
-  // Load categories
   useEffect(() => {
     async function loadCategories() {
       const data = await getCategories();
@@ -20,7 +20,6 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
     loadCategories();
   }, []);
 
-  // Handle edit vs create mode
   useEffect(() => {
     if (editingPost) {
       setTitle(editingPost.title || "");
@@ -28,25 +27,40 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       setSubmitStatus(editingPost.status || "draft");
       setCategoryId(editingPost.category_id || "");
       setFeatureImageUrl(editingPost.feature_image_url || "");
+      setError("");
     } else {
       setTitle("");
       setContent("");
       setSubmitStatus("draft");
       setCategoryId("");
       setFeatureImageUrl("");
+      setError("");
     }
   }, [editingPost]);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (!title.trim()) {
+      setError("Title is required.");
+      return;
+    }
+
+    if (!content.trim()) {
+      setError("Content is required.");
+      return;
+    }
+
+    if (!categoryId) {
+      setError("Category is required.");
+      return;
+    }
+
     const postData = {
       title,
       content,
       status: submitStatus,
-      category_id: categoryId ? Number(categoryId) : null,
-      tags: editingPost ? editingPost.tags : null,
-      discussion_status: editingPost ? editingPost.discussion_status : "open",
+      category_id: Number(categoryId),
       feature_image_url: featureImageUrl || null,
     };
 
@@ -56,12 +70,12 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       await createPost(postData);
     }
 
-    // Reset form
     setTitle("");
     setContent("");
     setSubmitStatus("draft");
     setCategoryId("");
     setFeatureImageUrl("");
+    setError("");
 
     onSuccess();
   }
@@ -71,6 +85,8 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       <h2 className="text-xl font-bold">
         {editingPost ? "Edit Post" : "Create Post"}
       </h2>
+
+      {error && <p className="text-red-600 text-sm">{error}</p>}
 
       {/* Title */}
       <div>
