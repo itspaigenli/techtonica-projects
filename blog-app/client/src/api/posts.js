@@ -17,6 +17,18 @@ export async function createPost(postData) {
   return response.json();
 }
 
+export async function updatePost(id, postData) {
+  const response = await fetch(`${BASE_URL}/posts/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+
+  return response.json();
+}
+
 export async function deletePost(id) {
   const response = await fetch(`${BASE_URL}/posts/${id}`, {
     method: "DELETE",
