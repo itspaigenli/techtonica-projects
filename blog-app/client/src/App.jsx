@@ -37,7 +37,7 @@ export default function App() {
 
       {/* Main Layout */}
       <section className="grid md:grid-cols-3 gap-6">
-        {/* LEFT SIDE */}
+        {/* Left Side */}
         <div className="md:col-span-2 space-y-6">
           {/* Category Grid */}
           <section className="bg-white p-4 rounded shadow space-y-4">
@@ -73,8 +73,9 @@ export default function App() {
               </div>
             </div>
 
-            {/* Reset filter */}
+            {/* Reset Category Filter */}
             <button
+              type="button"
               onClick={() => setSelectedCategory(null)}
               className="text-sm underline"
             >
@@ -99,7 +100,7 @@ export default function App() {
           </section>
         </div>
 
-        {/* RIGHT SIDE (Sidebar) */}
+        {/* Right Side / Sidebar */}
         <aside className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold mb-2">Current Standings</h2>
           <p className="text-sm text-gray-600">
