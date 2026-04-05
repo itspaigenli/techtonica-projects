@@ -15,7 +15,7 @@ export default function App() {
 
       <section className="bg-white p-4 rounded shadow">
         <h2 className="text-lg font-semibold mb-2">Viewer</h2>
-        <PostList refreshKey={refreshKey} />
+        <PostList refreshKey={refreshKey} onSuccess={handleRefresh} />
       </section>
 
       <section className="bg-white p-4 rounded shadow">
