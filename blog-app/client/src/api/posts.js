@@ -16,3 +16,11 @@ export async function createPost(postData) {
 
   return response.json();
 }
+
+export async function deletePost(id) {
+  const response = await fetch(`${BASE_URL}/posts/${id}`, {
+    method: "DELETE",
+  });
+
+  return response.json();
+}
