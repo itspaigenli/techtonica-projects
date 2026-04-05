@@ -33,4 +33,57 @@ router.get("/", (req, res) => {
   res.json([{ message: "GET /posts working" }]);
 }); */
 
+// POST
+router.post("/", async (req, res) => {
+  try {
+    const {
+      title,
+      content,
+      category_id,
+      tags,
+      status,
+      discussion_status,
+      feature_image_url,
+    } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({ error: "Title and content are required" });
+    }
+
+    const publish_date = status === "published" ? new Date() : null;
+
+    const sql = `
+      INSERT INTO posts (
+        title,
+        content,
+        category_id,
+        tags,
+        status,
+        discussion_status,
+        publish_date,
+        feature_image_url
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *;
+    `;
+
+    const values = [
+      title,
+      content,
+      category_id,
+      tags,
+      status || "draft",
+      discussion_status || "open",
+      publish_date,
+      feature_image_url,
+    ];
+
+    const result = await pool.query(sql, values);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("POST /posts error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 export default router;
