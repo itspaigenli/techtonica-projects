@@ -16,6 +16,18 @@ export default function PostList({ refreshKey }) {
     loadPosts();
   }, [refreshKey]);
 
+  function formatDate(dateString) {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+
   if (!posts.length) {
     return <p>No published posts found.</p>;
   }
@@ -34,8 +46,13 @@ export default function PostList({ refreshKey }) {
             </p>
           )}
 
+          {post.publish_date && (
+            <p className="text-sm text-gray-500">
+              Published: {formatDate(post.publish_date)}
+            </p>
+          )}
+
           <p>{post.content}</p>
-          <p className="text-sm text-gray-600">Status: {post.status}</p>
         </div>
       ))}
     </div>
