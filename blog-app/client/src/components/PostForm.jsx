@@ -8,7 +8,9 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
   const [submitStatus, setSubmitStatus] = useState("draft");
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
+  const [featureImageUrl, setFeatureImageUrl] = useState("");
 
+  // Load categories
   useEffect(() => {
     async function loadCategories() {
       const data = await getCategories();
@@ -18,17 +20,20 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
     loadCategories();
   }, []);
 
+  // Handle edit vs create mode
   useEffect(() => {
     if (editingPost) {
       setTitle(editingPost.title || "");
       setContent(editingPost.content || "");
       setSubmitStatus(editingPost.status || "draft");
       setCategoryId(editingPost.category_id || "");
+      setFeatureImageUrl(editingPost.feature_image_url || "");
     } else {
       setTitle("");
       setContent("");
       setSubmitStatus("draft");
       setCategoryId("");
+      setFeatureImageUrl("");
     }
   }, [editingPost]);
 
@@ -42,7 +47,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       category_id: categoryId ? Number(categoryId) : null,
       tags: editingPost ? editingPost.tags : null,
       discussion_status: editingPost ? editingPost.discussion_status : "open",
-      feature_image_url: editingPost ? editingPost.feature_image_url : null,
+      feature_image_url: featureImageUrl || null,
     };
 
     if (editingPost) {
@@ -51,10 +56,12 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       await createPost(postData);
     }
 
+    // Reset form
     setTitle("");
     setContent("");
     setSubmitStatus("draft");
     setCategoryId("");
+    setFeatureImageUrl("");
 
     onSuccess();
   }
@@ -65,6 +72,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
         {editingPost ? "Edit Post" : "Create Post"}
       </h2>
 
+      {/* Title */}
       <div>
         <label className="block font-semibold mb-1">Title</label>
         <input
@@ -75,6 +83,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
         />
       </div>
 
+      {/* Content */}
       <div>
         <label className="block font-semibold mb-1">Content</label>
         <textarea
@@ -84,6 +93,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
         />
       </div>
 
+      {/* Category */}
       <div>
         <label className="block font-semibold mb-1">Category</label>
         <select
@@ -100,6 +110,19 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
         </select>
       </div>
 
+      {/* Feature Image */}
+      <div>
+        <label className="block font-semibold mb-1">Feature Image URL</label>
+        <input
+          type="text"
+          className="w-full border border-gray-300 rounded px-3 py-2"
+          value={featureImageUrl}
+          onChange={(e) => setFeatureImageUrl(e.target.value)}
+          placeholder="https://example.com/image.jpg"
+        />
+      </div>
+
+      {/* Buttons */}
       <div className="flex gap-2">
         <button
           type="submit"
