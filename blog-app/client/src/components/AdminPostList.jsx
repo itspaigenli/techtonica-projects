@@ -38,6 +38,17 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
             </p>
           )}
 
+          {post.publish_date && (
+            <p className="text-sm text-gray-500">
+              Published:{" "}
+              {new Date(post.publish_date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          )}
+
           <div className="flex gap-2">
             <button
               onClick={() => onEdit(post)}
