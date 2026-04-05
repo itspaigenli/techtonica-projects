@@ -14,8 +14,28 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
   }, [refreshKey]);
 
   async function handleDelete(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     await deletePost(id);
     onSuccess();
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
   if (!posts.length) {
@@ -28,9 +48,16 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
 
       {posts.map((post) => (
         <div key={post.id} className="border rounded p-4 space-y-2">
+          {/* Feature Image */}
+          {post.feature_image_url && (
+            <img
+              src={post.feature_image_url}
+              alt={post.title}
+              className="w-full h-40 object-cover rounded"
+            />
+          )}
+
           <h3 className="text-lg font-semibold">{post.title}</h3>
-          <p>{post.content}</p>
-          <p className="text-sm text-gray-600">Status: {post.status}</p>
 
           {post.category_name && (
             <p className="text-sm text-gray-500">
@@ -38,16 +65,19 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
             </p>
           )}
 
+          <p className="text-sm text-gray-600">Status: {post.status}</p>
+
           {post.publish_date && (
             <p className="text-sm text-gray-500">
-              Published:{" "}
-              {new Date(post.publish_date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              Published: {formatDate(post.publish_date)}
             </p>
           )}
+
+          <p>
+            {post.content.length > 120
+              ? post.content.slice(0, 120) + "..."
+              : post.content}
+          </p>
 
           <div className="flex gap-2">
             <button
