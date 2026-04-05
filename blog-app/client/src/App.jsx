@@ -10,16 +10,16 @@ export default function App() {
   }
 
   return (
-    <div>
-      <h1>Sumo Blog</h1>
+    <div className="max-w-3xl mx-auto p-6 space-y-6">
+      <h1 className="text-2xl font-bold">Sumo Blog</h1>
 
-      <section>
-        <h2>Viewer</h2>
+      <section className="bg-white p-4 rounded shadow">
+        <h2 className="text-lg font-semibold mb-2">Viewer</h2>
         <PostList refreshKey={refreshKey} />
       </section>
 
-      <section>
-        <h2>Admin</h2>
+      <section className="bg-white p-4 rounded shadow">
+        <h2 className="text-lg font-semibold mb-2">Admin</h2>
         <PostForm onSuccess={handleRefresh} />
       </section>
     </div>
