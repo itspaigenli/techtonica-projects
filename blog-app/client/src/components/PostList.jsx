@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/posts";
 
-export default function PostList({ refreshKey }) {
+export default function PostList({ refreshKey, selectedCategory }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function loadPosts() {
       const data = await getPosts();
 
-      const publishedPosts = data.filter((post) => post.status === "published");
+      let filteredPosts = data.filter((post) => post.status === "published");
 
-      setPosts(publishedPosts);
+      if (selectedCategory) {
+        filteredPosts = filteredPosts.filter(
+          (post) => post.category_name === selectedCategory,
+        );
+      }
+
+      setPosts(filteredPosts);
     }
 
     loadPosts();
