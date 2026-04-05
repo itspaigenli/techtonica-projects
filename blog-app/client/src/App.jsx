@@ -2,6 +2,7 @@ import { useState } from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import AdminPostList from "./components/AdminPostList";
+import RankingsSidebar from "./components/RankingsSidebar";
 
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -46,12 +47,7 @@ export default function App() {
         </div>
 
         {/* Right Side: Sidebar */}
-        <aside className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg font-semibold mb-2">Current Standings</h2>
-          <p className="text-sm text-gray-600">
-            Sumo API sidebar will go here later.
-          </p>
-        </aside>
+        <RankingsSidebar />
       </section>
 
       {/* Admin Section */}
