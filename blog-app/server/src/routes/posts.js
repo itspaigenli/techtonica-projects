@@ -7,19 +7,19 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const sql = `
-      SELECT
-        p.id,
-        p.title,
-        p.content,
-        p.category_id,
-        p.status,
-        p.publish_date,
-        p.feature_image_url,
-        c.name AS category_name
-      FROM posts p
-      LEFT JOIN categories c ON p.category_id = c.id
-      ORDER BY p.publish_date DESC NULLS LAST, p.id DESC;
-    `;
+        SELECT
+    p.id,
+    p.title,
+    p.content,
+    p.category_id,
+    p.status,
+    p.publish_date,
+    p.feature_image_url,
+    c.name AS category_name
+  FROM posts p
+  LEFT JOIN categories c ON p.category_id = c.id
+  ORDER BY p.publish_date DESC NULLS LAST, p.id DESC;
+`;
 
     const result = await pool.query(sql);
     res.json(result.rows);
