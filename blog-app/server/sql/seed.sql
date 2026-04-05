@@ -1,8 +1,9 @@
 -- Insert categories
 INSERT INTO categories (name, slug) VALUES
-('Tournaments', 'tournaments'),
-('Wrestlers', 'wrestlers'),
-('Training', 'training');
+('Wrestler Profiles', 'wrestler-profiles'),
+('Match Breakdowns', 'match-breakdowns'),
+('Sumo for Beginners', 'sumo-for-beginners'),
+('History of Sumo', 'history-of-sumo');
 
 -- Insert posts
 INSERT INTO posts (

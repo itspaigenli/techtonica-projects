@@ -110,8 +110,8 @@ createdb blog_app
 From the project root:
 
 ```bash
-psql -d blog_app -f schema.sql
-psql -d blog_app -f seed.sql
+psql -d blog_app -f server/sql/schema.sql
+psql -d blog_app -f server/sql/seed.sql
 ```
 
 ### 5. Add environment variables
