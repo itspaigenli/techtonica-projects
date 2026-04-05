@@ -86,4 +86,65 @@ router.post("/", async (req, res) => {
   }
 });
 
+// PUT
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const {
+      title,
+      content,
+      category_id,
+      tags,
+      status,
+      discussion_status,
+      feature_image_url,
+    } = req.body || {};
+
+    if (!title || !content) {
+      return res.status(400).json({ error: "Title and content are required" });
+    }
+
+    const publish_date = status === "published" ? new Date() : null;
+
+    const sql = `
+      UPDATE posts
+      SET
+        title = $1,
+        content = $2,
+        category_id = $3,
+        tags = $4,
+        status = $5,
+        discussion_status = $6,
+        publish_date = $7,
+        feature_image_url = $8
+      WHERE id = $9
+      RETURNING *;
+    `;
+
+    const values = [
+      title,
+      content,
+      category_id,
+      tags,
+      status || "draft",
+      discussion_status || "open",
+      publish_date,
+      feature_image_url,
+      id,
+    ];
+
+    const result = await pool.query(sql, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("PUT /posts/:id error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 export default router;
