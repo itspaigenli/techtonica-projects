@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import postsRouter from "./routes/posts.js";
+import categoriesRouter from "./routes/categories.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 // Connect posts route
 app.use("/posts", postsRouter);
+app.use("/categories", categoriesRouter);
 
 export default app;
 
