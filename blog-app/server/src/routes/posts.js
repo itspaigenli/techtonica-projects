@@ -3,7 +3,7 @@ import pool from "../db.js";
 
 const router = express.Router();
 
-// GET /posts (actual data)
+// GET /posts
 router.get("/", async (req, res) => {
   try {
     const sql = `
@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
         p.id,
         p.title,
         p.content,
+        p.category_id,
         p.status,
         p.publish_date,
         p.feature_image_url,
@@ -28,26 +29,15 @@ router.get("/", async (req, res) => {
   }
 });
 
-/* GET /posts (test connection)
-router.get("/", (req, res) => {
-  res.json([{ message: "GET /posts working" }]);
-}); */
-
-// POST
+// POST /posts
 router.post("/", async (req, res) => {
   try {
-    const {
-      title,
-      content,
-      category_id,
-      tags,
-      status,
-      discussion_status,
-      feature_image_url,
-    } = req.body;
+    const { title, content, category_id, status, feature_image_url } = req.body;
 
-    if (!title || !content) {
-      return res.status(400).json({ error: "Title and content are required" });
+    if (!title || !content || !category_id) {
+      return res
+        .status(400)
+        .json({ error: "Title, content, and category are required" });
     }
 
     const publish_date = status === "published" ? new Date() : null;
@@ -57,13 +47,11 @@ router.post("/", async (req, res) => {
         title,
         content,
         category_id,
-        tags,
         status,
-        discussion_status,
         publish_date,
         feature_image_url
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
 
@@ -71,9 +59,7 @@ router.post("/", async (req, res) => {
       title,
       content,
       category_id,
-      tags,
       status || "draft",
-      discussion_status || "open",
       publish_date,
       feature_image_url,
     ];
@@ -86,23 +72,16 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT
+// PUT /posts/:id
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const { title, content, category_id, status, feature_image_url } = req.body;
 
-    const {
-      title,
-      content,
-      category_id,
-      tags,
-      status,
-      discussion_status,
-      feature_image_url,
-    } = req.body || {};
-
-    if (!title || !content) {
-      return res.status(400).json({ error: "Title and content are required" });
+    if (!title || !content || !category_id) {
+      return res
+        .status(400)
+        .json({ error: "Title, content, and category are required" });
     }
 
     const publish_date = status === "published" ? new Date() : null;
@@ -113,12 +92,10 @@ router.put("/:id", async (req, res) => {
         title = $1,
         content = $2,
         category_id = $3,
-        tags = $4,
-        status = $5,
-        discussion_status = $6,
-        publish_date = $7,
-        feature_image_url = $8
-      WHERE id = $9
+        status = $4,
+        publish_date = $5,
+        feature_image_url = $6
+      WHERE id = $7
       RETURNING *;
     `;
 
@@ -126,9 +103,7 @@ router.put("/:id", async (req, res) => {
       title,
       content,
       category_id,
-      tags,
       status || "draft",
-      discussion_status || "open",
       publish_date,
       feature_image_url,
       id,
@@ -147,7 +122,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE
+// DELETE /posts/:id
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
