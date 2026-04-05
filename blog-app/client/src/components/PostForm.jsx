@@ -24,18 +24,27 @@ export default function PostForm({ onSuccess }) {
     <form onSubmit={handleSubmit}>
       <h2>Create Post</h2>
 
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <div>
+        <label htmlFor="title">Title</label>
+        <br />
+        <input
+          id="title"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
 
-      <textarea
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
+      <div>
+        <label htmlFor="content">Content</label>
+        <br />
+        <textarea
+          id="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows="6"
+        />
+      </div>
 
       <button type="submit">Save Draft</button>
     </form>
