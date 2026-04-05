@@ -15,9 +15,7 @@ CREATE TABLE posts (
   title TEXT NOT NULL,
   content TEXT NOT NULL,
   category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
-  tags TEXT,
   status TEXT NOT NULL DEFAULT 'draft',
-  discussion_status TEXT DEFAULT 'open',
   publish_date TIMESTAMP,
   feature_image_url TEXT
 );
