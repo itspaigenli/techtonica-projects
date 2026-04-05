@@ -32,6 +32,12 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
           <p>{post.content}</p>
           <p className="text-sm text-gray-600">Status: {post.status}</p>
 
+          {post.category_name && (
+            <p className="text-sm text-gray-500">
+              Category: {post.category_name}
+            </p>
+          )}
+
           <div className="flex gap-2">
             <button
               onClick={() => onEdit(post)}
