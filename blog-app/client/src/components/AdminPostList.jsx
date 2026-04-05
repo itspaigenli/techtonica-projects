@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPosts, deletePost } from "../api/posts";
 
-export default function AdminPostList({ refreshKey, onSuccess }) {
+export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -30,10 +30,16 @@ export default function AdminPostList({ refreshKey, onSuccess }) {
         <div key={post.id} className="border rounded p-4 space-y-2">
           <h3 className="text-lg font-semibold">{post.title}</h3>
           <p>{post.content}</p>
-
           <p className="text-sm text-gray-600">Status: {post.status}</p>
 
           <div className="flex gap-2">
+            <button
+              onClick={() => onEdit(post)}
+              className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500"
+            >
+              Edit
+            </button>
+
             <button
               onClick={() => handleDelete(post.id)}
               className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
