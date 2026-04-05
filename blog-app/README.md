@@ -166,13 +166,13 @@ http://localhost:5173
 
 <!-- Add screenshot here -->
 
-![Viewer Screenshot](./screenshots/viewer.png)
+![Viewer Screenshot](./client/screenshots/viewer.png)
 
 ### Admin
 
 <!-- Add screenshot here -->
 
-![Admin Screenshot](./screenshots/admin.png)
+![Admin Screenshot](./client/screenshots/admin.png)
 
 ---
 
