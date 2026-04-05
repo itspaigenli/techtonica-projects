@@ -63,9 +63,10 @@ project-root/
 │   │   ├── routes/
 │   │   ├── db.js
 │   │   └── index.js
-│
-├── schema.sql
-├── seed.sql
+│   ├── sql/
+│   │   ├── schema.sql
+│   │   ├── seed.sql
+│   │
 └── README.md
 ```
 
@@ -76,8 +77,8 @@ project-root/
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
-cd <your-project-name>
+git clone https://github.com/itspaigenli/techtonica-projects.git
+cd blog-app
 ```
 
 ### 2. Install dependencies
@@ -101,7 +102,7 @@ npm install
 From the project root, create the database:
 
 ```bash
-createdb sumo_blog
+createdb blog_app
 ```
 
 ### 4. Run the schema and seed files
@@ -109,8 +110,8 @@ createdb sumo_blog
 From the project root:
 
 ```bash
-psql -d sumo_blog -f schema.sql
-psql -d sumo_blog -f seed.sql
+psql -d blog_app -f schema.sql
+psql -d blog_app -f seed.sql
 ```
 
 ### 5. Add environment variables
@@ -119,7 +120,7 @@ Create a `.env` file inside the `server` folder:
 
 ```env
 PORT=3000
-DATABASE_URL=postgres://localhost:5432/sumo_blog
+DATABASE_URL=postgres://localhost:5432/blog_app
 CLIENT_ORIGIN=http://localhost:5173
 ```
 
