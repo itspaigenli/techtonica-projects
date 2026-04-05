@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/posts";
 
-export default function PostList({ refreshKey, selectedCategory }) {
+export default function PostList({
+  refreshKey,
+  selectedCategory,
+  onSelectPost,
+}) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -43,7 +47,11 @@ export default function PostList({ refreshKey, selectedCategory }) {
       <h2 className="text-xl font-bold">Posts</h2>
 
       {posts.map((post) => (
-        <div key={post.id} className="border rounded p-4 space-y-2">
+        <div
+          key={post.id}
+          className="border rounded p-4 space-y-2 cursor-pointer hover:bg-gray-50"
+          onClick={() => onSelectPost(post)}
+        >
           {/* FEATURE IMAGE */}
           {post.feature_image_url && (
             <img

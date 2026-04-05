@@ -7,6 +7,7 @@ export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [editingPost, setEditingPost] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
@@ -87,16 +88,55 @@ export default function App() {
           <section className="bg-white p-4 rounded shadow space-y-4">
             <h2 className="text-lg font-semibold">Latest Posts</h2>
 
-            {selectedCategory && (
-              <p className="text-sm text-gray-600">
-                Showing: {selectedCategory}
-              </p>
-            )}
+            {selectedPost ? (
+              <div className="space-y-4">
+                <button
+                  onClick={() => setSelectedPost(null)}
+                  className="text-sm underline"
+                >
+                  ← Back to Posts
+                </button>
 
-            <PostList
-              refreshKey={refreshKey}
-              selectedCategory={selectedCategory}
-            />
+                {selectedPost.feature_image_url && (
+                  <img
+                    src={selectedPost.feature_image_url}
+                    alt={selectedPost.title}
+                    className="w-full h-64 object-cover rounded"
+                  />
+                )}
+
+                <h2 className="text-2xl font-bold">{selectedPost.title}</h2>
+
+                {selectedPost.category_name && (
+                  <p className="text-sm text-gray-500">
+                    Category: {selectedPost.category_name}
+                  </p>
+                )}
+
+                {selectedPost.publish_date && (
+                  <p className="text-sm text-gray-500">
+                    Published:{" "}
+                    {new Date(selectedPost.publish_date).toLocaleDateString()}
+                  </p>
+                )}
+
+                <p>{selectedPost.content}</p>
+              </div>
+            ) : (
+              <>
+                {selectedCategory && (
+                  <p className="text-sm text-gray-600">
+                    Showing: {selectedCategory}
+                  </p>
+                )}
+
+                <PostList
+                  refreshKey={refreshKey}
+                  selectedCategory={selectedCategory}
+                  onSelectPost={setSelectedPost}
+                />
+              </>
+            )}
           </section>
         </div>
 
