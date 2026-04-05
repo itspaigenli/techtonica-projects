@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import postsRouter from "./routes/posts.js";
 import categoriesRouter from "./routes/categories.js";
+import rankingsRouter from "./routes/rankings.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 // Connect posts route
 app.use("/posts", postsRouter);
 app.use("/categories", categoriesRouter);
+app.use("/rankings", rankingsRouter);
 
 export default app;
 
