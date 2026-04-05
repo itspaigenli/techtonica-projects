@@ -5,9 +5,23 @@ import AdminPostList from "./components/AdminPostList";
 
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
+  const [editingPost, setEditingPost] = useState(null);
 
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
+  }
+
+  function handleEdit(post) {
+    setEditingPost(post);
+  }
+
+  function handleClearEdit() {
+    setEditingPost(null);
+  }
+
+  function handleSuccess() {
+    handleRefresh();
+    handleClearEdit();
   }
 
   return (
@@ -16,15 +30,23 @@ export default function App() {
 
       <section className="bg-white p-4 rounded shadow">
         <h2 className="text-lg font-semibold mb-2">Viewer</h2>
-        <PostList refreshKey={refreshKey} onSuccess={handleRefresh} />
+        <PostList refreshKey={refreshKey} />
       </section>
 
-      <section className="bg-white p-4 rounded shadow">
+      <section className="bg-white p-4 rounded shadow space-y-6">
         <h2 className="text-lg font-semibold mb-2">Admin</h2>
 
-        <PostForm onSuccess={handleRefresh} />
+        <PostForm
+          onSuccess={handleSuccess}
+          editingPost={editingPost}
+          onCancelEdit={handleClearEdit}
+        />
 
-        <AdminPostList refreshKey={refreshKey} onSuccess={handleRefresh} />
+        <AdminPostList
+          refreshKey={refreshKey}
+          onSuccess={handleRefresh}
+          onEdit={handleEdit}
+        />
       </section>
     </div>
   );
