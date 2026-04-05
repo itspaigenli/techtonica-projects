@@ -4,14 +4,17 @@ import { createPost, updatePost } from "../api/posts";
 export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [submitStatus, setSubmitStatus] = useState("draft");
 
   useEffect(() => {
     if (editingPost) {
       setTitle(editingPost.title || "");
       setContent(editingPost.content || "");
+      setSubmitStatus(editingPost.status || "draft");
     } else {
       setTitle("");
       setContent("");
+      setSubmitStatus("draft");
     }
   }, [editingPost]);
 
@@ -21,7 +24,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
     const postData = {
       title,
       content,
-      status: editingPost ? editingPost.status : "draft",
+      status: submitStatus,
       category_id: editingPost ? editingPost.category_id : null,
       tags: editingPost ? editingPost.tags : null,
       discussion_status: editingPost ? editingPost.discussion_status : "open",
@@ -36,6 +39,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
 
     setTitle("");
     setContent("");
+    setSubmitStatus("draft");
 
     onSuccess();
   }
@@ -68,9 +72,18 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       <div className="flex gap-2">
         <button
           type="submit"
+          onClick={() => setSubmitStatus("draft")}
           className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600"
         >
-          {editingPost ? "Update Post" : "Save Draft"}
+          Save Draft
+        </button>
+
+        <button
+          type="submit"
+          onClick={() => setSubmitStatus("published")}
+          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Publish
         </button>
 
         {editingPost && (
