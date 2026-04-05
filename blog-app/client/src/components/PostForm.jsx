@@ -21,32 +21,34 @@ export default function PostForm({ onSuccess }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Create Post</h2>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-xl font-bold">Create Post</h2>
 
       <div>
-        <label htmlFor="title">Title</label>
-        <br />
+        <label className="block font-semibold mb-1">Title</label>
         <input
-          id="title"
           type="text"
+          className="w-full border border-gray-300 rounded px-3 py-2"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
 
       <div>
-        <label htmlFor="content">Content</label>
-        <br />
+        <label className="block font-semibold mb-1">Content</label>
         <textarea
-          id="content"
+          className="w-full border border-gray-300 rounded px-3 py-2 min-h-[120px]"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          rows="6"
         />
       </div>
 
-      <button type="submit">Save Draft</button>
+      <button
+        type="submit"
+        className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600"
+      >
+        Save Draft
+      </button>
     </form>
   );
 }
