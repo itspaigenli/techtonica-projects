@@ -27,6 +27,13 @@ export default function PostList({ refreshKey }) {
       {posts.map((post) => (
         <div key={post.id} className="border rounded p-4 space-y-2">
           <h3 className="text-lg font-semibold">{post.title}</h3>
+
+          {post.category_name && (
+            <p className="text-sm text-gray-500">
+              Category: {post.category_name}
+            </p>
+          )}
+
           <p>{post.content}</p>
           <p className="text-sm text-gray-600">Status: {post.status}</p>
         </div>
