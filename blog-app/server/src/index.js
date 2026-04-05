@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import postsRouter from "./routes/posts.js";
 
 dotenv.config();
 
@@ -14,9 +15,13 @@ app.use(
 
 app.use(express.json());
 
+// Root route
 app.get("/", (req, res) => {
   res.json({ message: "Server is running" });
 });
+
+// Connect posts route
+app.use("/posts", postsRouter);
 
 export default app;
 
