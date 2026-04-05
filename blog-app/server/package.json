@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "vitest",
-    "db:connect": "psql -d your_db_name",
+    "db:connect": "psql -d blog_app",
     "db:check": "psql -d postgres -c \"SELECT version();\""
   },
   "keywords": [],
