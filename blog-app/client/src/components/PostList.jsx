@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getPosts } from "../api/posts";
 import { getCategories } from "../api/categories";
 
-export default function PostList({ refreshKey }) {
+export default function PostList({ refreshKey, onSelectPost }) {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -104,6 +104,19 @@ export default function PostList({ refreshKey }) {
                 ? post.content.slice(0, 150) + "..."
                 : post.content}
             </p>
+            <p>
+              {post.content.length > 150
+                ? post.content.slice(0, 150) + "..."
+                : post.content}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => onSelectPost(post)}
+              className="text-sm underline text-blue-700"
+            >
+              Read More
+            </button>
           </div>
         ))
       )}
@@ -111,7 +124,7 @@ export default function PostList({ refreshKey }) {
       {/* Image Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded shadow-lg max-w-3xl w-full p-4 space-y-4">
+          <div className="bg-white rounded shadow-lg max-w-4xl w-full p-4 space-y-4 overflow-auto max-h-[90vh]">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold">Feature Image</h3>
               <button
@@ -126,7 +139,7 @@ export default function PostList({ refreshKey }) {
             <img
               src={selectedImage}
               alt="Feature"
-              className="w-full h-auto rounded"
+              className="max-w-full max-h-[80vh] object-contain rounded mx-auto"
             />
           </div>
         </div>

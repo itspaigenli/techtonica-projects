@@ -7,6 +7,7 @@ import RankingsSidebar from "./components/RankingsSidebar";
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [editingPost, setEditingPost] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
@@ -42,7 +43,51 @@ export default function App() {
           <section className="bg-white p-4 rounded shadow space-y-4">
             <h2 className="text-lg font-semibold">Latest Posts</h2>
 
-            <PostList refreshKey={refreshKey} />
+            {selectedPost ? (
+              <div className="space-y-4">
+                {/* Back Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedPost(null)}
+                  className="text-sm underline text-blue-700"
+                >
+                  ← Back to Posts
+                </button>
+
+                {/* Full Post Title */}
+                <h3 className="text-2xl font-bold">{selectedPost.title}</h3>
+
+                {/* Category */}
+                {selectedPost.category_name && (
+                  <p className="text-sm text-gray-500">
+                    Category: {selectedPost.category_name}
+                  </p>
+                )}
+
+                {/* Publish Date */}
+                {selectedPost.publish_date && (
+                  <p className="text-sm text-gray-500">
+                    Published:{" "}
+                    {new Date(selectedPost.publish_date).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      },
+                    )}
+                  </p>
+                )}
+
+                {/* Full Content */}
+                <p>{selectedPost.content}</p>
+              </div>
+            ) : (
+              <PostList
+                refreshKey={refreshKey}
+                onSelectPost={setSelectedPost}
+              />
+            )}
           </section>
         </div>
 
