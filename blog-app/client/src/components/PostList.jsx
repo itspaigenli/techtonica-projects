@@ -44,6 +44,15 @@ export default function PostList({ refreshKey, selectedCategory }) {
 
       {posts.map((post) => (
         <div key={post.id} className="border rounded p-4 space-y-2">
+          {/* FEATURE IMAGE */}
+          {post.feature_image_url && (
+            <img
+              src={post.feature_image_url}
+              alt={post.title}
+              className="w-full h-48 object-cover rounded"
+            />
+          )}
+
           <h3 className="text-lg font-semibold">{post.title}</h3>
 
           {post.category_name && (
@@ -58,7 +67,11 @@ export default function PostList({ refreshKey, selectedCategory }) {
             </p>
           )}
 
-          <p>{post.content}</p>
+          <p>
+            {post.content.length > 150
+              ? post.content.slice(0, 150) + "..."
+              : post.content}
+          </p>
         </div>
       ))}
     </div>
