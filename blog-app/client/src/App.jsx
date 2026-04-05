@@ -1,3 +1,27 @@
+import { useState } from "react";
+import PostList from "./components/PostList";
+import PostForm from "./components/PostForm";
+
 export default function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  function handleRefresh() {
+    setRefreshKey((prev) => prev + 1);
+  }
+
+  return (
+    <div>
+      <h1>Sumo Blog</h1>
+
+      <section>
+        <h2>Viewer</h2>
+        <PostList refreshKey={refreshKey} />
+      </section>
+
+      <section>
+        <h2>Admin</h2>
+        <PostForm onSuccess={handleRefresh} />
+      </section>
+    </div>
+  );
 }
