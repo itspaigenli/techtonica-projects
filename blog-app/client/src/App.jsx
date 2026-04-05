@@ -6,6 +6,7 @@ import AdminPostList from "./components/AdminPostList";
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [editingPost, setEditingPost] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
@@ -26,6 +27,7 @@ export default function App() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
+      {/* Header */}
       <header className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Sumo Blog</h1>
         <a href="#admin" className="text-sm font-medium underline">
@@ -33,25 +35,71 @@ export default function App() {
         </a>
       </header>
 
+      {/* Main Layout */}
       <section className="grid md:grid-cols-3 gap-6">
+        {/* LEFT SIDE */}
         <div className="md:col-span-2 space-y-6">
-          <section className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-4">Explore Topics</h2>
+          {/* Category Grid */}
+          <section className="bg-white p-4 rounded shadow space-y-4">
+            <h2 className="text-xl font-semibold">Explore Topics</h2>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <div className="border rounded p-4">Wrestler Profiles</div>
-              <div className="border rounded p-4">Match Breakdowns</div>
-              <div className="border rounded p-4">Sumo for Beginners</div>
-              <div className="border rounded p-4">History of Sumo</div>
+              <div
+                className="border rounded p-4 cursor-pointer hover:bg-gray-100"
+                onClick={() => setSelectedCategory("Wrestler Profiles")}
+              >
+                Wrestler Profiles
+              </div>
+
+              <div
+                className="border rounded p-4 cursor-pointer hover:bg-gray-100"
+                onClick={() => setSelectedCategory("Match Breakdowns")}
+              >
+                Match Breakdowns
+              </div>
+
+              <div
+                className="border rounded p-4 cursor-pointer hover:bg-gray-100"
+                onClick={() => setSelectedCategory("Sumo for Beginners")}
+              >
+                Sumo for Beginners
+              </div>
+
+              <div
+                className="border rounded p-4 cursor-pointer hover:bg-gray-100"
+                onClick={() => setSelectedCategory("History of Sumo")}
+              >
+                History of Sumo
+              </div>
             </div>
+
+            {/* Reset filter */}
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className="text-sm underline"
+            >
+              Show All
+            </button>
           </section>
 
-          <section className="bg-white p-4 rounded shadow">
-            <h2 className="text-lg font-semibold mb-2">Latest Posts</h2>
-            <PostList refreshKey={refreshKey} />
+          {/* Posts Section */}
+          <section className="bg-white p-4 rounded shadow space-y-4">
+            <h2 className="text-lg font-semibold">Latest Posts</h2>
+
+            {selectedCategory && (
+              <p className="text-sm text-gray-600">
+                Showing: {selectedCategory}
+              </p>
+            )}
+
+            <PostList
+              refreshKey={refreshKey}
+              selectedCategory={selectedCategory}
+            />
           </section>
         </div>
 
+        {/* RIGHT SIDE (Sidebar) */}
         <aside className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold mb-2">Current Standings</h2>
           <p className="text-sm text-gray-600">
@@ -60,6 +108,7 @@ export default function App() {
         </aside>
       </section>
 
+      {/* Admin Section */}
       <section
         id="admin"
         className="bg-white p-4 rounded shadow space-y-6 border-t-4 border-gray-800"
