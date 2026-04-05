@@ -1,20 +1,34 @@
 import { useEffect, useState } from "react";
 import { createPost, updatePost } from "../api/posts";
+import { getCategories } from "../api/categories";
 
 export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [submitStatus, setSubmitStatus] = useState("draft");
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      const data = await getCategories();
+      setCategories(data);
+    }
+
+    loadCategories();
+  }, []);
 
   useEffect(() => {
     if (editingPost) {
       setTitle(editingPost.title || "");
       setContent(editingPost.content || "");
       setSubmitStatus(editingPost.status || "draft");
+      setCategoryId(editingPost.category_id || "");
     } else {
       setTitle("");
       setContent("");
       setSubmitStatus("draft");
+      setCategoryId("");
     }
   }, [editingPost]);
 
@@ -25,7 +39,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       title,
       content,
       status: submitStatus,
-      category_id: editingPost ? editingPost.category_id : null,
+      category_id: categoryId ? Number(categoryId) : null,
       tags: editingPost ? editingPost.tags : null,
       discussion_status: editingPost ? editingPost.discussion_status : "open",
       feature_image_url: editingPost ? editingPost.feature_image_url : null,
@@ -40,6 +54,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
     setTitle("");
     setContent("");
     setSubmitStatus("draft");
+    setCategoryId("");
 
     onSuccess();
   }
@@ -67,6 +82,22 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
+      </div>
+
+      <div>
+        <label className="block font-semibold mb-1">Category</label>
+        <select
+          className="w-full border border-gray-300 rounded px-3 py-2"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value="">Select a category</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="flex gap-2">
