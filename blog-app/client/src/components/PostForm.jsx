@@ -37,7 +37,7 @@ export default function PostForm({ onSuccess }) {
       <div>
         <label className="block font-semibold mb-1">Content</label>
         <textarea
-          className="w-full border border-gray-300 rounded px-3 py-2 min-h-[120px]"
+          className="w-full border border-gray-300 rounded px-3 py-2 min-h-30"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
