@@ -77,7 +77,7 @@ export default function PostList({ refreshKey }) {
               <img
                 src={post.feature_image_url}
                 alt={post.title}
-                className="w-full h-48 object-cover rounded"
+                className="w-full h-auto rounded"
               />
             )}
 
