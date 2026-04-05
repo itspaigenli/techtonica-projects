@@ -6,6 +6,7 @@ export default function PostList({ refreshKey }) {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     async function loadCategories() {
@@ -67,18 +68,21 @@ export default function PostList({ refreshKey }) {
         </select>
       </div>
 
+      {/* Posts List */}
       {!posts.length ? (
         <p>No published posts found.</p>
       ) : (
         posts.map((post) => (
           <div key={post.id} className="border rounded p-4 space-y-2">
-            {/* Feature Image */}
+            {/* Feature Image Button */}
             {post.feature_image_url && (
-              <img
-                src={post.feature_image_url}
-                alt={post.title}
-                className="w-full h-auto rounded"
-              />
+              <button
+                type="button"
+                onClick={() => setSelectedImage(post.feature_image_url)}
+                className="text-sm underline text-blue-700"
+              >
+                View Feature Image
+              </button>
             )}
 
             <h3 className="text-lg font-semibold">{post.title}</h3>
@@ -102,6 +106,30 @@ export default function PostList({ refreshKey }) {
             </p>
           </div>
         ))
+      )}
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded shadow-lg max-w-3xl w-full p-4 space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold">Feature Image</h3>
+              <button
+                type="button"
+                onClick={() => setSelectedImage(null)}
+                className="text-sm underline"
+              >
+                Close
+              </button>
+            </div>
+
+            <img
+              src={selectedImage}
+              alt="Feature"
+              className="w-full h-auto rounded"
+            />
+          </div>
+        </div>
       )}
     </div>
   );
