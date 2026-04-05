@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
         c.name AS category_name
       FROM posts p
       LEFT JOIN categories c ON p.category_id = c.id
-      ORDER BY p.id;
+      ORDER BY p.publish_date DESC NULLS LAST, p.id DESC;
     `;
 
     const result = await pool.query(sql);
