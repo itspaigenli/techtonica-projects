@@ -18,13 +18,14 @@ export default function PostList({ refreshKey }) {
   }
 
   return (
-    <div>
-      <h2>Posts</h2>
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold">Posts</h2>
+
       {posts.map((post) => (
-        <div key={post.id}>
-          <h3>{post.title}</h3>
+        <div key={post.id} className="border rounded p-4 space-y-2">
+          <h3 className="text-lg font-semibold">{post.title}</h3>
           <p>{post.content}</p>
-          <p>Status: {post.status}</p>
+          <p className="text-sm text-gray-600">Status: {post.status}</p>
         </div>
       ))}
     </div>
