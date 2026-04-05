@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
+import AdminPostList from "./components/AdminPostList";
 
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -20,7 +21,10 @@ export default function App() {
 
       <section className="bg-white p-4 rounded shadow">
         <h2 className="text-lg font-semibold mb-2">Admin</h2>
+
         <PostForm onSuccess={handleRefresh} />
+
+        <AdminPostList refreshKey={refreshKey} onSuccess={handleRefresh} />
       </section>
     </div>
   );
