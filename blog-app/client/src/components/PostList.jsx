@@ -7,14 +7,17 @@ export default function PostList({ refreshKey }) {
   useEffect(() => {
     async function loadPosts() {
       const data = await getPosts();
-      setPosts(data);
+
+      const publishedPosts = data.filter((post) => post.status === "published");
+
+      setPosts(publishedPosts);
     }
 
     loadPosts();
   }, [refreshKey]);
 
   if (!posts.length) {
-    return <p>No posts found.</p>;
+    return <p>No published posts found.</p>;
   }
 
   return (
