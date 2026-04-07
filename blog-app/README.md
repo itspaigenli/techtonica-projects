@@ -197,4 +197,4 @@ http://localhost:5173
 
 ## Author
 
-Paige
+Paige <3
