@@ -8,6 +8,7 @@ export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [editingPost, setEditingPost] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [editorMessage, setEditorMessage] = useState("");
 
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
@@ -15,15 +16,21 @@ export default function App() {
 
   function handleEdit(post) {
     setEditingPost(post);
+    setEditorMessage("");
   }
 
   function handleClearEdit() {
     setEditingPost(null);
   }
 
-  function handleSuccess() {
+  function handleSuccess(status = "draft") {
     handleRefresh();
     handleClearEdit();
+    setEditorMessage(
+      status === "published"
+        ? "Post published successfully."
+        : "Draft saved successfully.",
+    );
   }
 
   return (
@@ -101,6 +108,12 @@ export default function App() {
         className="bg-white p-4 rounded shadow space-y-6 border-t-4 border-gray-800"
       >
         <h2 className="text-xl font-semibold">Admin</h2>
+
+        {editorMessage && (
+          <p className="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+            {editorMessage}
+          </p>
+        )}
 
         <PostForm
           onSuccess={handleSuccess}

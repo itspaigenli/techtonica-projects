@@ -5,11 +5,11 @@ import { getCategories } from "../api/categories";
 export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [submitStatus, setSubmitStatus] = useState("draft");
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
   const [featureImageUrl, setFeatureImageUrl] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function loadCategories() {
@@ -24,14 +24,12 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
     if (editingPost) {
       setTitle(editingPost.title || "");
       setContent(editingPost.content || "");
-      setSubmitStatus(editingPost.status || "draft");
       setCategoryId(editingPost.category_id || "");
       setFeatureImageUrl(editingPost.feature_image_url || "");
       setError("");
     } else {
       setTitle("");
       setContent("");
-      setSubmitStatus("draft");
       setCategoryId("");
       setFeatureImageUrl("");
       setError("");
@@ -40,19 +38,26 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+    const form = e.currentTarget;
+    const submitStatus = e.nativeEvent.submitter?.value || "draft";
 
     if (!title.trim()) {
       setError("Title is required.");
+      setIsSubmitting(false);
       return;
     }
 
     if (!content.trim()) {
       setError("Content is required.");
+      setIsSubmitting(false);
       return;
     }
 
     if (!categoryId) {
       setError("Category is required.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -64,20 +69,25 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       feature_image_url: featureImageUrl || null,
     };
 
-    if (editingPost) {
-      await updatePost(editingPost.id, postData);
-    } else {
-      await createPost(postData);
+    try {
+      if (editingPost) {
+        await updatePost(editingPost.id, postData);
+      } else {
+        await createPost(postData);
+      }
+
+      setTitle("");
+      setContent("");
+      setCategoryId("");
+      setFeatureImageUrl("");
+      setError("");
+      form.reset();
+      onSuccess(submitStatus);
+    } catch (err) {
+      setError(err.message || "Unable to save the post right now.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setTitle("");
-    setContent("");
-    setSubmitStatus("draft");
-    setCategoryId("");
-    setFeatureImageUrl("");
-    setError("");
-
-    onSuccess();
   }
 
   return (
@@ -142,18 +152,20 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
       <div className="flex gap-2">
         <button
           type="submit"
-          onClick={() => setSubmitStatus("draft")}
+          value="draft"
+          disabled={isSubmitting}
           className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600"
         >
-          Save Draft
+          {isSubmitting ? "Saving..." : "Save Draft"}
         </button>
 
         <button
           type="submit"
-          onClick={() => setSubmitStatus("published")}
+          value="published"
+          disabled={isSubmitting}
           className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600"
         >
-          Publish
+          {isSubmitting ? "Saving..." : "Publish"}
         </button>
 
         {editingPost && (
