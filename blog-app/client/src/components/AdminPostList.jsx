@@ -39,62 +39,77 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
   }
 
   if (!posts.length) {
-    return <p>No posts found.</p>;
+    return (
+      <div className="rounded-[1.75rem] border border-dashed border-stone-300 bg-white/70 p-10 text-center text-stone-600">
+        No posts found.
+      </div>
+    );
   }
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold">Manage Posts</h2>
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-clay-600">
+          Manage Coverage
+        </p>
+        <h2 className="font-display text-3xl uppercase tracking-[0.08em] text-ink-950">
+          Published And Draft Posts
+        </h2>
+      </div>
 
       {posts.map((post) => (
-        <div key={post.id} className="border rounded p-4 space-y-2">
-          {/* Feature Image */}
+        <article
+          key={post.id}
+          className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-[0_12px_38px_rgba(23,17,15,0.08)]"
+        >
           {post.feature_image_url && (
-            <img
-              src={post.feature_image_url}
-              alt={post.title}
-              className="w-full h-40 object-cover rounded"
-            />
+            <div className="bg-stone-100 p-4">
+              <img
+                src={post.feature_image_url}
+                alt={post.title}
+                className="h-44 w-full rounded-[1.25rem] object-contain"
+              />
+            </div>
           )}
 
-          <h3 className="text-lg font-semibold">{post.title}</h3>
+          <div className="space-y-4 p-5">
+            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay-600">
+              {post.category_name && <span>{post.category_name}</span>}
+              <span>{post.status}</span>
+              {post.publish_date && (
+                <span>{formatDate(post.publish_date)}</span>
+              )}
+            </div>
 
-          {post.category_name && (
-            <p className="text-sm text-gray-500">
-              Category: {post.category_name}
+            <h3 className="font-display text-3xl uppercase tracking-[0.06em] text-ink-950">
+              {post.title}
+            </h3>
+
+            <p className="text-sm leading-7 text-stone-700">
+              {post.content.length > 140
+                ? `${post.content.slice(0, 140)}...`
+                : post.content}
             </p>
-          )}
 
-          <p className="text-sm text-gray-600">Status: {post.status}</p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => onEdit(post)}
+                className="sumo-button"
+              >
+                Edit
+              </button>
 
-          {post.publish_date && (
-            <p className="text-sm text-gray-500">
-              Published: {formatDate(post.publish_date)}
-            </p>
-          )}
-
-          <p>
-            {post.content.length > 120
-              ? post.content.slice(0, 120) + "..."
-              : post.content}
-          </p>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() => onEdit(post)}
-              className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500"
-            >
-              Edit
-            </button>
-
-            <button
-              onClick={() => handleDelete(post.id)}
-              className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
-            >
-              Delete
-            </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(post.id)}
+                className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100"
+              >
+                Delete
+              </button>
+            </div>
           </div>
-        </div>
+        </article>
       ))}
     </div>
   );
