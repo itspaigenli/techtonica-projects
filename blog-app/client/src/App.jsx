@@ -119,36 +119,44 @@ export default function App() {
 
               <div className="pt-6">
                 {selectedPost ? (
-                  <div className="space-y-4">
-                {/* Back Button */}
+                  <article className="space-y-6">
                     <button
                       type="button"
                       onClick={() => setSelectedPost(null)}
-                      className="text-sm underline text-blue-700"
+                      className="sumo-button-secondary"
                     >
-                      ← Back to Posts
+                      Back To All Posts
                     </button>
 
-                    {/* Full Post Title */}
-                    <h3 className="text-2xl font-bold">{selectedPost.title}</h3>
+                    <div className="space-y-4 rounded-[1.75rem] border border-stone-200 bg-sand-100 p-6">
+                      <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-clay-600">
+                        {selectedPost.category_name && (
+                          <span>{selectedPost.category_name}</span>
+                        )}
+                        {selectedPost.publish_date && (
+                          <span>{formatDate(selectedPost.publish_date)}</span>
+                        )}
+                      </div>
 
-                    {/* Category */}
-                    {selectedPost.category_name && (
-                      <p className="text-sm text-gray-500">
-                        Category: {selectedPost.category_name}
+                      <h3 className="font-display text-4xl uppercase tracking-[0.06em] text-ink-950 sm:text-5xl">
+                        {selectedPost.title}
+                      </h3>
+
+                      {selectedPost.feature_image_url && (
+                        <div className="rounded-[1.5rem] bg-white p-4 shadow-lg">
+                          <img
+                            src={selectedPost.feature_image_url}
+                            alt={selectedPost.title}
+                            className="h-72 w-full rounded-[1.25rem] object-contain"
+                          />
+                        </div>
+                      )}
+
+                      <p className="max-w-3xl whitespace-pre-line text-base leading-8 text-stone-700">
+                        {selectedPost.content}
                       </p>
-                    )}
-
-                    {/* Publish Date */}
-                    {selectedPost.publish_date && (
-                      <p className="text-sm text-gray-500">
-                        Published: {formatDate(selectedPost.publish_date)}
-                      </p>
-                    )}
-
-                    {/* Full Content */}
-                    <p>{selectedPost.content}</p>
-                  </div>
+                    </div>
+                  </article>
                 ) : (
                   <PostList
                     refreshKey={refreshKey}
