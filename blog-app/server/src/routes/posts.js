@@ -1,5 +1,6 @@
 import express from "express";
 import pool from "../db.js";
+import { getPostSummary } from "../summaries.js";
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.get("/", async (req, res) => {
     p.id,
     p.title,
     p.content,
+    p.summary,
     p.category_id,
     p.status,
     p.publish_date,
@@ -40,6 +42,11 @@ router.post("/", async (req, res) => {
         .json({ error: "Title, content, and category are required" });
     }
 
+    const summary = await getPostSummary({
+      title,
+      content,
+      category_name: null,
+    });
     const publish_date = status === "published" ? new Date() : null;
 
     const sql = `
@@ -47,11 +54,12 @@ router.post("/", async (req, res) => {
         title,
         content,
         category_id,
+        summary,
         status,
         publish_date,
         feature_image_url
       )
-      VALUES ($1, $2, $3, $4, $5, $6)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
 
@@ -59,6 +67,7 @@ router.post("/", async (req, res) => {
       title,
       content,
       category_id,
+      summary,
       status || "draft",
       publish_date,
       feature_image_url,
@@ -84,6 +93,11 @@ router.put("/:id", async (req, res) => {
         .json({ error: "Title, content, and category are required" });
     }
 
+    const summary = await getPostSummary({
+      title,
+      content,
+      category_name: null,
+    });
     const publish_date = status === "published" ? new Date() : null;
 
     const sql = `
@@ -92,10 +106,11 @@ router.put("/:id", async (req, res) => {
         title = $1,
         content = $2,
         category_id = $3,
-        status = $4,
-        publish_date = $5,
-        feature_image_url = $6
-      WHERE id = $7
+        summary = $4,
+        status = $5,
+        publish_date = $6,
+        feature_image_url = $7
+      WHERE id = $8
       RETURNING *;
     `;
 
@@ -103,6 +118,7 @@ router.put("/:id", async (req, res) => {
       title,
       content,
       category_id,
+      summary,
       status || "draft",
       publish_date,
       feature_image_url,
