@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import AdminPostList from "./components/AdminPostList";
@@ -21,6 +21,15 @@ export default function App() {
   const [editorMessage, setEditorMessage] = useState("");
   const postFormRef = useRef(null);
 
+  useEffect(() => {
+    if (editingPost) {
+      postFormRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [editingPost]);
+
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
   }
@@ -28,12 +37,6 @@ export default function App() {
   function handleEdit(post) {
     setEditingPost(post);
     setEditorMessage("");
-    window.requestAnimationFrame(() => {
-      postFormRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
   }
 
   function handleClearEdit() {

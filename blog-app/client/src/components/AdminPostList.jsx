@@ -3,11 +3,17 @@ import { getPosts, deletePost } from "../api/posts";
 
 export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadPosts() {
-      const data = await getPosts();
-      setPosts(data);
+      try {
+        const data = await getPosts();
+        setPosts(data);
+        setError("");
+      } catch (err) {
+        setError(err.message || "Failed to load posts.");
+      }
     }
 
     loadPosts();
@@ -22,8 +28,13 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
       return;
     }
 
-    await deletePost(id);
-    onSuccess();
+    try {
+      await deletePost(id);
+      setError("");
+      onSuccess();
+    } catch (err) {
+      setError(err.message || "Failed to delete post.");
+    }
   }
 
   function formatDate(dateString) {
@@ -41,7 +52,7 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
   if (!posts.length) {
     return (
       <div className="rounded-[1.75rem] border border-dashed border-stone-300 bg-white/70 p-10 text-center text-stone-600">
-        No posts found.
+        {error || "No posts found."}
       </div>
     );
   }
@@ -56,6 +67,12 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
           Published And Draft Posts
         </h2>
       </div>
+
+      {error && (
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       {posts.map((post) => (
         <article
