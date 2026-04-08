@@ -99,16 +99,7 @@ export default function PostList({ refreshKey, onSelectPost }) {
               </p>
             )}
 
-            <p>
-              {post.content.length > 150
-                ? post.content.slice(0, 150) + "..."
-                : post.content}
-            </p>
-            <p>
-              {post.content.length > 150
-                ? post.content.slice(0, 150) + "..."
-                : post.content}
-            </p>
+            <p>{post.summary || post.content}</p>
 
             <button
               type="button"
