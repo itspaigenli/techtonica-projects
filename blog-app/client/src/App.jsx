@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import AdminPostList from "./components/AdminPostList";
@@ -9,6 +9,16 @@ export default function App() {
   const [editingPost, setEditingPost] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [editorMessage, setEditorMessage] = useState("");
+  const postFormRef = useRef(null);
+
+  useEffect(() => {
+    if (editingPost) {
+      postFormRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [editingPost]);
 
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
@@ -115,11 +125,13 @@ export default function App() {
           </p>
         )}
 
-        <PostForm
-          onSuccess={handleSuccess}
-          editingPost={editingPost}
-          onCancelEdit={handleClearEdit}
-        />
+        <div ref={postFormRef}>
+          <PostForm
+            onSuccess={handleSuccess}
+            editingPost={editingPost}
+            onCancelEdit={handleClearEdit}
+          />
+        </div>
 
         <AdminPostList
           refreshKey={refreshKey}
