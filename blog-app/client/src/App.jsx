@@ -3,6 +3,7 @@ import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import AdminPostList from "./components/AdminPostList";
 import RankingsSidebar from "./components/RankingsSidebar";
+import sumoSeal from "./assets/sumo-seal.svg";
 
 function formatDate(dateString) {
   if (!dateString) return "";
@@ -75,22 +76,13 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid gap-3 text-sm text-stone-700 sm:grid-cols-3 lg:min-w-[24rem] lg:grid-cols-1">
-              <div className="rounded-2xl border border-clay-200 bg-clay-50 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-clay-600">
-                  Coverage
-                </p>
-                <p className="mt-2 font-medium">
-                  Banzuke shifts and tournament recaps
-                </p>
-              </div>
-              <div className="rounded-2xl border border-stone-200 bg-white px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-clay-600">
-                  Pulse
-                </p>
-                <p className="mt-2 font-medium">
-                  Current rankings synced from the API
-                </p>
+            <div className="flex w-full max-w-sm flex-col gap-4 lg:items-end">
+              <div className="w-full overflow-hidden rounded-[1.75rem] border border-clay-200 bg-clay-50 shadow-[0_12px_30px_rgba(23,17,15,0.08)]">
+                <img
+                  src={sumoSeal}
+                  alt="Sumo-themed blog emblem"
+                  className="h-56 w-full object-cover"
+                />
               </div>
               <a href="#admin" className="sumo-button text-center">
                 Enter The Editorial Room
