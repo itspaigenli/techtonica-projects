@@ -3,11 +3,7 @@ import { createPost, updatePost } from "../api/posts";
 import { getCategories } from "../api/categories";
 
 export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
-  const [featureImageUrl, setFeatureImageUrl] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -20,28 +16,18 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
     loadCategories();
   }, []);
 
-  useEffect(() => {
-    if (editingPost) {
-      setTitle(editingPost.title || "");
-      setContent(editingPost.content || "");
-      setCategoryId(editingPost.category_id || "");
-      setFeatureImageUrl(editingPost.feature_image_url || "");
-      setError("");
-    } else {
-      setTitle("");
-      setContent("");
-      setCategoryId("");
-      setFeatureImageUrl("");
-      setError("");
-    }
-  }, [editingPost]);
-
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
     const form = e.currentTarget;
-    const submitStatus = e.nativeEvent.submitter?.value || "draft";
+    const formData = new FormData(form);
+    const submitter = e.nativeEvent.submitter;
+    const title = (formData.get("title") || "").toString();
+    const content = (formData.get("content") || "").toString();
+    const categoryId = (formData.get("categoryId") || "").toString();
+    const featureImageUrl = (formData.get("featureImageUrl") || "").toString();
+    const submitStatus = submitter?.value || "draft";
 
     if (!title.trim()) {
       setError("Title is required.");
@@ -76,56 +62,70 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
         await createPost(postData);
       }
 
-      setTitle("");
-      setContent("");
-      setCategoryId("");
-      setFeatureImageUrl("");
-      setError("");
       form.reset();
       onSuccess(submitStatus);
     } catch (err) {
-      setError(err.message || "Unable to save the post right now.");
+      setError(
+        err.message || "Unable to save the post right now. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-bold">
-        {editingPost ? "Edit Post" : "Create Post"}
-      </h2>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5 rounded-[1.75rem] border border-stone-200 bg-sand-100 p-6"
+    >
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-clay-600">
+          Compose
+        </p>
+        <h2 className="font-display text-3xl uppercase tracking-[0.08em] text-ink-950">
+          {editingPost ? "Edit Post" : "Create Post"}
+        </h2>
+      </div>
 
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      {error && (
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
-      {/* Title */}
       <div>
-        <label className="block font-semibold mb-1">Title</label>
+        <label className="mb-2 block text-sm font-semibold text-stone-800">
+          Title
+        </label>
         <input
+          name="title"
           type="text"
-          className="w-full border border-gray-300 rounded px-3 py-2"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          className="sumo-input"
+          defaultValue={editingPost?.title || ""}
+          placeholder="Grand Champion in Waiting"
         />
       </div>
 
-      {/* Content */}
       <div>
-        <label className="block font-semibold mb-1">Content</label>
+        <label className="mb-2 block text-sm font-semibold text-stone-800">
+          Content
+        </label>
         <textarea
-          className="w-full border border-gray-300 rounded px-3 py-2 min-h-30"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          name="content"
+          className="sumo-input min-h-40"
+          defaultValue={editingPost?.content || ""}
+          placeholder="Write your tournament analysis, preview, or profile here..."
         />
       </div>
 
-      {/* Category */}
       <div>
-        <label className="block font-semibold mb-1">Category</label>
+        <label className="mb-2 block text-sm font-semibold text-stone-800">
+          Category
+        </label>
         <select
-          className="w-full border border-gray-300 rounded px-3 py-2"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
+          name="categoryId"
+          className="sumo-input"
+          defaultValue={editingPost?.category_id || ""}
         >
           <option value="">Select a category</option>
           {categories.map((category) => (
@@ -136,25 +136,25 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
         </select>
       </div>
 
-      {/* Feature Image */}
       <div>
-        <label className="block font-semibold mb-1">Feature Image URL</label>
+        <label className="mb-2 block text-sm font-semibold text-stone-800">
+          Feature Image URL
+        </label>
         <input
+          name="featureImageUrl"
           type="text"
-          className="w-full border border-gray-300 rounded px-3 py-2"
-          value={featureImageUrl}
-          onChange={(e) => setFeatureImageUrl(e.target.value)}
+          className="sumo-input"
+          defaultValue={editingPost?.feature_image_url || ""}
           placeholder="https://example.com/image.jpg"
         />
       </div>
 
-      {/* Buttons */}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-3 pt-2">
         <button
           type="submit"
           value="draft"
           disabled={isSubmitting}
-          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600"
+          className="sumo-button-secondary"
         >
           {isSubmitting ? "Saving..." : "Save Draft"}
         </button>
@@ -163,7 +163,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
           type="submit"
           value="published"
           disabled={isSubmitting}
-          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="sumo-button"
         >
           {isSubmitting ? "Saving..." : "Publish"}
         </button>
@@ -172,7 +172,7 @@ export default function PostForm({ onSuccess, editingPost, onCancelEdit }) {
           <button
             type="button"
             onClick={onCancelEdit}
-            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+            className="rounded-full border border-transparent px-4 py-2 text-sm font-semibold text-stone-500 transition hover:text-stone-800"
           >
             Cancel
           </button>
