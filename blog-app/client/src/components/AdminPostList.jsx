@@ -92,9 +92,23 @@ export default function AdminPostList({ refreshKey, onSuccess, onEdit }) {
           <div className="space-y-4 p-5">
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay-600">
               {post.category_name && <span>{post.category_name}</span>}
-              <span>{post.status}</span>
+              {post.category_name && (
+                <span className="h-3 w-px bg-stone-300" aria-hidden="true" />
+              )}
+              <span
+                className={`rounded-full px-3 py-1 ${
+                  post.status === "published"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-amber-100 text-amber-700"
+                }`}
+              >
+                {post.status}
+              </span>
               {post.publish_date && (
-                <span>{formatDate(post.publish_date)}</span>
+                <>
+                  <span className="h-3 w-px bg-stone-300" aria-hidden="true" />
+                  <span>{formatDate(post.publish_date)}</span>
+                </>
               )}
             </div>
 
