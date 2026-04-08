@@ -4,6 +4,16 @@ import PostForm from "./components/PostForm";
 import AdminPostList from "./components/AdminPostList";
 import RankingsSidebar from "./components/RankingsSidebar";
 
+function formatDate(dateString) {
+  if (!dateString) return "";
+
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [editingPost, setEditingPost] = useState(null);
@@ -84,15 +94,7 @@ export default function App() {
                 {/* Publish Date */}
                 {selectedPost.publish_date && (
                   <p className="text-sm text-gray-500">
-                    Published:{" "}
-                    {new Date(selectedPost.publish_date).toLocaleDateString(
-                      "en-US",
-                      {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      },
-                    )}
+                    Published: {formatDate(selectedPost.publish_date)}
                   </p>
                 )}
 
