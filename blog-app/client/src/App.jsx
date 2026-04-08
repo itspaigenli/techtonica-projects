@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import AdminPostList from "./components/AdminPostList";
@@ -21,15 +21,6 @@ export default function App() {
   const [editorMessage, setEditorMessage] = useState("");
   const postFormRef = useRef(null);
 
-  useEffect(() => {
-    if (editingPost) {
-      postFormRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, [editingPost]);
-
   function handleRefresh() {
     setRefreshKey((prev) => prev + 1);
   }
@@ -37,6 +28,12 @@ export default function App() {
   function handleEdit(post) {
     setEditingPost(post);
     setEditorMessage("");
+    window.requestAnimationFrame(() => {
+      postFormRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
   }
 
   function handleClearEdit() {
@@ -112,8 +109,8 @@ export default function App() {
                   </h2>
                 </div>
                 <p className="max-w-xl text-sm leading-6 text-stone-600">
-                  Explore commentary on technique, momentum, rivalries, and the
-                  ritual theatre that makes every tournament week feel electric.
+                  Read blog posts about sumo matches, rankings, rivalries, and
+                  tournament moments that stand out.
                 </p>
               </div>
 
@@ -152,7 +149,7 @@ export default function App() {
                         </div>
                       )}
 
-                      <p className="max-w-3xl whitespace-pre-line text-base leading-8 text-stone-700">
+                      <p className="max-w-3xl text-base leading-8 whitespace-pre-line text-stone-700">
                         {selectedPost.content}
                       </p>
                     </div>
@@ -172,29 +169,44 @@ export default function App() {
 
         <section
           id="admin"
-          className="bg-white p-4 rounded shadow space-y-6 border-t-4 border-gray-800"
+          className="scroll-mt-6 rounded-[2rem] border border-white/65 bg-white/80 px-6 py-6 shadow-[var(--shadow-dohyo)] sm:px-8"
         >
-          <h2 className="text-xl font-semibold">Admin</h2>
-
-          {editorMessage && (
-            <p className="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
-              {editorMessage}
+          <div className="flex flex-col gap-4 border-b border-stone-200/80 pb-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-clay-600">
+                Editorial Console
+              </p>
+              <h2 className="font-display text-4xl uppercase tracking-[0.08em] text-ink-950">
+                Editorial Room
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-6 text-stone-600">
+              Here is the section to draft, edit, and delete posts. I want this
+              section to be its own page one day.
             </p>
-          )}
-
-          <div ref={postFormRef}>
-            <PostForm
-              onSuccess={handleSuccess}
-              editingPost={editingPost}
-              onCancelEdit={handleClearEdit}
-            />
           </div>
 
-          <AdminPostList
-            refreshKey={refreshKey}
-            onSuccess={handleRefresh}
-            onEdit={handleEdit}
-          />
+          <div className="grid gap-8 pt-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+            <div ref={postFormRef}>
+              {editorMessage && (
+                <p className="mb-4 rounded-2xl border border-clay-200 bg-clay-50 px-4 py-3 text-sm text-clay-700">
+                  {editorMessage}
+                </p>
+              )}
+              <PostForm
+                key={editingPost ? `edit-${editingPost.id}` : "create"}
+                onSuccess={handleSuccess}
+                editingPost={editingPost}
+                onCancelEdit={handleClearEdit}
+              />
+            </div>
+
+            <AdminPostList
+              refreshKey={refreshKey}
+              onSuccess={handleRefresh}
+              onEdit={handleEdit}
+            />
+          </div>
         </section>
       </div>
     </div>
